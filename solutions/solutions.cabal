@@ -27,3 +27,7 @@ executable Day1Part2
   import:              exe
   build-depends:       containers
   main-is:             Day1Part2.hs
+
+executable Day2Part1
+  import:              exe
+  main-is:             Day2Part1.hs
