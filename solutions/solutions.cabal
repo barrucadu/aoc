@@ -22,3 +22,8 @@ common exe
 executable Day1Part1
   import:              exe
   main-is:             Day1Part1.hs
+
+executable Day1Part2
+  import:              exe
+  build-depends:       containers
+  main-is:             Day1Part2.hs
