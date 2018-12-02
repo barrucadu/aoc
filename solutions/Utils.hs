@@ -31,3 +31,11 @@ With 'ord':
 parseInt :: String -> Int
 parseInt = foldl' go 0 where
   go acc c = acc * 10 + ord c - ord '0'
+
+-- | Convert a list of strings to ints, assuming each one is in the
+-- format "+\d+" or "-\d+".
+parseInts :: [String] -> [Int]
+parseInts = map go where
+  go ('+':n) = parseInt n
+  go ('-':n) = -1 * parseInt n
+  go _ = error "expected +\\d+ or -\\d+"
