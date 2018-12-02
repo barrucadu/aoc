@@ -1,3 +1,2 @@
-*
-!*.hs
-!.gitignore
+dist-newstyle
+.ghc.*
