@@ -6,7 +6,8 @@ import Data.List (foldl')
 {- | Converts a number to an integer.  Assumes no leading "+" or "-".
 
 Using 'ord' here rather than 'digitToInt' is slightly faster for day 1
-part 1.
+part 1.  'read' handles scientific notation and the like, so it's also
+slower.
 
 With 'digitToInt':
 
