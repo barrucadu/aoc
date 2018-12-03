@@ -24,12 +24,12 @@ solve claims = runST $ do
       go (_:cs) = go cs
       go [] = error "invalid claim"
 
-      go2 acc (',':cs) = acc : go2 0 cs
-      go2 acc (':':cs) = acc : go2 0 cs
-      go2 acc ('x':cs) = acc : go2 0 cs
+      go2 !acc (',':cs) = acc : go2 0 cs
+      go2 !acc (':':cs) = acc : go2 0 cs
+      go2 !acc ('x':cs) = acc : go2 0 cs
       go2 _ (' ':cs)   = go2 0 cs
-      go2 acc (c:cs) = go2 (stepParseInt acc c) cs
-      go2 acc [] = [acc]
+      go2 !acc (c:cs) = go2 (stepParseInt acc c) cs
+      go2 !acc [] = [acc]
     parseClaim _ = error "invalid claim"
 
     stakeClaim v [x0, y0, width, height] =
