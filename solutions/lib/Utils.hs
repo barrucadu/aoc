@@ -3,11 +3,24 @@ module Utils where
 import Data.Char (ord)
 import Data.List (foldl')
 
-{- | Converts a number to an integer.  Assumes no leading "+" or "-".
+-- | Convert a list of strings to ints, assuming each one is in the
+-- format "+\d+" or "-\d+".
+parseInts :: [String] -> [Int]
+{-# INLINE parseInts #-}
+parseInts = map go where
+  go ('+':n) = parseInt n
+  go ('-':n) = -1 * parseInt n
+  go _ = error "expected +\\d+ or -\\d+"
+
+-- | Converts a number to an integer.  Assumes no leading "+" or "-".
+parseInt :: String -> Int
+{-# INLINE parseInt #-}
+parseInt = foldl' stepParseInt 0
+
+{- | Converts a char to a digit.
 
 Using 'ord' here rather than 'digitToInt' is slightly faster for day 1
-part 1.  'read' handles scientific notation and the like, so it's also
-slower.
+part 1.
 
 With 'digitToInt':
 
@@ -29,14 +42,6 @@ With 'ord':
     std dev              18.28 μs   (13.35 μs .. 27.72 μs)
 @
 -}
-parseInt :: String -> Int
-parseInt = foldl' go 0 where
-  go acc c = acc * 10 + ord c - ord '0'
-
--- | Convert a list of strings to ints, assuming each one is in the
--- format "+\d+" or "-\d+".
-parseInts :: [String] -> [Int]
-parseInts = map go where
-  go ('+':n) = parseInt n
-  go ('-':n) = -1 * parseInt n
-  go _ = error "expected +\\d+ or -\\d+"
+stepParseInt :: Int -> Char -> Int
+{-# INLINE stepParseInt #-}
+stepParseInt acc c = acc * 10 + ord c - ord '0'

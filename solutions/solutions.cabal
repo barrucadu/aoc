@@ -35,3 +35,8 @@ executable Day2Part1
 executable Day2Part2
   import:              exe
   main-is:             Day2Part2.hs
+
+executable Day3Part1
+  import:              exe
+  build-depends:       vector
+  main-is:             Day3Part1.hs
