@@ -14,8 +14,8 @@ parse = go0 . sort . lines where
   go0 [] = []
   go0 _ = error "malformed input"
 
-  go1 acc " begins shift" rest' = go2 acc rest'
-  go1 acc (d:rest) rest' = go1 (stepParseInt acc d) rest rest'
+  go1 !acc " begins shift" rest' = go2 acc rest'
+  go1 !acc (d:rest) rest' = go1 (stepParseInt acc d) rest rest'
   go1 _ _ _ = error "malformed input"
 
   go2 guardnum xs0 = let (times, count, rest) = fallsAsleep [] 0 xs0 in (guardnum, times, count) : go0 rest where
