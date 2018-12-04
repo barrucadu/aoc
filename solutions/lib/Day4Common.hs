@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns #-}
+
 module Day4Common where
 
 import Data.List (sort)
@@ -16,15 +18,14 @@ parse = go0 . unlines . sort . lines where
   go1 acc (d:rest) = go1 (stepParseInt acc d) rest
   go1 _ _ = error "malformed input"
 
-  go2 guardnum xs0 = let (times, rest) = fallsAsleep [] xs0 in (guardnum, times, count times) : go0 rest where
-    fallsAsleep times ('[':_:_:_:_:'-':_:_:'-':_:_:' ':'0':'0':':':m1:m2:']':' ':'f':'a':'l':'l':'s':' ':'a':'s':'l':'e':'e':'p':'\n':rest) =
-      wakesUp times (parseMinute m1 m2) rest
-    fallsAsleep times rest = (reverse times, rest)
+  go2 guardnum xs0 = let (times, count, rest) = fallsAsleep [] 0 xs0 in (guardnum, times, count) : go0 rest where
+    fallsAsleep times !count ('[':_:_:_:_:'-':_:_:'-':_:_:' ':'0':'0':':':m1:m2:']':' ':'f':'a':'l':'l':'s':' ':'a':'s':'l':'e':'e':'p':'\n':rest) =
+      wakesUp times count (parseMinute m1 m2) rest
+    fallsAsleep times !count rest = (times, count, rest)
 
-    wakesUp times sleepTime ('[':_:_:_:_:'-':_:_:'-':_:_:' ':'0':'0':':':m1:m2:']':' ':'w':'a':'k':'e':'s':' ':'u':'p':'\n':rest) =
-      fallsAsleep ((sleepTime, parseMinute m1 m2) : times) rest
-    wakesUp _ _ _ = error "malformed input"
+    wakesUp times !count sleepTime ('[':_:_:_:_:'-':_:_:'-':_:_:' ':'0':'0':':':m1:m2:']':' ':'w':'a':'k':'e':'s':' ':'u':'p':'\n':rest) =
+      let wakeTime = parseMinute m1 m2
+      in fallsAsleep ((sleepTime, wakeTime) : times) (count + wakeTime - sleepTime) rest
+    wakesUp _ _ _ _ = error "malformed input"
 
     parseMinute m1 = stepParseInt (stepParseInt 0 m1)
-
-    count = sum . map (\(start, end) -> end - start)
