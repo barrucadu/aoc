@@ -8,7 +8,8 @@ maintainer:          mike@barrucadu.co.uk
 build-type:          Simple
 
 library
-  exposed-modules:     Utils
+  exposed-modules:     Day4Common
+                     , Utils
   build-depends:       base
   default-language:    Haskell2010
   ghc-options:         -O3
