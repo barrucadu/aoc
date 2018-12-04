@@ -50,3 +50,8 @@ executable Day4Part1
   import:              exe
   build-depends:       containers
   main-is:             Day4Part1.hs
+
+executable Day4Part2
+  import:              exe
+  build-depends:       containers
+  main-is:             Day4Part2.hs
