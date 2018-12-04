@@ -2,7 +2,7 @@
 
 import qualified Data.IntMap.Strict as M
 
-import Day4Common (parse)
+import Common
 import Utils
 
 main :: IO ()

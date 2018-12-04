@@ -7,52 +7,63 @@ author:              Michael Walker
 maintainer:          mike@barrucadu.co.uk
 build-type:          Simple
 
-library
-  exposed-modules:     Day4Common
-                     , Utils
+common base
   build-depends:       base
   default-language:    Haskell2010
   ghc-options:         -O3
-  hs-source-dirs:      lib
 
 common exe
-  build-depends:       base, solutions
-  default-language:    Haskell2010
-  ghc-options:         -O3
+  import:              base
+  build-depends:       solutions
+
+library
+  import:              base
+  exposed-modules:     Utils
+  hs-source-dirs:      lib
 
 executable Day1Part1
   import:              exe
-  main-is:             Day1Part1.hs
+  main-is:             Part1.hs
+  hs-source-dirs:      day1
 
 executable Day1Part2
   import:              exe
+  main-is:             Part2.hs
   build-depends:       containers
-  main-is:             Day1Part2.hs
+  hs-source-dirs:      day1
 
 executable Day2Part1
   import:              exe
-  main-is:             Day2Part1.hs
+  main-is:             Part1.hs
+  hs-source-dirs:      day2
 
 executable Day2Part2
   import:              exe
-  main-is:             Day2Part2.hs
+  main-is:             Part2.hs
+  hs-source-dirs:      day2
 
 executable Day3Part1
   import:              exe
+  main-is:             Part1.hs
   build-depends:       vector
-  main-is:             Day3Part1.hs
+  hs-source-dirs:      day3
 
 executable Day3Part2
   import:              exe
+  main-is:             Part2.hs
   build-depends:       vector
-  main-is:             Day3Part2.hs
+  hs-source-dirs:      day3
 
 executable Day4Part1
   import:              exe
+  main-is:             Part1.hs
+  other-modules:       Common
   build-depends:       containers
-  main-is:             Day4Part1.hs
+  hs-source-dirs:      day4
 
 executable Day4Part2
   import:              exe
+  main-is:             Part2.hs
+  other-modules:       Common
   build-depends:       containers
-  main-is:             Day4Part2.hs
+  hs-source-dirs:      day4

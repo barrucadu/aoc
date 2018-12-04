@@ -4,9 +4,9 @@
 cd solutions
 cabal new-build >/dev/null
 
-for f in Day*.hs; do
-  exename=`echo $f | sed 's/.hs$//'`
-  exe=dist-newstyle/build/*/*/*/x/*/build/*/$exename
-  echo "== $exename"
-  bench $exe | sed 1d
+for f in dist-newstyle/build/*/*/*/x/*/build/*/Day*Part*; do
+  if [[ -f $f ]] && [[ -x $f ]]; then
+    echo "== $(basename $f)"
+    bench $f | sed 1d
+  fi
 done

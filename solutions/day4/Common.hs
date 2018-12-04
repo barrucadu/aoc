@@ -1,6 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
 
-module Day4Common where
+module Common where
 
 import Data.List (sort)
 
