@@ -10,8 +10,8 @@ main = do
 
 solve :: String -> Int
 solve input = minimum [ shrink (remove p input) | p <- S.toList polymers ] where
-  polymers = go S.empty input where
-    go acc (p:ps) = go (S.insert (toLower p) acc) ps
+  polymers = S.map toLower (go S.empty input) where
+    go acc (p:ps) = go (S.insert p acc) ps
     go acc [] = acc
 
   remove p = filter (\c -> toLower c /= p)
