@@ -1,7 +1,17 @@
 module Utils where
 
-import Data.Char (ord)
+import Data.Char (chr, ord)
 import Data.List (foldl')
+
+-- | Lowercase a char.  Assumes it's an ASCII letter.
+lowercase :: Char -> Char
+{-# INLINE lowercase #-}
+lowercase c =
+  let diff = ord 'a' - ord 'A'
+      o = ord c
+  in if o > ord 'Z'
+     then c
+     else chr (o + diff)
 
 -- | Convert a list of strings to ints, assuming each one is in the
 -- format "+\d+" or "-\d+".
