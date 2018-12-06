@@ -3,7 +3,6 @@
 import qualified Data.IntMap.Strict as M
 
 import Common
-import Utils
 
 main :: IO ()
 main = do
@@ -31,6 +30,7 @@ solve input = bestGuardNum * bestMinute where
     go guardnum0 times0 _ _ _ = (guardnum0, concat times0)
 
   (_, bestMinute) = maximum [(go 0 minute bestTimes, minute) | minute <- [0..59]] where
+    go :: Int -> Int -> [(Int, Int)] -> Int
     go acc minute ((start,end):rest)
       | minute >= start && minute < end = go (1 + acc) minute rest
       | otherwise = go acc minute rest
