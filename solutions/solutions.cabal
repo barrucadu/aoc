@@ -84,3 +84,8 @@ executable Day6Part1
   main-is:             Part1.hs
   build-depends:       containers
   hs-source-dirs:      day6
+
+executable Day6Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day6
