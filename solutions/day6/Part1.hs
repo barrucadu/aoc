@@ -11,7 +11,9 @@ main = mainFor 6 parse (show . solve)
 solve :: (Int, Int, Int, Int, [(Int, Int)]) -> Int
 solve (xmin, xmax, ymin, ymax, points) = search M.empty points where
   search acc [] = maximum (M.elems acc)
-  search acc (p:rest) = search (flood acc p) rest
+  search acc (p:rest)
+    | edge p = search acc rest
+    | otherwise = search (flood acc p) rest
 
   flood acc0 p@(px, py) = go 1 1 where
     go !n !delta =
