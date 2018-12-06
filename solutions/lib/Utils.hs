@@ -5,6 +5,7 @@ import Data.List (foldl')
 
 -- | Common main function
 mainFor :: Int -> (String -> a) -> (a -> String) -> IO ()
+{-# INLINE mainFor #-}
 mainFor dayN parse solve = do
   input <- parse <$> readFile ("../inputs/day" ++ show dayN ++ ".txt")
   putStrLn (solve input)
