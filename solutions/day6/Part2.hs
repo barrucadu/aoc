@@ -1,5 +1,7 @@
 {-# LANGUAGE BangPatterns #-}
 
+import Data.List (sort)
+
 import Common
 import Utils
 
@@ -20,6 +22,7 @@ solve (_, _, _, _, points) = go 1 1 where
     | otherwise = go1 f rest
   go1 !f _ = f
 
-  (px, py) = head (filter inRange points)
+  px = median (sort (map fst points))
+  py = median (sort (map snd points))
 
   inRange xy = sum (map (manhattan xy) points) < 10000

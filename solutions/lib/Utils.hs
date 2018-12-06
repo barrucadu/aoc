@@ -15,6 +15,12 @@ manhattan :: (Int, Int) -> (Int, Int) -> Int
 {-# INLINE manhattan #-}
 manhattan (x1,y1) (x2,y2) = abs (x1 - x2) + abs (y1 - y2)
 
+-- | Median of a sorted nonempty list.
+median :: [a] -> a
+{-# INLINE median #-}
+median xs = xs !! pos where
+  pos = length xs `div` 2
+
 -- | Lowercase a char.  Assumes it's an ASCII letter.
 lowercase :: Char -> Char
 {-# INLINE lowercase #-}
