@@ -1,4 +1,4 @@
-import qualified Data.IntMap.Strict as M
+import qualified Data.Map.Strict as M
 import Data.List (sort)
 
 import Common
@@ -12,8 +12,8 @@ solve (xmin, xmax, ymin, ymax, points) = go initial [(x, y) | x <- [xmin..xmax],
   go acc [] = maximum (M.elems acc)
   go acc (xy@(x, y):rest) = case closest xy of
     Just p
-      | x == xmin || x == xmax || y == ymin || y == ymax -> go (M.delete (hash p) acc) rest
-      | otherwise -> go (M.adjust (+1) (hash p) acc) rest
+      | x == xmin || x == xmax || y == ymin || y == ymax -> go (M.delete p acc) rest
+      | otherwise -> go (M.adjust (+1) p acc) rest
     Nothing -> go acc rest
 
   closest xy = case sort [(manhattan p xy, p) | p <- points] of
@@ -21,6 +21,4 @@ solve (xmin, xmax, ymin, ymax, points) = go initial [(x, y) | x <- [xmin..xmax],
     ((_, p):_) -> Just p
     _ -> Nothing
 
-  initial = M.fromList [(hash p, 0) | p <- points]
-
-  hash (x, y) = x * 1000 + y
+  initial = M.fromList [(p, 0) | p <- points]
