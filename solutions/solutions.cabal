@@ -82,10 +82,12 @@ executable Day5Part2
 executable Day6Part1
   import:              exe
   main-is:             Part1.hs
+  other-modules:       Common
   build-depends:       containers
   hs-source-dirs:      day6
 
 executable Day6Part2
   import:              exe
   main-is:             Part2.hs
+  other-modules:       Common
   hs-source-dirs:      day6
