@@ -41,6 +41,4 @@ solve (xmin, xmax, ymin, ymax, points) = go initial [(x, y) | x <- [xmin..xmax],
 
   initial = M.fromList [(hash p, 0) | p <- points]
 
-  manhattan (x1,y1) (x2,y2) = abs (x1 - x2) + abs (y1 - y2)
-
   hash (x, y) = x * 1000 + y

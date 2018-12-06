@@ -3,6 +3,11 @@ module Utils where
 import Data.Char (chr, ord)
 import Data.List (foldl')
 
+-- | Manhattan distance between two points
+manhattan :: (Int, Int) -> (Int, Int) -> Int
+{-# INLINE manhattan #-}
+manhattan (x1,y1) (x2,y2) = abs (x1 - x2) + abs (y1 - y2)
+
 -- | Lowercase a char.  Assumes it's an ASCII letter.
 lowercase :: Char -> Char
 {-# INLINE lowercase #-}

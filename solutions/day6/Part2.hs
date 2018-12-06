@@ -31,6 +31,4 @@ solve (xmin, xmax, ymin, ymax, points) = foldl' go 0 [(x, y) | x <- [xmin..xmax]
     then total + 1
     else total
 
-  manhattan (x1,y1) (x2,y2) = abs (x1 - x2) + abs (y1 - y2)
-
   limit = 10000
