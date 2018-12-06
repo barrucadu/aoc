@@ -1,7 +1,7 @@
+import Utils
+
 main :: IO ()
-main = do
-  input <- lines <$> readFile "../inputs/day2.txt"
-  putStrLn (solve input)
+main = mainFor 2 lines solve
 
 solve :: [String] -> String
 solve (l:ls) = case findMatch l ls of

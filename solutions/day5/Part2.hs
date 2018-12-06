@@ -6,9 +6,7 @@ import Data.Char (chr, ord)
 import Utils
 
 main :: IO ()
-main = do
-  input <- init <$> readFile "../inputs/day5.txt"
-  print (solve input)
+main = mainFor 5 init (show . solve)
 
 solve :: String -> Int
 solve input0 = minimum [ count | p <- S.toList polymers, let (count, _) = shrink (remove p input) ] where

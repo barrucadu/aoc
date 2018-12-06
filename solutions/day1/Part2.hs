@@ -3,12 +3,10 @@ import qualified Data.IntSet as S
 import Utils
 
 main :: IO ()
-main = do
-  input <- parseInts . lines <$> readFile "../inputs/day1.txt"
-  print (solve (cycle input))
+main = mainFor 1 (parseInts . lines) (show . solve)
 
 solve :: [Int] -> Int
-solve = go (S.singleton 0) 0 where
+solve = go (S.singleton 0) 0 . cycle where
   go seen acc (n:ns) =
     let acc' = acc + n
     in if acc' `S.member` seen

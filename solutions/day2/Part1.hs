@@ -1,9 +1,9 @@
 import Data.List (foldl', group, sort)
 
+import Utils
+
 main :: IO ()
-main = do
-  input <- lines <$> readFile "../inputs/day2.txt"
-  print (solve input)
+main = mainFor 2 lines (show . solve)
 
 solve :: [String] -> Int
 solve input = twos * threes where

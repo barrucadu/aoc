@@ -3,9 +3,7 @@
 import Utils
 
 main :: IO ()
-main = do
-  input <- init <$> readFile "../inputs/day5.txt"
-  print (solve input)
+main = mainFor 5 init (show . solve)
 
 solve :: String -> Int
 solve = go 0 [] where

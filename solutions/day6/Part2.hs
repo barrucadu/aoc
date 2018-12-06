@@ -4,9 +4,7 @@ import Common
 import Utils
 
 main :: IO ()
-main = do
-  input <- parse <$> readFile "../inputs/day6.txt"
-  print (solve input)
+main = mainFor 6 parse (show . solve)
 
 solve :: (Int, Int, Int, Int, [(Int, Int)]) -> Int
 solve (xmin, xmax, ymin, ymax, points) = foldl' go 0 [(x, y) | x <- [xmin..xmax], y <- [ymin..ymax]] where

@@ -3,6 +3,12 @@ module Utils where
 import Data.Char (chr, ord)
 import Data.List (foldl')
 
+-- | Common main function
+mainFor :: Int -> (String -> a) -> (a -> String) -> IO ()
+mainFor dayN parse solve = do
+  input <- parse <$> readFile ("../inputs/day" ++ show dayN ++ ".txt")
+  putStrLn (solve input)
+
 -- | Manhattan distance between two points
 manhattan :: (Int, Int) -> (Int, Int) -> Int
 {-# INLINE manhattan #-}

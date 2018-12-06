@@ -7,9 +7,7 @@ import qualified Data.Vector.Unboxed.Mutable as V
 import Utils
 
 main :: IO ()
-main = do
-  input <- lines <$> readFile "../inputs/day3.txt"
-  print (solve input)
+main = mainFor 3 lines (show . solve)
 
 solve :: [String] -> Int
 solve claims = runST $ do

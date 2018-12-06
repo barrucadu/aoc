@@ -3,11 +3,10 @@
 import qualified Data.IntMap.Strict as M
 
 import Common
+import Utils
 
 main :: IO ()
-main = do
-  input <- parse <$> readFile "../inputs/day4.txt"
-  print (solve input)
+main = mainFor 4 parse (show . solve)
 
 solve :: [(Int, [(Int, Int)], Int)] -> Int
 solve input = bestGuardNum * bestMinute where
