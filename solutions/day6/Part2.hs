@@ -1,6 +1,7 @@
 {-# LANGUAGE BangPatterns #-}
 
 import Data.List (sort)
+import qualified Data.Vector as V
 
 import Common
 import Utils
@@ -8,7 +9,7 @@ import Utils
 main :: IO ()
 main = mainFor 6 parse (show . solve)
 
-solve :: [(Int, Int)] -> Int
+solve :: V.Vector (Int, Int) -> Int
 solve points = go 1 1 where
   go !n !delta =
     let xs = [(x, y) | x <- [px-delta..px+delta], y <- [py-delta, py+delta]]
@@ -22,7 +23,8 @@ solve points = go 1 1 where
     | otherwise = go1 f rest
   go1 !f _ = f
 
-  px = median (sort (map fst points))
-  py = median (sort (map snd points))
+  (px, py) =
+    let lpoints = V.toList points
+    in (median (sort (map fst lpoints)), median (sort (map snd lpoints)))
 
-  inRange xy = sum (map (manhattan xy) points) < 10000
+  inRange xy = V.foldl' (\acc p -> acc + manhattan xy p) 0 points < 10000

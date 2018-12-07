@@ -2,11 +2,13 @@
 
 module Common where
 
+import qualified Data.Vector as V
+
 import Utils
 
-parse :: String -> [(Int, Int)]
+parse :: String -> V.Vector (Int, Int)
 {-# INLINABLE parse #-}
-parse input0 = map (go 0) (lines input0) where
+parse = V.fromList . map (go 0) . lines where
   go !acc (',':' ':rest) = (acc, go1 0 rest)
   go !acc (d:rest) = go (stepParseInt acc d) rest
   go _ [] = error "invalid input"

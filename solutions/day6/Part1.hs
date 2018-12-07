@@ -8,12 +8,15 @@ import Utils
 main :: IO ()
 main = mainFor 6 parse (show . solve)
 
-solve :: [(Int, Int)] -> Int
-solve points0 = search 0 0 points0 where
-  search best _ [] = best
-  search best !idx (p:rest)
-    | edge p = search best (idx+1) rest
-    | otherwise = search (flood best idx p) (idx+1) rest
+solve :: V.Vector (Int, Int) -> Int
+solve points = search 0 0 where
+  search best !idx
+    | idx == V.length points = best
+    | otherwise =
+      let p = V.unsafeIndex points idx
+          best' = if edge p then best else flood best idx p
+          idx' = idx + 1
+      in search best' idx'
 
   flood best0 idx p@(px, py) = go 1 1 where
     go !n !delta =
@@ -39,7 +42,6 @@ solve points0 = search 0 0 points0 where
 
   edge (x, y) = x == xmin || x == xmax || y == ymin || y == ymax
 
-  (xmin, xmax) = minmax (map fst points0)
-  (ymin, ymax) = minmax (map snd points0)
-
-  points = V.fromList points0
+  ((xmin, xmax), (ymin, ymax)) =
+    let lpoints = V.toList points
+    in (minmax (map fst lpoints), minmax (map snd lpoints))

@@ -90,6 +90,7 @@ executable Day6Part2
   import:              exe
   main-is:             Part2.hs
   other-modules:       Common
+  build-depends:       vector
   hs-source-dirs:      day6
 
 executable Day7Part1
