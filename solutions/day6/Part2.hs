@@ -8,8 +8,8 @@ import Utils
 main :: IO ()
 main = mainFor 6 parse (show . solve)
 
-solve :: (Int, Int, Int, Int, [(Int, Int)]) -> Int
-solve (_, _, _, _, points) = go 1 1 where
+solve :: [(Int, Int)] -> Int
+solve points = go 1 1 where
   go !n !delta =
     let xs = [(x, y) | x <- [px-delta..px+delta], y <- [py-delta, py+delta]]
         ys = [(x, y) | x <- [px-delta, px+delta], y <- [py-delta+1..py+delta-1]]

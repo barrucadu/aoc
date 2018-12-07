@@ -6,8 +6,8 @@ import Utils
 main :: IO ()
 main = mainFor 6 parse (show . solve)
 
-solve :: (Int, Int, Int, Int, [(Int, Int)]) -> Int
-solve (xmin, xmax, ymin, ymax, points) = search 0 points where
+solve :: [(Int, Int)] -> Int
+solve points = search 0 points where
   search best [] = best
   search best (p:rest)
     | edge p = search best rest
@@ -36,3 +36,6 @@ solve (xmin, xmax, ymin, ymax, points) = search 0 points where
     dist = manhattan p0 xy
 
   edge (x, y) = x == xmin || x == xmax || y == ymin || y == ymax
+
+  (xmin, xmax) = minmax (map fst points)
+  (ymin, ymax) = minmax (map snd points)

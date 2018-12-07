@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns #-}
+
 module Utils where
 
 import Data.Char (chr, ord)
@@ -14,6 +16,11 @@ mainFor dayN parse solve = do
 manhattan :: (Int, Int) -> (Int, Int) -> Int
 {-# INLINE manhattan #-}
 manhattan (x1,y1) (x2,y2) = abs (x1 - x2) + abs (y1 - y2)
+
+-- | Min/max from a nonempty list, in pass.
+minmax :: Ord a => [a] -> (a, a)
+minmax (x0:xs) = foldr (\x (!mi, !ma) -> (min x mi, max x ma)) (x0, x0) xs
+minmax _ = error "empty list"
 
 -- | Median of a sorted nonempty list.
 median :: [a] -> a
