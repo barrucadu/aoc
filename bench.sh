@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p haskellPackages.bench haskellPackages.cabal-install haskellPackages.ghc
+#! nix-shell -i bash -p haskellPackages.cabal-install haskellPackages.ghc linuxPackages.perf
 
 cd solutions
 cabal new-build >/dev/null
@@ -7,6 +7,6 @@ cabal new-build >/dev/null
 for f in dist-newstyle/build/*/*/*/x/*/build/*/Day*Part*; do
   if [[ -f $f ]] && [[ -x $f ]]; then
     echo "== $(basename $f)"
-    bench $f | sed 1d
+    perf stat -r500 $f >/dev/null
   fi
 done
