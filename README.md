@@ -20,3 +20,4 @@ Current benchmark results:
 |Day6Part1|50.34 ms   (49.95 ms .. 51.00 ms)|49.82 ms   (49.62 ms .. 50.08 ms)|408.9 μs   (241.9 μs .. 642.9 μs)|
 |Day6Part2|29.56 ms   (29.22 ms .. 29.89 ms)|29.67 ms   (29.57 ms .. 29.80 ms)|242.5 μs   (184.0 μs .. 309.2 μs)|
 |Day7Part1|-|-|-|
+|Day7Part2|-|-|-|

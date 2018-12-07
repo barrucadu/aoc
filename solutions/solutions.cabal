@@ -96,4 +96,12 @@ executable Day7Part1
   import:              exe
   main-is:             Part1.hs
   build-depends:       containers
+  other-modules:       Common
+  hs-source-dirs:      day7
+
+executable Day7Part2
+  import:              exe
+  main-is:             Part2.hs
+  build-depends:       containers
+  other-modules:       Common
   hs-source-dirs:      day7
