@@ -5,10 +5,12 @@ import qualified Data.Set as S
 
 parse :: String -> M.Map Char (Int, S.Set Char)
 parse = go M.empty where
-  go g ('S':'t':'e':'p':' ':from:' ':'m':'u':'s':'t':' ':'b':'e':' ':'f':'i':'n':'i':'s':'h':'e':'d':' ':'b':'e':'f':'o':'r':'e':' ':'s':'t':'e':'p':' ':to:' ':'c':'a':'n':' ':'b':'e':'g':'i':'n':'.':'\n':rest) =
-    go (M.alter inc to (M.alter (link to) from g)) rest
   go g [] = g
-  go _ _ = error "invalid input"
+  go g xs =
+    let (from:xs') = drop (length "Step ") xs
+        (to:xs'') = drop (length " must be finished before step ") xs'
+        rest = drop (length " can begin.\n") xs''
+    in go (M.alter inc to (M.alter (link to) from g)) rest
 
   link to (Just (x, successors)) = Just (x, S.insert to successors)
   link to Nothing = Just (0, S.singleton to)
