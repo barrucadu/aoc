@@ -15,14 +15,15 @@ solve :: M.Map Char (Int, S.Set Char) -> Int
 solve graph0 = go 0 5 [] initials graph0 where
   go :: Int -> Int -> [(Int, Char)] -> S.Set Char -> M.Map Char (Int, S.Set Char) -> Int
   go !n !idlers workers empties g
-    | S.null empties && null workers = n - 1
+    | S.null empties && null workers = n
     | otherwise =
-      let workers' = map tick workers
+      let timeskip = case workers of [] -> 0; ts -> minimum (map fst ts)
+          workers' = map (tick timeskip) workers
           ((empties', g'), workers'', idlers') = foldr done ((empties, g), [], idlers) workers'
           (empties'', workers''', idlers'') = claim empties' workers'' idlers'
-      in go (n + 1) idlers'' workers''' empties'' g'
+      in go (n + timeskip) idlers'' workers''' empties'' g'
 
-  tick = first (subtract 1)
+  tick = first . subtract
 
   done (0, c) ((empties, g), workers, idlers) = (deleteNode c empties g, workers, idlers+1)
   done w (eg, workers, idlers) = (eg, w:workers, idlers)
