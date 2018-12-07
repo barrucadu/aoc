@@ -1,6 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
 
-import qualified Data.Vector as V
+import qualified Data.Vector.Unboxed as V
 
 import Common
 import Utils
