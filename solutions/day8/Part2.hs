@@ -1,5 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
 
+import Control.Arrow (first)
 import Data.List (foldl')
 
 import Utils
@@ -23,11 +24,7 @@ solve = fst . goN where
       let (value, rest') = goN rest
       in goC' (value:values) (n-1) rest'
 
-  goM = goM' [] where
-    goM' metadatas !0 rest = (metadatas, rest)
-    goM' metadatas !n (m:rest) =
-      goM' (parseInt m:metadatas) (n-1) rest
-    goM' _ _ _ = error "invalid input"
+  goM n = first (map parseInt) . splitAt n
 
   calculate 0 _ metadatas = sum metadatas
   calculate nvalues values metadatas = foldl' go 0 metadatas where
