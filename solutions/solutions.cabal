@@ -111,3 +111,8 @@ executable Day8Part1
   import:              exe
   main-is:             Part1.hs
   hs-source-dirs:      day8
+
+executable Day8Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day8
