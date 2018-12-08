@@ -24,7 +24,7 @@ solve = fst . goN where
       in goC' (value:values) (n-1) rest'
 
   goM = goM' [] where
-    goM' metadatas !0 rest = (reverse metadatas, rest)
+    goM' metadatas !0 rest = (metadatas, rest)
     goM' metadatas !n (m:rest) =
       goM' (parseInt m:metadatas) (n-1) rest
     goM' _ _ _ = error "invalid input"
