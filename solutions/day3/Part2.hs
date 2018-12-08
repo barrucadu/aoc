@@ -2,7 +2,6 @@
 
 import Control.Monad.ST (ST, runST)
 import Data.Foldable (for_)
-import Data.Traversable (for)
 import qualified Data.Vector.Unboxed.Mutable as V
 
 import Utils
@@ -45,10 +44,15 @@ solve claims = runST $ do
         if ok then pure cid else go cs
       go [] = error "no non-overlapping claim"
 
-      checkNonOverlapping [x0, y0, width, height] = do
-        xok <- for [x0..x0 + width - 1] $ \x -> do
-          yok <- for [y0..y0 + height - 1] $ \y ->
-            (==1) <$> V.unsafeRead v (x + y * 1000)
-          pure (and yok)
-        pure (and xok)
+      checkNonOverlapping [x0, y0, width, height] = check positions where
+        check [] = pure True
+        check ((x, y):xys) = do
+          ok <- (==1) <$> V.unsafeRead v (x + y * 1000)
+          if ok then check xys else pure False
+
+        positions =
+          [ (x, y)
+          | x <- [x0..x0 + width - 1]
+          , y <- [y0..y0 + height - 1]
+          ]
       checkNonOverlapping _ = error "invalid claim"
