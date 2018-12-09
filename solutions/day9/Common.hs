@@ -41,13 +41,11 @@ solve (nplayers, lastmarble) = runST $ do
           go' (countdown-1) (marble+1) (player+1) anticlockwise' (marble:clockwise')
 
     rotateA :: Int -> [Int] -> [Int] -> ([Int], [Int])
-    rotateA _ [] [] = error "rotateA"
     rotateA 0 as cs = (as, cs)
     rotateA n as (c:cs) = rotateA (n-1) (c:as) cs
     rotateA n as [] = rotateA n [] (reverse as)
 
     rotateC :: Int -> [Int] -> [Int] -> ([Int], [Int])
-    rotateC _ [] [] = error "rotateC"
     rotateC 0 as cs = (as, cs)
     rotateC n (a:as) cs = rotateC (n-1) as (a:cs)
     rotateC n [] cs = rotateC n (reverse cs) []
