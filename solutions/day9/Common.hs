@@ -22,23 +22,23 @@ solve :: (Int, Int) -> Int
 {-# INLINABLE solve #-}
 solve (nplayers, lastmarble) = runST $ do
     scores <- V.new nplayers
-    scores' <- go scores 1 0 [] [0]
+    scores' <- go scores 22 1 0 [] [0]
     getMax scores'
   where
-    go :: V.STVector s Int -> Int -> Int -> [Int] -> [Int] -> ST s (V.STVector s Int)
+    go :: V.STVector s Int -> Int -> Int -> Int -> [Int] -> [Int] -> ST s (V.STVector s Int)
     go scores = go' where
-      go' !marble !player anticlockwise clockwise
+      go' !countdown !marble !player anticlockwise clockwise
         | marble == lastmarble + 1 = pure scores
-        | marble `mod` 23 == 0 = do
+        | countdown == 0 = do
           let (anticlockwise', (m:clockwise')) = rotateA 7 anticlockwise clockwise
           let (anticlockwise'', clockwise'') = rotateC 1 anticlockwise' clockwise'
           let score = marble + m
           let player' = player `mod` nplayers
           V.unsafeModify scores (+score) player'
-          go' (marble+1) (player'+1) anticlockwise'' clockwise''
+          go' 22 (marble+1) (player'+1) anticlockwise'' clockwise''
         | otherwise = do
           let (anticlockwise', clockwise') = rotateC 1 anticlockwise clockwise
-          go' (marble+1) (player+1) anticlockwise' (marble:clockwise')
+          go' (countdown-1) (marble+1) (player+1) anticlockwise' (marble:clockwise')
 
     rotateA :: Int -> [Int] -> [Int] -> ([Int], [Int])
     rotateA _ [] [] = error "rotateA"
