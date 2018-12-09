@@ -116,3 +116,14 @@ executable Day8Part2
   import:              exe
   main-is:             Part2.hs
   hs-source-dirs:      day8
+
+executable Day9Part1
+  import:              exe
+  main-is:             Part1.hs
+  build-depends:       containers
+  hs-source-dirs:      day9
+
+-- executable Day9Part2
+--   import:              exe
+--   main-is:             Part2.hs
+--   hs-source-dirs:      day9
