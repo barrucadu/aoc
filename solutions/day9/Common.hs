@@ -33,15 +33,12 @@ solve (nplayers, lastmarble) = runST $ do
           let (anticlockwise', (m:clockwise')) = rotateA 7 anticlockwise clockwise
           let (anticlockwise'', clockwise'') = rotateC 1 anticlockwise' clockwise'
           let score = marble + m
-          let player' = (player + 1) `mod` nplayers
-          let marble' = marble + 1
-          V.unsafeModify scores (+score) player
-          go' marble' player' anticlockwise'' clockwise''
+          let player' = player `mod` nplayers
+          V.unsafeModify scores (+score) player'
+          go' (marble+1) (player'+1) anticlockwise'' clockwise''
         | otherwise = do
           let (anticlockwise', clockwise') = rotateC 1 anticlockwise clockwise
-          let player' = (player + 1) `mod` nplayers
-          let marble' = marble + 1
-          go' marble' player' anticlockwise' (marble:clockwise')
+          go' (marble+1) (player+1) anticlockwise' (marble:clockwise')
 
     rotateA :: Int -> [Int] -> [Int] -> ([Int], [Int])
     rotateA _ [] [] = error "rotateA"
