@@ -120,7 +120,7 @@ executable Day8Part2
 executable Day9Part1
   import:              exe
   main-is:             Part1.hs
-  build-depends:       containers
+  build-depends:       vector
   hs-source-dirs:      day9
 
 -- executable Day9Part2
