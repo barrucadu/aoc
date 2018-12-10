@@ -1,36 +1,12 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Control.Arrow (first)
 import qualified Data.Set as S
 
+import Common
 import Utils
 
 main :: IO ()
 main = mainFor 10 parse (prettyPrint . solve)
-
-parse :: String -> [((Int, Int), (Int, Int))]
-parse = map go . lines where
-  go ('p':'o':'s':'i':'t':'i':'o':'n':'=':rest) =
-    let (xy, 'v':'e':'l':'o':'c':'i':'t':'y':'=':rest') = goP rest
-        (dxy, _) = goP rest'
-    in (xy, dxy)
-  go _ = error "invalid input"
-
-  goP ('<':rest) =
-    let (x, rest') = goN rest
-        (y, rest'') = goN rest'
-    in ((x, y), rest'')
-  goP _ = error "invalid input"
-
-  goN (' ':rest) = goN' 0 rest
-  goN ('-':rest) = first negate (goN' 0 rest)
-  goN _ = error "invalid input"
-
-  goN' !acc (',':' ':rest) = (acc, rest)
-  goN' !acc ('>':' ':rest) = (acc, rest)
-  goN' !acc ('>':rest) = (acc, rest)
-  goN' !acc (d:rest) = goN' (stepParseInt acc d) rest
-  goN' _ _ = error "invalid input"
 
 solve :: [((Int, Int), (Int, Int))] -> [(Int, Int)]
 solve points0 = map ($go t0) funcs where
