@@ -130,3 +130,9 @@ executable Day9Part2
   build-depends:       vector
   other-modules:       Common
   hs-source-dirs:      day9
+
+executable Day10Part1
+  import:              exe
+  main-is:             Part1.hs
+  build-depends:       containers
+  hs-source-dirs:      day10
