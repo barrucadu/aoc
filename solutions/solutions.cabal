@@ -21,117 +21,117 @@ library
   exposed-modules:     Utils
   hs-source-dirs:      lib
 
-executable Day1Part1
+executable Day01Part1
   import:              exe
   main-is:             Part1.hs
   other-modules:       Common
-  hs-source-dirs:      day1
+  hs-source-dirs:      day01
 
-executable Day1Part2
+executable Day01Part2
   import:              exe
   main-is:             Part2.hs
   build-depends:       containers
   other-modules:       Common
-  hs-source-dirs:      day1
+  hs-source-dirs:      day01
 
-executable Day2Part1
+executable Day02Part1
   import:              exe
   main-is:             Part1.hs
-  hs-source-dirs:      day2
+  hs-source-dirs:      day02
 
-executable Day2Part2
+executable Day02Part2
   import:              exe
   main-is:             Part2.hs
-  hs-source-dirs:      day2
+  hs-source-dirs:      day02
 
-executable Day3Part1
+executable Day03Part1
   import:              exe
   main-is:             Part1.hs
   build-depends:       vector
-  hs-source-dirs:      day3
+  hs-source-dirs:      day03
 
-executable Day3Part2
+executable Day03Part2
   import:              exe
   main-is:             Part2.hs
   build-depends:       vector
-  hs-source-dirs:      day3
+  hs-source-dirs:      day03
 
-executable Day4Part1
+executable Day04Part1
   import:              exe
   main-is:             Part1.hs
   other-modules:       Common
   build-depends:       containers
-  hs-source-dirs:      day4
+  hs-source-dirs:      day04
 
-executable Day4Part2
+executable Day04Part2
   import:              exe
   main-is:             Part2.hs
   other-modules:       Common
   build-depends:       containers
-  hs-source-dirs:      day4
+  hs-source-dirs:      day04
 
-executable Day5Part1
+executable Day05Part1
   import:              exe
   main-is:             Part1.hs
-  hs-source-dirs:      day5
+  hs-source-dirs:      day05
 
-executable Day5Part2
+executable Day05Part2
   import:              exe
   main-is:             Part2.hs
   build-depends:       containers
-  hs-source-dirs:      day5
+  hs-source-dirs:      day05
 
-executable Day6Part1
+executable Day06Part1
   import:              exe
   main-is:             Part1.hs
   other-modules:       Common
   build-depends:       vector
-  hs-source-dirs:      day6
+  hs-source-dirs:      day06
 
-executable Day6Part2
+executable Day06Part2
   import:              exe
   main-is:             Part2.hs
   other-modules:       Common
   build-depends:       vector
-  hs-source-dirs:      day6
+  hs-source-dirs:      day06
 
-executable Day7Part1
+executable Day07Part1
   import:              exe
   main-is:             Part1.hs
   build-depends:       containers
   other-modules:       Common
-  hs-source-dirs:      day7
+  hs-source-dirs:      day07
 
-executable Day7Part2
+executable Day07Part2
   import:              exe
   main-is:             Part2.hs
   build-depends:       containers
   other-modules:       Common
-  hs-source-dirs:      day7
+  hs-source-dirs:      day07
 
-executable Day8Part1
+executable Day08Part1
   import:              exe
   main-is:             Part1.hs
-  hs-source-dirs:      day8
+  hs-source-dirs:      day08
 
-executable Day8Part2
+executable Day08Part2
   import:              exe
   main-is:             Part2.hs
-  hs-source-dirs:      day8
+  hs-source-dirs:      day08
 
-executable Day9Part1
+executable Day09Part1
   import:              exe
   main-is:             Part1.hs
   build-depends:       vector
   other-modules:       Common
-  hs-source-dirs:      day9
+  hs-source-dirs:      day09
 
-executable Day9Part2
+executable Day09Part2
   import:              exe
   main-is:             Part2.hs
   build-depends:       vector
   other-modules:       Common
-  hs-source-dirs:      day9
+  hs-source-dirs:      day09
 
 executable Day10Part1
   import:              exe
