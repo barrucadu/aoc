@@ -1,6 +1,8 @@
 #! /usr/bin/env nix-shell
 #! nix-shell -i bash -p haskellPackages.cabal-install haskellPackages.ghc linuxPackages.perf
 
+set -e
+
 cd solutions
 cabal new-build >/dev/null
 
