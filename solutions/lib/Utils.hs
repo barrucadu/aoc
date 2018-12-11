@@ -38,15 +38,6 @@ lowercase c =
      then c
      else chr (o + diff)
 
--- | Convert a list of strings to ints, assuming each one is in the
--- format "+\d+" or "-\d+".
-parseInts :: [String] -> [Int]
-{-# INLINE parseInts #-}
-parseInts = map go where
-  go ('+':n) = parseInt n
-  go ('-':n) = -1 * parseInt n
-  go _ = error "expected +\\d+ or -\\d+"
-
 -- | Converts a number to an integer.  Assumes no leading "+" or "-".
 parseInt :: String -> Int
 {-# INLINE parseInt #-}
