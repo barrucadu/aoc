@@ -9,6 +9,6 @@ cabal new-build >/dev/null
 for f in dist-newstyle/build/*/*/*/x/*/build/*/Day*Part*; do
   if [[ -f $f ]] && [[ -x $f ]]; then
     echo "== $(basename $f)"
-    perf stat -r500 $f >/dev/null
+    perf stat -r50 $f >/dev/null
   fi
 done
