@@ -53,10 +53,10 @@ solve sizes serial = runST (findSlidingWindow =<< summedArray) where
     threshold = dimension - window
 
     rectSum x y = do
-      a <- V.read v (at x y)
-      b <- V.read v (at (x + window) y)
-      c <- V.read v (at x (y + window))
-      d <- V.read v (at (x + window) (y + window))
+      a <- V.unsafeRead v (at x y)
+      b <- V.unsafeRead v (at (x + window) y)
+      c <- V.unsafeRead v (at x (y + window))
+      d <- V.unsafeRead v (at (x + window) (y + window))
       pure (d + a - b - c)
 
   power x y =
