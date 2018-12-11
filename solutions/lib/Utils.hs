@@ -9,7 +9,8 @@ import Data.List (foldl')
 mainFor :: Int -> (String -> a) -> (a -> String) -> IO ()
 {-# INLINE mainFor #-}
 mainFor dayN parse solve = do
-  input <- parse <$> readFile ("../inputs/day" ++ show dayN ++ ".txt")
+  let n = if dayN < 10 then '0' : show dayN else show dayN
+  input <- parse <$> readFile ("../inputs/day" ++ n ++ ".txt")
   putStrLn (solve input)
 
 -- | Manhattan distance between two points
