@@ -1,18 +1,11 @@
 import Data.List (foldl')
 import qualified Data.Map.Strict as M
 
+import Common
 import Utils
 
 main :: IO ()
 main = mainFor 12 parse (show . solve)
-
-parse :: String -> (String, M.Map String Char)
-parse = go1 . lines where
-  go1 ((_:_:_:_:_:_:_:_:_:_:_:_:_:_:_:rest):[]:transitions) = (rest, M.fromList (map go2 transitions))
-  go1 _ = error "invalid input"
-
-  go2 [l1, l2, c, r1, r2, _, _, _, _, d] = ([l1, l2, c, r1, r2], d)
-  go2 _ = error "invalid input"
 
 solve :: (String, M.Map String Char) -> Int
 solve (initial, transitions) = calc (step 20 tape0) where
