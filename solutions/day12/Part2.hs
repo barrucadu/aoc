@@ -27,15 +27,14 @@ solve (initial, transitions) = calc (step 50000000000 tape0) where
 
   step :: Integer -> (Integer, String) -> (Integer, String)
   step 0 tape = tape
-  step n (s, t@(l10:l20:rest)) = if stable t t' then (s + n, t) else step (n-1) (trim s t') where
-    t' = l10 : l20 : go l10 l20 rest
+  step n (s, t) = if stable t t' then (s + n, t) else step (n-1) (trim s t') where
+    t' = go '.' '.' t
 
     go '.' '.' tape' | empty tape' = tape'
     go l2 l1 (c:tape'@(r1:r2:_)) =
       let c' = M.findWithDefault '.' [l2, l1, c, r1, r2] transitions
       in c' : go l1 c tape'
     go _ _ xs = xs
-  step _ _ = error "invalid tape"
 
   trim :: Integer -> String -> (Integer, String)
   trim s t

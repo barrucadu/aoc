@@ -22,9 +22,8 @@ solve (initial, transitions) = calc (step 20 tape0) where
 
   step :: Int -> String -> String
   step 0 tape = tape
-  step n (l10:l20:rest) = step (n-1) (l10 : l20 : go l10 l20 rest) where
+  step n tape = step (n-1) (go '.' '.' tape) where
     go l2 l1 (c:tape'@(r1:r2:_)) =
       let c' = M.findWithDefault '.' [l2, l1, c, r1, r2] transitions
       in c' : go l1 c tape'
     go _ _ xs = xs
-  step _ _ = error "invalid tape"
