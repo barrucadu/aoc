@@ -27,8 +27,8 @@ solve (initial, transitions) = calc (step 50000000000 tape0) where
 
   step :: Integer -> (Integer, String) -> (Integer, String)
   step 0 tape = tape
-  step n (s, t) = if stable t t' then (s + n, t) else step (n-1) (trim s t') where
-    t' = go '.' '.' t
+  step n (s, t) = if stable t t' then (s + n, t) else step (n-1) st' where
+    st'@(_, t') = resize s (go '.' '.' t)
 
     go '.' '.' tape' | empty tape' = tape'
     go l2 l1 (c:tape'@(r1:r2:_)) =
@@ -36,15 +36,14 @@ solve (initial, transitions) = calc (step 50000000000 tape0) where
       in c' : go l1 c tape'
     go _ _ xs = xs
 
-  trim :: Integer -> String -> (Integer, String)
-  trim s t
-    | empty t = (s+1, tail t)
-    | otherwise = (s, t)
+  resize :: Integer -> String -> (Integer, String)
+  resize s0 t0 = go (s0 - 2) ('.':'.':t0) where
+    go s ('.':t@('.':'.':_)) = go (s+1) t
+    go s t = (s, t)
 
   stable :: String -> String -> Bool
-  stable t1 t2 = check ('.':t1) t2 where
-    check (c:cs) (d:ds) = c == d && (empty cs && empty ds || check cs ds)
-    check _ _ = False
+  stable (c:cs) (d:ds) = c == d && (empty cs && empty ds || stable cs ds)
+  stable _ _ = False
 
   empty :: String -> Bool
   empty = all (=='.') . take 30
