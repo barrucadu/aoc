@@ -23,6 +23,6 @@ solve (initial, transitions) = calc (step 20 tape0) where
   step 0 tape = tape
   step n tape = step (n-1) (go '.' '.' tape) where
     go l2 l1 (c:tape'@(r1:r2:_)) =
-      let c' = findTransition transitions c [l2, l1, r1, r2]
+      let c' = findTransition transitions c (toK l2 l1 r1 r2)
       in c' : go l1 c tape'
     go _ _ xs = xs
