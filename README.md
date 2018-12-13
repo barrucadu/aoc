@@ -31,3 +31,4 @@ Current benchmark results:
 |Day11Part2|0.023942997|+-  0.34%|
 |Day12Part1|0.001164808|+-  0.65%|
 |Day12Part2|0.002550224|+-  0.39%|
+|Day13Part1|0.005574930|+-  0.33%|
