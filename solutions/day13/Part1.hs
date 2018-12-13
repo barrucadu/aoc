@@ -15,7 +15,7 @@ solve (em, pm0) = go pm0 where
   step = step' M.empty . M.assocs where
     step' pm (c:cs) =
       let (yx, cart) = stepCart em c
-      in if yx `M.member` pm
+      in if yx `M.member` pm || any ((==yx) . fst) cs
          then Left yx
          else step' (M.insert yx cart pm) cs
     step' pm [] = Right pm
