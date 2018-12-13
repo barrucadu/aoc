@@ -19,7 +19,7 @@ solve (em, pm0) = go pm0 where
   step = step' M.empty . M.assocs where
     step' pm (c:cs) =
       let (yx, cart) = stepCart em c
-      in if yx `M.member` pm || any ((==yx) . fst) cs
+      in if checkCollision pm yx cs
          then step' (M.delete yx pm) cs
          else step' (M.insert yx cart pm) cs
     step' pm [] = pm

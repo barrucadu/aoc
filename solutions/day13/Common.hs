@@ -64,3 +64,12 @@ stepCart em ((y, x), cart) = (yx', cart') where
         SLeft  -> cart { stepDirection = SUp,    turnDirection = TLeft }
         SRight -> cart { stepDirection = SDown,  turnDirection = TLeft }
     Nothing -> cart
+
+checkCollision :: M.Map Pos Cart -> Pos -> [(Pos, Cart)] -> Bool
+{-# INLINABLE checkCollision #-}
+checkCollision pm yx0 cs0 = yx0 `M.member` pm || go cs0 where
+  go ((yx,_):cs)
+    | yx == yx0 = True
+    | yx > yx0  = False
+    | otherwise = go cs
+  go [] = False
