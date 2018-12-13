@@ -6,7 +6,7 @@ import Utils
 main :: IO ()
 main = mainFor 13 parse (show . solve)
 
-solve :: (M.Map Pos Event, M.Map Pos Cart) -> (Int, Int)
+solve :: (Events, M.Map Pos Cart) -> (Int, Int)
 solve (em, pm0) = go pm0 where
   go pm =
     let pm' = step pm
