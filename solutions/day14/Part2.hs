@@ -1,5 +1,4 @@
 import Control.Monad.ST (ST, runST)
-import Data.List (isPrefixOf)
 import qualified Data.Vector.Unboxed.Mutable as V
 
 import Utils
@@ -15,28 +14,46 @@ solve p = runST $ do
     run v 2 0 1
   where
     wanted = reverse p
+    wlen = length wanted
 
     run :: V.STVector s Int -> Int -> Int -> Int -> ST s Int
-    run = go [] where
-      go written v len pos1 pos2
-        | wanted `isPrefixOf` written = pure (len - length wanted)
-        | wanted `isPrefixOf` drop 1 written = pure (len - length wanted - 1)
+    run = go where
+      go v len pos1 pos2
         | len >= V.length v - 2 = do
             v' <- V.unsafeGrow v (V.length v)
-            go written v' len pos1 pos2
+            go v' len pos1 pos2
         | otherwise = do
-          val1 <- V.read v pos1
-          val2 <- V.read v pos2
-          (written', len') <- write v written len val1 val2
-          go written' v len' (advance len' pos1 val1) (advance len' pos2 val2)
+            val1 <- V.read v pos1
+            val2 <- V.read v pos2
+            len' <- write v len val1 val2
+            doneA <- check v len'
+            if doneA
+              then pure (len' - wlen)
+              else do
+                doneB <- check v (len' - 1)
+                if doneB
+                  then pure (len' - 1 - wlen)
+                  else go v len' (advance len' pos1 val1) (advance len' pos2 val2)
 
-      write v written len val1 val2 = case (val1 + val2) `divMod` 10 of
+      write v len val1 val2 = case (val1 + val2) `divMod` 10 of
         (0, o) -> do
           V.write v len o
-          pure (o : written, len+1)
+          pure (len+1)
         (t, o) -> do
           V.write v len t
           V.write v (len+1) o
-          pure (o : t : written, len+2)
+          pure (len+2)
 
       advance len pos val = (pos + 1 + val) `mod` len
+
+    check v len
+        | len < wlen = pure False
+        | otherwise = go len wanted
+      where
+        go 0 _ = pure True
+        go _ [] = pure True
+        go n (w:ws) = do
+          x <- V.read v (n-1)
+          if x == w
+            then go (n-1) ws
+            else pure False
