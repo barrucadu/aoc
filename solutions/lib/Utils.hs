@@ -72,3 +72,67 @@ With 'ord':
 stepParseInt :: Int -> Char -> Int
 {-# INLINE stepParseInt #-}
 stepParseInt acc c = acc * 10 + ord c - ord '0'
+
+-------------------------------------------------------------------------------
+-- * Deque
+
+-- | Banker's deque, from Purely Functional Data Structures
+data Dequeue a = Dequeue {-# UNPACK #-} !Int [a] {-# UNPACK #-} !Int [a]
+
+dqempty :: Dequeue a
+{-# INLINE dqempty #-}
+dqempty = Dequeue 0 [] 0 []
+
+dqnull :: Dequeue a -> Bool
+{-# INLINE dqnull #-}
+dqnull (Dequeue 0 [] 0 []) = True
+dqnull _ = False
+
+dqfromList :: [a] -> Dequeue a
+{-# INLINE dqfromList #-}
+dqfromList as = dqcheck $ Dequeue (length as) as 0 []
+
+dqpushFront :: Dequeue a -> a -> Dequeue a
+{-# INLINE dqpushFront #-}
+dqpushFront (Dequeue sizeF front sizeR rear) x =
+  dqcheck $ Dequeue (sizeF + 1) (x : front) sizeR rear
+
+dqpopFront :: Dequeue a -> (a, Dequeue a)
+{-# INLINE dqpopFront #-}
+dqpopFront (Dequeue _ [] _ []) = error "dqpopFront: empty"
+dqpopFront (Dequeue _ [] _ [x]) = (x, dqempty)
+dqpopFront (Dequeue _ [] _ _) = error "dqpopFront: too unbalanced"
+dqpopFront (Dequeue sizeF (f : fs) sizeR rear) =
+  (f, dqcheck $ Dequeue (sizeF - 1) fs sizeR rear)
+
+dqpushBack :: Dequeue a -> a -> Dequeue a
+{-# INLINE dqpushBack #-}
+dqpushBack (Dequeue sizeF front sizeR rear) x =
+  dqcheck $ Dequeue sizeF front (sizeR + 1) (x : rear)
+
+dqpopBack :: Dequeue a -> (a, Dequeue a)
+{-# INLINE dqpopBack #-}
+dqpopBack (Dequeue _ [] _ []) = error "dqpopBack: empty"
+dqpopBack (Dequeue _ [x] _ []) = (x, dqempty)
+dqpopBack (Dequeue _ _ _ []) = error "dqpopBack: too unbalanced"
+dqpopBack (Dequeue sizeF front sizeR (r : rs)) =
+  (r, dqcheck $ Dequeue sizeF front (sizeR - 1) rs)
+
+-- | Checks to see if the queue is too far out of balance. If it is,
+-- it rebalances it.
+dqcheck :: Dequeue a -> Dequeue a
+{-# INLINE dqcheck #-}
+dqcheck q@(Dequeue sizeF front sizeR rear)
+    | sizeF > c * sizeR + 1 =
+      let front' = take size1 front
+          rear' = rear ++ reverse (drop size1 front)
+      in Dequeue size1 front' size2 rear'
+    | sizeR > c * sizeF + 1 =
+      let front' = front ++ reverse (drop size1 rear)
+          rear' = take size1 rear
+      in Dequeue size2 front' size1 rear'
+    | otherwise = q
+  where
+    size1 = (sizeF + sizeR) `div` 2
+    size2 = (sizeF + sizeR) - size1
+    c = 4

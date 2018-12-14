@@ -22,33 +22,35 @@ solve :: (Int, Int) -> Int
 {-# INLINABLE solve #-}
 solve (nplayers, lastmarble) = runST $ do
     scores <- V.new nplayers
-    scores' <- go scores 22 1 0 [] [0]
+    scores' <- go scores 22 1 0 (dqfromList [0])
     getMax scores'
   where
-    go :: V.STVector s Int -> Int -> Int -> Int -> [Int] -> [Int] -> ST s (V.STVector s Int)
+    go :: V.STVector s Int -> Int -> Int -> Int -> Dequeue Int -> ST s (V.STVector s Int)
     go scores = go' where
-      go' !countdown !marble !player anticlockwise clockwise
+      go' !countdown !marble !player dq
         | marble == lastmarble + 1 = pure scores
         | countdown == 0 = do
-          let (anticlockwise', (m:clockwise')) = rotateA 7 anticlockwise clockwise
-          let (anticlockwise'', clockwise'') = rotateC 1 anticlockwise' clockwise'
+          let (m, dq') = dqpopFront (rotateA 7 dq)
+          let dq'' = rotateC 1 dq'
           let score = marble + m
           let player' = player `mod` nplayers
           V.unsafeModify scores (+score) player'
-          go' 22 (marble+1) (player'+1) anticlockwise'' clockwise''
+          go' 22 (marble+1) (player'+1) dq''
         | otherwise = do
-          let (anticlockwise', clockwise') = rotateC 1 anticlockwise clockwise
-          go' (countdown-1) (marble+1) (player+1) anticlockwise' (marble:clockwise')
+          let dq' = dqpushFront (rotateC 1 dq) marble
+          go' (countdown-1) (marble+1) (player+1) dq'
 
-    rotateA :: Int -> [Int] -> [Int] -> ([Int], [Int])
-    rotateA 0 as cs = (as, cs)
-    rotateA n as (c:cs) = rotateA (n-1) (c:as) cs
-    rotateA n as [] = rotateA n [] (reverse as)
+    rotateA :: Int -> Dequeue a -> Dequeue a
+    rotateA 0 dq = dq
+    rotateA n dq =
+      let (m, dq') = dqpopFront dq
+      in rotateA (n-1) (dqpushBack dq' m)
 
-    rotateC :: Int -> [Int] -> [Int] -> ([Int], [Int])
-    rotateC 0 as cs = (as, cs)
-    rotateC n (a:as) cs = rotateC (n-1) as (a:cs)
-    rotateC n [] cs = rotateC n (reverse cs) []
+    rotateC :: Int -> Dequeue a -> Dequeue a
+    rotateC 0 dq = dq
+    rotateC n dq =
+      let (m, dq') = dqpopBack dq
+      in rotateA (n-1) (dqpushFront dq' m)
 
     getMax v = getMax' (V.length v) 0 where
       getMax' 0 best = pure best
