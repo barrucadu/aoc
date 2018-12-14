@@ -2,8 +2,10 @@
 
 module Utils where
 
+import Control.Monad.ST (ST)
 import Data.Char (chr, ord)
 import Data.List (foldl')
+import qualified Data.Vector.Unboxed.Mutable as VM
 
 -- | Common main function
 mainFor :: Int -> (String -> a) -> (a -> String) -> IO ()
@@ -77,6 +79,26 @@ stepParseInt acc c = acc * 10 + parseDigit c
 parseDigit :: Char -> Int
 {-# INLINE parseDigit #-}
 parseDigit c = ord c - ord '0'
+
+-------------------------------------------------------------------------------
+-- * Vector-backed Arrays
+
+-- | A pair of the width and the underlying vector.
+type STArray s a = (Int, VM.STVector s a)
+
+newArray :: VM.Unbox a => Int -> Int -> ST s (STArray s a)
+{-# INLINE newArray #-}
+newArray width height = do
+  v <- VM.new (width * height)
+  pure (width, v)
+
+writeArray :: VM.Unbox a => STArray s a -> Int -> Int -> a -> ST s ()
+{-# INLINE writeArray #-}
+writeArray (width, v) x y = VM.unsafeWrite v (x + y * width)
+
+readArray :: VM.Unbox a => STArray s a -> Int -> Int -> ST s a
+{-# INLINE readArray #-}
+readArray (width, v) x y = VM.unsafeRead v (x + y * width)
 
 -------------------------------------------------------------------------------
 -- * Deque

@@ -19,6 +19,7 @@ common exe
 library
   import:              base
   exposed-modules:     Utils
+  build-depends:       vector
   hs-source-dirs:      lib
 
 executable Day01Part1
@@ -149,14 +150,12 @@ executable Day10Part2
 executable Day11Part1
   import:              exe
   main-is:             Part1.hs
-  build-depends:       vector
   other-modules:       Common
   hs-source-dirs:      day11
 
 executable Day11Part2
   import:              exe
   main-is:             Part2.hs
-  build-depends:       vector
   other-modules:       Common
   hs-source-dirs:      day11
 
