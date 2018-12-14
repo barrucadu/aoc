@@ -71,7 +71,12 @@ With 'ord':
 -}
 stepParseInt :: Int -> Char -> Int
 {-# INLINE stepParseInt #-}
-stepParseInt acc c = acc * 10 + ord c - ord '0'
+stepParseInt acc c = acc * 10 + parseDigit c
+
+-- | Parse a single digit.
+parseDigit :: Char -> Int
+{-# INLINE parseDigit #-}
+parseDigit c = ord c - ord '0'
 
 -------------------------------------------------------------------------------
 -- * Deque

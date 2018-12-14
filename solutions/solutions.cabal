@@ -193,3 +193,9 @@ executable Day14Part1
   main-is:             Part1.hs
   build-depends:       vector
   hs-source-dirs:      day14
+
+executable Day14Part2
+  import:              exe
+  main-is:             Part2.hs
+  build-depends:       vector
+  hs-source-dirs:      day14
