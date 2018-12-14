@@ -187,3 +187,9 @@ executable Day13Part2
   build-depends:       containers, vector
   other-modules:       Common
   hs-source-dirs:      day13
+
+executable Day14Part1
+  import:              exe
+  main-is:             Part1.hs
+  build-depends:       vector
+  hs-source-dirs:      day14
