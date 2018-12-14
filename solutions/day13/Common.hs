@@ -6,9 +6,9 @@ module Common where
 
 import Data.Foldable (for_)
 import qualified Data.Map.Strict as M
-import qualified Data.Vector.Unboxed as V
-import qualified Data.Vector.Unboxed.Mutable as VM
 import Data.Word (Word8)
+
+import Utils
 
 -- (Y, X) so that iterating over a map goes in the right order for the
 -- carts.
@@ -27,13 +27,13 @@ data Cart = Cart
   , turnDirection :: !TDirection
   }
 
-type Events = (Int, V.Vector Event)
+type Events = Array Event
 
 parse :: String -> (Events, M.Map Pos Cart)
 {-# INLINABLE parse #-}
 parse = go 0 0 [] M.empty where
   go :: Int -> Int -> [((Int, Int), Event)] -> M.Map Pos Cart -> String -> (Events, M.Map Pos Cart)
-  go !y !x em pm "\n" = ((x, fromEM y x em), pm)
+  go !y !x em pm "\n" = (fromEM x y em, pm)
   go !y  _ em pm ('\n':es) = go (y+1) 0 em pm es
   go !y !x em pm ('\\':es) = go y (x+1) (((y, x), EBckSlash):em) pm es
   go !y !x em pm ('/':es)  = go y (x+1) (((y, x), EFwdSlash):em) pm es
@@ -45,21 +45,21 @@ parse = go 0 0 [] M.empty where
   go !y !x em pm (_:es)    = go y (x+1) em pm es
   go _ _ _ _ _ = error "invalid input"
 
-  fromEM height width em = V.create $ do
-    v <- VM.new (height * width)
-    for_ em $ \((y, x), e) -> VM.unsafeWrite v (y * width + x) e
+  fromEM width height em = createArray $ do
+    v <- newArray width height
+    for_ em $ \((y, x), e) -> writeArray v x y e
     pure v
 
 stepCart :: Events -> (Pos, Cart) -> (Pos, Cart)
 {-# INLINABLE stepCart #-}
-stepCart (width, ev) ((y, x), cart) = (yx', cart') where
+stepCart ev ((y, x), cart) = (yx', cart') where
   yx'@(y', x') = case stepDirection cart of
     SUp    -> (y-1, x)
     SDown  -> (y+1, x)
     SLeft  -> (y, x-1)
     SRight -> (y, x+1)
 
-  cart' = case V.unsafeIndex ev (y' * width + x') of
+  cart' = case indexArray ev x' y' of
     EBckSlash -> case stepDirection cart of
       SUp    -> cart { stepDirection = SLeft  }
       SDown  -> cart { stepDirection = SRight }

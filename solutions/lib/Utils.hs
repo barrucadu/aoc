@@ -1,10 +1,12 @@
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE RankNTypes #-}
 
 module Utils where
 
-import Control.Monad.ST (ST)
+import Control.Monad.ST (ST, runST)
 import Data.Char (chr, ord)
 import Data.List (foldl')
+import qualified Data.Vector.Unboxed as V
 import qualified Data.Vector.Unboxed.Mutable as VM
 
 -- | Common main function
@@ -86,6 +88,9 @@ parseDigit c = ord c - ord '0'
 -- | A pair of the width and the underlying vector.
 type STArray s a = (Int, VM.STVector s a)
 
+-- | An immutable 'STArray'
+type Array a = (Int, V.Vector a)
+
 newArray :: VM.Unbox a => Int -> Int -> ST s (STArray s a)
 {-# INLINE newArray #-}
 newArray width height = do
@@ -99,6 +104,17 @@ writeArray (width, v) x y = VM.unsafeWrite v (x + y * width)
 readArray :: VM.Unbox a => STArray s a -> Int -> Int -> ST s a
 {-# INLINE readArray #-}
 readArray (width, v) x y = VM.unsafeRead v (x + y * width)
+
+createArray :: VM.Unbox a => (forall s. ST s (STArray s a)) -> Array a
+{-# INLINE createArray #-}
+createArray ma = runST $ do
+  (width, v) <- ma
+  frozen <- V.unsafeFreeze v
+  pure (width, frozen)
+
+indexArray :: V.Unbox a => Array a -> Int -> Int -> a
+{-# INLINE indexArray #-}
+indexArray (width, v) x y = V.unsafeIndex v (x + y * width)
 
 -------------------------------------------------------------------------------
 -- * Deque
