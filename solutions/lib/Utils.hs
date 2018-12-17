@@ -115,3 +115,11 @@ createArray ma = runST $ do
 indexArray :: V.Unbox a => Array a -> Int -> Int -> a
 {-# INLINE indexArray #-}
 indexArray (width, v) x y = V.unsafeIndex v (x + y * width)
+
+widthArray :: Array a -> Int
+{-# INLINE widthArray #-}
+widthArray (width, _) = width
+
+heightArray :: V.Unbox a => Array a -> Int
+{-# INLINE heightArray #-}
+heightArray (width, v) = V.length v `div` width
