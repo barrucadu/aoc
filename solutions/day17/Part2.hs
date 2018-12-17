@@ -13,7 +13,6 @@ solve ranges = go 0 minX minY where
     | y == maxY + 1 = acc
     | otherwise = case indexArray arr x y of
         SWaterStanding -> go (acc+1) (x+1) y
-        SWaterFlowing  -> go (acc+1) (x+1) y
         _ -> go acc (x+1) y
 
   (minX, maxX, minY, maxY, arr) = waterfall ranges
