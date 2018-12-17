@@ -51,8 +51,14 @@ solve ranges = runST $ do
     flow arr startX startY
     scan arr
   where
-    scan arr = length . filter (`elem` [SWaterStanding, SWaterFlowing]) <$>
-      sequence [readArray arr x y | x <- [minX..maxX], y <- [minY..maxY]]
+    scan arr = go 0 minX minY where
+      go !acc !x !y
+        | x == maxX + 1 = go acc minX (y+1)
+        | y == maxY + 1 = pure acc
+        | otherwise = readArray arr x y >>= \case
+            SWaterStanding -> go (acc+1) (x+1) y
+            SWaterFlowing  -> go (acc+1) (x+1) y
+            _ -> go acc (x+1) y
 
     startX = 500
     startY = minY - 1
