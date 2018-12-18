@@ -227,4 +227,5 @@ executable Day17Part2
 executable Day18Part1
   import:              exe
   main-is:             Part1.hs
+  other-modules:       Common
   hs-source-dirs:      day18
