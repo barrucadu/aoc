@@ -88,12 +88,12 @@ getReg _ _ = error "getReg: invalid register"
 
 setReg :: Regs -> Int -> Int -> Regs
 {-# INLINABLE setReg #-}
-setReg (_, b, c, d, e, f) 0 a = (a, b, c, d, e, f)
-setReg (a, _, c, d, e, f) 1 b = (a, b, c, d, e, f)
-setReg (a, b, _, d, e, f) 2 c = (a, b, c, d, e, f)
-setReg (a, b, c, _, e, f) 3 d = (a, b, c, d, e, f)
-setReg (a, b, c, d, _, f) 4 e = (a, b, c, d, e, f)
-setReg (a, b, c, d, e, _) 5 f = (a, b, c, d, e, f)
+setReg (_, b, c, d, e, f) 0 !a = (a, b, c, d, e, f)
+setReg (a, _, c, d, e, f) 1 !b = (a, b, c, d, e, f)
+setReg (a, b, _, d, e, f) 2 !c = (a, b, c, d, e, f)
+setReg (a, b, c, _, e, f) 3 !d = (a, b, c, d, e, f)
+setReg (a, b, c, d, _, f) 4 !e = (a, b, c, d, e, f)
+setReg (a, b, c, d, e, _) 5 !f = (a, b, c, d, e, f)
 setReg _ _ _ = error "setReg: invalid register"
 
 cond :: Bool -> Int
