@@ -140,7 +140,7 @@ runProgram program ipR regs = go 0 where
         r0 <- getReg regs 0
         setReg regs 0 (r0 + x)
     setReg regs 1 (r2 + 1)
-    setReg regs 3 (r2 + 3)
+    setReg regs 3 2
     setReg regs 5 0
 
   divides a b = b `mod` a == 0
@@ -392,7 +392,7 @@ Calculate how many times the inner loop will run:
 
     do (r2 - r1 + 1) times {
       r3 = 1
-      do r1 times {
+      do r2 times {
         if (r1 * r3 == r2) {
           r0 += r1
         }
@@ -405,7 +405,7 @@ Calculate how many times the inner loop will run:
     r4 = 16
 
 That's adding k * r1 to r0, where k is the number of numbers r3 such
-that 1 <= r3 <= r1 and r1 * r3 == r2.  There can only be one such
+that 1 <= r3 <= r2 and r1 * r3 == r2.  There can only be one such
 number, so this is actually checking if r1 is a factor of r2!
 
     do (r2 - r1 + 1) times {
@@ -429,7 +429,7 @@ even better optimisation, we can implement this directly:
       }
     }
     r1 = r2 + 1
-    r3 = r1 + 2
+    r3 = 2
     r5 = 0
     r4 = 16
 
