@@ -396,7 +396,7 @@ Calculate how many times the inner loop will run:
         if (r1 * r3 == r2) {
           r0 += r1
         }
-        r3 += r1 + 1
+        r3 += 1
       }
       r1 += 1
     } while (r1 <= r2)
@@ -413,7 +413,7 @@ number, so this is actually checking if r1 is a factor of r2!
       if r1 `divides` r2 {
         r0 += r1
       }
-      r3 += r1 + 1
+      r3 += 1
       r1 += 1
     } while (r1 <= r2)
     r1 = r2 + 1
