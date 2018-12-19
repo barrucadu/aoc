@@ -6,7 +6,6 @@ module Common where
 
 import Control.Monad.ST (ST, runST)
 import Data.Foldable (for_)
-import Data.Maybe (catMaybes)
 
 import Utils
 
@@ -46,20 +45,117 @@ step
   -> Automata s -- ^ Target
   -> ST s ()
 {-# INLINABLE step #-}
-step (width, height) sCur sNext =
-    for_ [0..width-1]  $ \x ->
-    for_ [0..height-1] $ \y ->
-    writeArray sNext x y =<< rules' sCur x y
+step (width, height) sCur sNext = do
+    -- corners
+    rulesTL
+    rulesTR
+    rulesBL
+    rulesBR
+    -- edges
+    for_ [1..width-2] $ \x -> do
+      rulesT x
+      rulesB x
+    for_ [1..height-2] $ \y -> do
+      rulesL y
+      rulesR y
+    -- interior
+    for_ [1..width-2] $ \x ->
+      for_ [1..height-2] $ \y ->
+        rules' x y
   where
-    rules' s x y = do
-      now <- readArray s x y
-      ns  <- sequence [safeRead s x' y' | x' <- [x-1..x+1], y' <- [y-1..y+1], (x', y') /= (x, y)]
-      pure (rules now (catMaybes ns))
+    rulesTL = do
+      now <- readArray sCur 0 0
+      ns  <- sequence
+        [ readArray sCur 1 0
+        , readArray sCur 1 1
+        , readArray sCur 0 1
+        ]
+      writeArray sNext 0 0 (rules now ns)
 
-    safeRead s x y
-      | x < 0 || x >= width  = pure Nothing
-      | y < 0 || y >= height = pure Nothing
-      | otherwise = Just <$> readArray s x y
+    rulesTR = do
+      now <- readArray sCur (width - 1) 0
+      ns  <- sequence
+        [ readArray sCur (width - 2) 0
+        , readArray sCur (width - 2) 1
+        , readArray sCur (width - 1) 1
+        ]
+      writeArray sNext (width - 1) 0 (rules now ns)
+
+    rulesBL = do
+      now <- readArray sCur 0 (height - 1)
+      ns  <- sequence
+        [ readArray sCur 1 (height - 1)
+        , readArray sCur 1 (height - 2)
+        , readArray sCur 0 (height - 2)
+        ]
+      writeArray sNext 0 (height - 1) (rules now ns)
+
+    rulesBR = do
+      now <- readArray sCur (width - 1) (height - 1)
+      ns  <- sequence
+        [ readArray sCur (width - 2) (height - 1)
+        , readArray sCur (width - 2) (height - 2)
+        , readArray sCur (width - 1) (height - 2)
+        ]
+      writeArray sNext (width - 1) (height - 1) (rules now ns)
+
+    rulesT x = do
+      now <- readArray sCur x 0
+      ns  <- sequence
+        [ readArray sCur (x - 1) 0
+        , readArray sCur (x + 1) 0
+        , readArray sCur (x - 1) 1
+        , readArray sCur x       1
+        , readArray sCur (x + 1) 1
+        ]
+      writeArray sNext x 0 (rules now ns)
+
+    rulesB x = do
+      now <- readArray sCur x (height - 1)
+      ns  <- sequence
+        [ readArray sCur (x - 1) (height - 1)
+        , readArray sCur (x + 1) (height - 1)
+        , readArray sCur (x - 1) (height - 2)
+        , readArray sCur x       (height - 2)
+        , readArray sCur (x + 1) (height - 2)
+        ]
+      writeArray sNext x (height - 1) (rules now ns)
+
+    rulesL y = do
+      now <- readArray sCur 0 y
+      ns  <- sequence
+        [ readArray sCur 0 (y - 1)
+        , readArray sCur 0 (y + 1)
+        , readArray sCur 1 (y - 1)
+        , readArray sCur 1 y
+        , readArray sCur 1 (y + 1)
+        ]
+      writeArray sNext 0 y (rules now ns)
+
+    rulesR y = do
+      now <- readArray sCur (width - 1) y
+      ns  <- sequence
+        [ readArray sCur (width - 1) (y - 1)
+        , readArray sCur (width - 1) (y + 1)
+        , readArray sCur (width - 2) (y - 1)
+        , readArray sCur (width - 2) y
+        , readArray sCur (width - 2) (y + 1)
+        ]
+      writeArray sNext (width - 1) y (rules now ns)
+
+    rules' x y = do
+      now <- readArray sCur x y
+      ns  <- sequence
+        [ readArray sCur (x - 1) (y - 1)
+        , readArray sCur (x - 1) y
+        , readArray sCur (x - 1) (y + 1)
+        , readArray sCur x       (y - 1)
+        , readArray sCur x       (y + 1)
+        , readArray sCur (x + 1) (y - 1)
+        , readArray sCur (x + 1) y
+        , readArray sCur (x + 1) (y + 1)
+        ]
+      writeArray sNext x y (rules now ns)
 
 -- | Work out what comes next, given the current value and the
 -- neighbours.
