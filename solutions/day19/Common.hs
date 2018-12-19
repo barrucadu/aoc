@@ -5,6 +5,7 @@ module Common where
 
 import Control.Monad (when)
 import Control.Monad.ST (ST)
+import Data.Foldable (for_)
 import qualified Data.Vector.Unboxed as V
 import qualified Data.Vector.Unboxed.Mutable as VM
 import Data.Bits ((.&.), (.|.))
@@ -132,23 +133,15 @@ runProgram program ipR regs = go 0 where
       else go ip'
 
   opt2 = do
-    r1_0 <- getReg regs 1
+    r1 <- getReg regs 1
     r2 <- getReg regs 2
-    times (r2 - r1_0 + 1) $ do
-      setReg regs 3 1
-      r1 <- getReg regs 1
-      when (r1 `divides` r2) $ do
+    for_ [r1..r2] $ \x ->
+      when (x `divides` r2) $ do
         r0 <- getReg regs 0
-        setReg regs 0 (r0 + r1)
-      r3 <- getReg regs 3
-      setReg regs 3 (r3 + r1 + 1)
-      setReg regs 1 (r1 + 1)
+        setReg regs 0 (r0 + x)
     setReg regs 1 (r2 + 1)
+    setReg regs 3 (r2 + 3)
     setReg regs 5 0
-
-  times n0 m = times' n0 where
-    times' 0 = pure ()
-    times' n = m >> times' (n-1)
 
   divides a b = b `mod` a == 0
 
@@ -424,6 +417,19 @@ number, so this is actually checking if r1 is a factor of r2!
       r1 += 1
     } while (r1 <= r2)
     r1 = r2 + 1
+    r5 = 0
+    r4 = 16
+
+This is summing the divisors of r2 from r1 to r2, inclusive.  As an
+even better optimisation, we can implement this directly:
+
+    for x in [r1..r2] {
+      if x `divides` r2 {
+        r0 += x
+      }
+    }
+    r1 = r2 + 1
+    r3 = r1 + 2
     r5 = 0
     r4 = 16
 
