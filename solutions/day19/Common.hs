@@ -1,21 +1,30 @@
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE PatternSynonyms #-}
 
 module Common where
 
-import qualified Data.Vector as V
+import qualified Data.Vector.Unboxed as V
 import Data.Bits ((.&.), (.|.))
 
 import Utils
 
-data Op
-  = AddR | AddI
-  | MulR | MulI
-  | BanR | BanI
-  | BorR | BorI
-  | SetR | SetI
-  | GtIR | GtRI | GtRR
-  | EqIR | EqRI | EqRR
-  deriving (Eq, Ord, Show, Enum, Bounded)
+type Op = Int
+pattern AddR <- 0  where AddR = 0
+pattern AddI <- 1  where AddI = 1
+pattern MulR <- 2  where MulR = 2
+pattern MulI <- 3  where MulI = 3
+pattern BanR <- 4  where BanR = 4
+pattern BanI <- 5  where BanI = 5
+pattern BorR <- 6  where BorR = 6
+pattern BorI <- 7  where BorI = 7
+pattern SetR <- 8  where SetR = 8
+pattern SetI <- 9  where SetI = 9
+pattern GtIR <- 10 where GtIR = 10
+pattern GtRI <- 11 where GtRI = 11
+pattern GtRR <- 12 where GtRR = 12
+pattern EqIR <- 13 where EqIR = 13
+pattern EqRI <- 14 where EqRI = 14
+pattern EqRR <- 15 where EqRR = 15
 
 type Program = V.Vector Instr
 type Instr = (Op, Int, Int, Int)
