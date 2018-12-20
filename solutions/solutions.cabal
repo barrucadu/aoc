@@ -249,3 +249,17 @@ executable Day19Part2
   build-depends:       vector
   other-modules:       Common
   hs-source-dirs:      day19
+
+executable Day20Part1
+  import:              exe
+  main-is:             Part1.hs
+  build-depends:       containers, fgl
+  other-modules:       Common
+  hs-source-dirs:      day20
+
+executable Day20Part2
+  import:              exe
+  main-is:             Part2.hs
+  build-depends:       containers, fgl
+  other-modules:       Common
+  hs-source-dirs:      day20
