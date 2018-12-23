@@ -268,3 +268,8 @@ executable Day22Part1
   import:              exe
   main-is:             Part1.hs
   hs-source-dirs:      day22
+
+executable Day23Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day23
