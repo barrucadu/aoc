@@ -264,6 +264,13 @@ executable Day20Part2
   other-modules:       Common
   hs-source-dirs:      day20
 
+executable Day21Part1
+  import:              exe
+  main-is:             Part1.hs
+  build-depends:       vector
+  other-modules:       Common
+  hs-source-dirs:      day21
+
 executable Day22Part1
   import:              exe
   main-is:             Part1.hs
