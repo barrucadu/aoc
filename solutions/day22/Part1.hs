@@ -3,21 +3,11 @@
 import Control.Monad.ST (ST, runST)
 import Data.Foldable (for_)
 
+import Common
 import Utils
 
 main :: IO ()
 main = mainFor 22 parse (show . solve)
-
-parse :: String -> (Int, (Int, Int))
-parse input0 = (depth, target) where
-  (dline:tline:_) = lines input0
-
-  depth  = parseInt (drop (length "depth: ")  dline)
-  target = go 0 (drop (length "target: ") tline)
-
-  go !acc (',':rest) = (acc, parseInt rest)
-  go !acc (c:rest) = go (stepParseInt acc c) rest
-  go _ _ = error "invalid input"
 
 solve :: (Int, (Int, Int)) -> Int
 solve (depth, (tX, tY)) = runST $ do

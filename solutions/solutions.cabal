@@ -281,6 +281,14 @@ executable Day21Part2
 executable Day22Part1
   import:              exe
   main-is:             Part1.hs
+  other-modules:       Common
+  hs-source-dirs:      day22
+
+executable Day22Part2
+  import:              exe
+  main-is:             Part2.hs
+  build-depends:       astar, unordered-containers
+  other-modules:       Common
   hs-source-dirs:      day22
 
 executable Day23Part1

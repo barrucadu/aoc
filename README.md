@@ -48,6 +48,7 @@ Current benchmark results:
 |Day21Part1|-|-|
 |Day21Part2|-|-|
 |Day22Part1|-|-|
+|Day22Part2|-|-|
 |Day23Part1|-|-|
 |Day24Part1|-|-|
 |Day24Part2|-|-|
