@@ -87,125 +87,132 @@ fight (immuneSystem0, infection0) = runST $ do
     immuneSystem <- toArmies immuneSystem0
     infection    <- toArmies infection0
     battle immuneSystem infection
-  where
-    -- invariant: armies vectors are sorted in attack order (initiative descending)
-    toArmies :: [Army] -> ST s (V.STVector s (Army, Maybe Int))
-    toArmies as = do
-      let sorted = reverse (sortOn initiative as)
-      let len = length as
-      v <- V.unsafeNew len
-      for_ (zip [0..] sorted) $ \(i, a) -> V.unsafeWrite v i (a, Nothing)
-      pure v
 
-    -- battle two groups against each other, mutating the original
-    -- vectors
-    battle :: V.STVector s (Army, Maybe Int) -> V.STVector s (Army, Maybe Int) -> ST s (Maybe (Int, Winner))
-    battle group1 group2 = loop where
-      loop = checkVictory >>= \case
-        Just score -> pure (Just score)
-        Nothing -> do
-          ok <- targetSelection =<< epowerOrder
-          if ok
-            then attack >> loop
-            else pure Nothing
+-- invariant: armies vectors are sorted in attack order (initiative descending)
+toArmies :: [Army] -> ST s (V.STVector s (Army, Maybe Int))
+{-# INLINABLE toArmies #-}
+toArmies as = do
+  let sorted = reverse (sortOn initiative as)
+  let len = length as
+  v <- V.unsafeNew len
+  for_ (zip [0..] sorted) $ \(i, a) -> V.unsafeWrite v i (a, Nothing)
+  pure v
 
-      epowerOrder = do
-          o1 <- go 1 group1 0
-          o2 <- go 2 group2 0
-          pure (reverse (sort (o1 ++ o2)))
-        where
-          go g v !i
-            | i == V.length v = pure []
-            | otherwise = do
-                (a, _) <- V.unsafeRead v i
-                ((effectivePower a, initiative a, g, i):) <$> go g v (i+1)
+-- battle two groups against each other, mutating the original vectors
+battle :: V.STVector s (Army, Maybe Int) -> V.STVector s (Army, Maybe Int) -> ST s (Maybe (Int, Winner))
+{-# INLINABLE battle #-}
+battle group1 group2 = loop where
+  loop = checkVictory >>= \case
+    Just score -> pure (Just score)
+    Nothing -> do
+      ok <- targetSelection =<< epowerOrder
+      if ok
+        then attack >> loop
+        else pure Nothing
 
-      targetSelection order0 = do
-          assigned1 <- V.unsafeNew (V.length group1)
-          assigned2 <- V.unsafeNew (V.length group2)
-          V.set assigned1 False
-          V.set assigned2 False
-          select assigned1 assigned2
-        where
-          select assigned1 assigned2 = go False order0 where
-            go ok ((_,_,1,i):os) = do
-              (army, _) <- V.unsafeRead group1 i
-              choice <- choose army group2 assigned2
-              case choice of
-                Just chosen -> do
-                  V.unsafeWrite group1 i (army, choice)
-                  V.unsafeWrite assigned2 chosen True
-                  go True os
-                Nothing -> go ok os
-            go ok ((_,_,2,i):os) = do
-              (army, _) <- V.unsafeRead group2 i
-              choice <- choose army group1 assigned1
-              case choice of
-                Just chosen -> do
-                  V.unsafeWrite group2 i (army, choice)
-                  V.unsafeWrite assigned1 chosen True
-                  go True os
-                Nothing -> go ok os
-            go ok _ = pure ok
+  epowerOrder = do
+      o1 <- go 1 group1 0
+      o2 <- go 2 group2 0
+      pure (reverse (sort (o1 ++ o2)))
+    where
+      go g v !i
+        | i == V.length v = pure []
+        | otherwise = do
+            (a, _) <- V.unsafeRead v i
+            ((effectivePower a, initiative a, g, i):) <$> go g v (i+1)
 
-          choose attacker defenders assigned = go Nothing 0 where
-            go best !i
-              | i == V.length defenders = pure (fst <$> best)
-              | otherwise = do
-                  (defender, _) <- V.unsafeRead defenders i
-                  isAssigned <- V.unsafeRead assigned i
-                  if | units defender <= 0 -> go best (i+1)
-                     | isAssigned -> go best (i+1)
-                     | isBetterThan attacker defender best -> go (Just (i, defender)) (i+1)
-                     | otherwise -> go best (i+1)
+  targetSelection order0 = do
+      assigned1 <- V.unsafeNew (V.length group1)
+      assigned2 <- V.unsafeNew (V.length group2)
+      V.set assigned1 False
+      V.set assigned2 False
+      select assigned1 assigned2
+    where
+      select assigned1 assigned2 = go False order0 where
+        go ok ((_,_,1,i):os) = do
+          (army, _) <- V.unsafeRead group1 i
+          choice <- choose army group2 assigned2
+          case choice of
+            Just chosen -> do
+              V.unsafeWrite group1 i (army, choice)
+              V.unsafeWrite assigned2 chosen True
+              go True os
+            Nothing -> go ok os
+        go ok ((_,_,2,i):os) = do
+          (army, _) <- V.unsafeRead group2 i
+          choice <- choose army group1 assigned1
+          case choice of
+            Just chosen -> do
+              V.unsafeWrite group2 i (army, choice)
+              V.unsafeWrite assigned1 chosen True
+              go True os
+            Nothing -> go ok os
+        go ok _ = pure ok
 
-            isBetterThan attacker defender1 (Just (_, defender2))
-              | damage attacker defender1 > damage attacker defender2 = True
-              | damage attacker defender1 < damage attacker defender2 = False
-              | effectivePower defender1 > effectivePower defender2 = True
-              | effectivePower defender1 < effectivePower defender2 = False
-              | initiative defender1 > initiative defender2 = True
-              | otherwise = False
-            isBetterThan attacker defender Nothing = damage attacker defender > unitHP defender
-
-      attack = go 0 0 where
-        go i1 i2
-          | i1 == V.length group1 && i2 == V.length group2 = pure ()
-          | i1 == V.length group1 = doAttack group2 group1 i2 >> go i1 (i2+1)
-          | i2 == V.length group2 = doAttack group1 group2 i1 >> go (i1+1) i2
+      choose attacker defenders assigned = go Nothing 0 where
+        go best !i
+          | i == V.length defenders = pure (fst <$> best)
           | otherwise = do
-              (candidate1, _) <- V.unsafeRead group1 i1
-              (candidate2, _) <- V.unsafeRead group2 i2
-              if initiative candidate1 > initiative candidate2
-                then doAttack group1 group2 i1 >> go (i1+1) i2
-                else doAttack group2 group1 i2 >> go i1 (i2+1)
+              (defender, _) <- V.unsafeRead defenders i
+              isAssigned <- V.unsafeRead assigned i
+              if | units defender <= 0 -> go best (i+1)
+                 | isAssigned -> go best (i+1)
+                 | isBetterThan attacker defender best -> go (Just (i, defender)) (i+1)
+                 | otherwise -> go best (i+1)
 
-        doAttack g1 g2 i = V.unsafeRead g1 i >>= \case
-          (attacker, Just target) | units attacker > 0 -> do
-            (defender, defenderTarget) <- V.unsafeRead g2 target
-            let killed = damage attacker defender `div` unitHP defender
-            let defender' = defender { units = max 0 (units defender - killed) }
-            V.unsafeWrite g2 target (defender', if units defender' <= 0 then Nothing else defenderTarget)
-            V.unsafeWrite g1 i (attacker, Nothing)
-          _ -> pure ()
+        isBetterThan attacker defender1 (Just (_, defender2))
+          | damage attacker defender1 > damage attacker defender2 = True
+          | damage attacker defender1 < damage attacker defender2 = False
+          | effectivePower defender1 > effectivePower defender2 = True
+          | effectivePower defender1 < effectivePower defender2 = False
+          | initiative defender1 > initiative defender2 = True
+          | otherwise = False
+        isBetterThan attacker defender Nothing = damage attacker defender > unitHP defender
 
-      checkVictory = do
-        score1 <- score group1
-        score2 <- score group2
-        pure $ if | score1 == 0 -> Just (score2, Infection)
-                  | score2 == 0 -> Just (score1, ImmuneSystem)
-                  | otherwise   -> Nothing
+  attack = go 0 0 where
+    go i1 i2
+      | i1 == V.length group1 && i2 == V.length group2 = pure ()
+      | i1 == V.length group1 = doAttack group2 group1 i2 >> go i1 (i2+1)
+      | i2 == V.length group2 = doAttack group1 group2 i1 >> go (i1+1) i2
+      | otherwise = do
+          (candidate1, _) <- V.unsafeRead group1 i1
+          (candidate2, _) <- V.unsafeRead group2 i2
+          if initiative candidate1 > initiative candidate2
+            then doAttack group1 group2 i1 >> go (i1+1) i2
+            else doAttack group2 group1 i2 >> go i1 (i2+1)
 
-      score armies = go 0 0 where
-        go !acc !i
-          | i >= V.length armies = pure acc
-          | otherwise = do
-              (army, _) <- V.unsafeRead armies i
-              go (acc + units army) (i+1)
+    doAttack g1 g2 i = V.unsafeRead g1 i >>= \case
+      (attacker, Just target) | units attacker > 0 -> do
+        (defender, defenderTarget) <- V.unsafeRead g2 target
+        let killed = damage attacker defender `div` unitHP defender
+        let defender' = defender { units = max 0 (units defender - killed) }
+        V.unsafeWrite g2 target (defender', if units defender' <= 0 then Nothing else defenderTarget)
+        V.unsafeWrite g1 i (attacker, Nothing)
+      _ -> pure ()
 
-      effectivePower a = units a * unitDamage a
+  checkVictory = do
+    score1 <- score group1
+    score2 <- score group2
+    pure $ if | score1 == 0 -> Just (score2, Infection)
+              | score2 == 0 -> Just (score1, ImmuneSystem)
+              | otherwise   -> Nothing
 
-      damage attacker defender
-        | attackType attacker `elem` immunities defender = 0
-        | attackType attacker `elem` weaknesses defender = 2 * effectivePower attacker
-        | otherwise = effectivePower attacker
+score :: V.STVector s (Army, a) -> ST s Int
+{-# INLINABLE score #-}
+score armies = go 0 0 where
+  go !acc !i
+    | i >= V.length armies = pure acc
+    | otherwise = do
+        (army, _) <- V.unsafeRead armies i
+        go (acc + units army) (i+1)
+
+effectivePower :: Army -> Int
+{-# INLINABLE effectivePower #-}
+effectivePower a = units a * unitDamage a
+
+damage :: Army -> Army -> Int
+{-# INLINABLE damage #-}
+damage attacker defender
+  | attackType attacker `elem` immunities defender = 0
+  | attackType attacker `elem` weaknesses defender = 2 * effectivePower attacker
+  | otherwise = effectivePower attacker
