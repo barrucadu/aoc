@@ -49,3 +49,4 @@ Current benchmark results:
 |Day22Part1|-|-|
 |Day22Part1|-|-|
 |Day23Part1|-|-|
+|Day24Part1|-|-|
