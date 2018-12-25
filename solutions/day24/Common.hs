@@ -101,14 +101,17 @@ toArmies as = do
 -- battle two groups against each other, mutating the original vectors
 battle :: V.STVector s (Army, Maybe Int) -> V.STVector s (Army, Maybe Int) -> ST s (Maybe (Int, Winner))
 {-# INLINABLE battle #-}
-battle group1 group2 = loop where
-  loop = checkVictory >>= \case
-    Just score -> pure (Just score)
-    Nothing -> do
-      ok <- targetSelection =<< epowerOrder
-      if ok
-        then attack >> loop
-        else pure Nothing
+battle group1 group2 = loop (-1) (-1) where
+  loop 0 score2 = pure (Just (score2, Infection))
+  loop score1 0 = pure (Just (score1, ImmuneSystem))
+  loop score1 score2 = do
+    ok <- targetSelection =<< epowerOrder
+    attack
+    score1' <- score group1
+    score2' <- score group2
+    if score1 /= score1' || score2 /= score2'
+      then loop score1' score2'
+      else pure Nothing
 
   epowerOrder = do
       o1 <- go 1 group1 0
@@ -128,26 +131,26 @@ battle group1 group2 = loop where
       V.set assigned2 False
       select assigned1 assigned2
     where
-      select assigned1 assigned2 = go False order0 where
-        go ok ((_,_,1,i):os) = do
+      select assigned1 assigned2 = go order0 where
+        go ((_,_,1,i):os) = do
           (army, _) <- V.unsafeRead group1 i
           choice <- choose army group2 assigned2
           case choice of
             Just chosen -> do
               V.unsafeWrite group1 i (army, choice)
               V.unsafeWrite assigned2 chosen True
-              go True os
-            Nothing -> go ok os
-        go ok ((_,_,2,i):os) = do
+              go os
+            Nothing -> go os
+        go ((_,_,2,i):os) = do
           (army, _) <- V.unsafeRead group2 i
           choice <- choose army group1 assigned1
           case choice of
             Just chosen -> do
               V.unsafeWrite group2 i (army, choice)
               V.unsafeWrite assigned1 chosen True
-              go True os
-            Nothing -> go ok os
-        go ok _ = pure ok
+              go os
+            Nothing -> go os
+        go _ = pure ()
 
       choose attacker defenders assigned = go Nothing 0 where
         go best !i
@@ -167,7 +170,7 @@ battle group1 group2 = loop where
           | effectivePower defender1 < effectivePower defender2 = False
           | initiative defender1 > initiative defender2 = True
           | otherwise = False
-        isBetterThan attacker defender Nothing = damage attacker defender > unitHP defender
+        isBetterThan attacker defender Nothing = damage attacker defender > 0
 
   attack = go 0 0 where
     go i1 i2
@@ -190,13 +193,6 @@ battle group1 group2 = loop where
         V.unsafeWrite g1 i (attacker, Nothing)
       _ -> pure ()
 
-  checkVictory = do
-    score1 <- score group1
-    score2 <- score group2
-    pure $ if | score1 == 0 -> Just (score2, Infection)
-              | score2 == 0 -> Just (score1, ImmuneSystem)
-              | otherwise   -> Nothing
-
 score :: V.STVector s (Army, a) -> ST s Int
 {-# INLINABLE score #-}
 score armies = go 0 0 where
@@ -216,3 +212,14 @@ damage attacker defender
   | attackType attacker `elem` immunities defender = 0
   | attackType attacker `elem` weaknesses defender = 2 * effectivePower attacker
   | otherwise = effectivePower attacker
+
+-- handy for debugging
+ppV :: Show a => V.STVector s (Army, a) -> ST s String
+ppV v = go [] 0 where
+  go acc n
+    | n == V.length v = do
+        s <- score v
+        pure (unlines (reverse (("score: " ++ show s):acc)))
+    | otherwise = do
+        (a, x) <- V.unsafeRead v n
+        go (show (n, effectivePower a, a, x) : acc) (n+1)
