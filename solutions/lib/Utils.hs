@@ -27,6 +27,11 @@ manhattan3 :: (Int, Int, Int) -> (Int, Int, Int) -> Int
 {-# INLINE manhattan3 #-}
 manhattan3 (x1,y1,z1) (x2,y2,z2) = abs (x1 - x2) + abs (y1 - y2) + abs (z1 - z2)
 
+-- | Manhattan distance between two points in 4D space
+manhattan4 :: (Int, Int, Int, Int) -> (Int, Int, Int, Int) -> Int
+{-# INLINE manhattan4 #-}
+manhattan4 (x1,y1,z1,t1) (x2,y2,z2,t2) = abs (x1 - x2) + abs (y1 - y2) + abs (z1 - z2) + abs (t1 - t2)
+
 -- | Min/max from a nonempty list, in pass.
 minmax :: Ord a => [a] -> (a, a)
 minmax (x0:xs) = foldr (\x (!mi, !ma) -> (min x mi, max x ma)) (x0, x0) xs
