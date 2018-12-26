@@ -294,6 +294,14 @@ executable Day22Part2
 executable Day23Part1
   import:              exe
   main-is:             Part1.hs
+  other-modules:       Common
+  hs-source-dirs:      day23
+
+executable Day23Part2
+  import:              exe
+  main-is:             Part2.hs
+  build-depends:       pqueue
+  other-modules:       Common
   hs-source-dirs:      day23
 
 executable Day24Part1
