@@ -1,3 +1,4 @@
+{-# LANGUAGE MultiWayIf #-}
 {-# LANGUAGE RecordWildCards #-}
 
 import qualified Data.PQueue.Prio.Max as P
@@ -23,19 +24,18 @@ data Region = Region
   deriving (Show)
 
 solve :: [Bot] -> Int
-solve nanobots = rpartition 0 [] (P.singleton (rnumbots region0) region0) where
-  rpartition best singletons pq = case P.maxViewWithKey pq of
+solve nanobots = rpartition 0 0 region0 (P.singleton (rnumbots region0) region0) where
+  rpartition bestK bestD bestR pq = case P.maxViewWithKey pq of
     Just ((k0, r0), pq')
-      | k0 >= best ->
+      | k0 >= bestK ->
         if singleton r0
-        then if k0 > best
-             then rpartition k0 [r0] pq'
-             else rpartition best (r0:singletons) pq'
+        then let d0 = manhattan3 (0, 0, 0) (rminX r0, rminY r0, rminZ r0)
+             in if | k0 > bestK -> rpartition k0 d0 r0 pq'
+                   | d0 < bestD -> rpartition k0 d0 r0 pq'
+                   | otherwise  -> rpartition bestK bestD bestR pq'
         else let rs = P.fromList [(rnumbots r, r) | r <- split r0]
-             in rpartition best singletons (P.union pq' rs)
-    _ -> choose singletons
-
-  choose = minimum . map (\Region{..} -> manhattan3 (0, 0, 0) (rminX, rminY, rminZ))
+             in rpartition bestK bestD bestR (P.union pq' rs)
+    _ -> bestD
 
   region0 =
     -- don't need to consider [minX - r .. maxX + r] (similarly for
