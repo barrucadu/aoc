@@ -1,6 +1,6 @@
 module Common where
 
-import Utils
+import           Utils
 
 parse :: String -> [Int]
 {-# INLINABLE parse #-}

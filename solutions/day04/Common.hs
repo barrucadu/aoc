@@ -2,9 +2,9 @@
 
 module Common where
 
-import Data.List (sort)
+import           Data.List (sort)
 
-import Utils
+import           Utils
 
 -- | Parser for day 4, shared between both parts
 parse :: String -> [(Int, [(Int, Int)], Int)]

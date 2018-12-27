@@ -4,13 +4,13 @@
 
 module Common where
 
-import Control.Monad.ST (ST, runST)
-import Data.Foldable (for_)
-import Data.List (sort, sortOn)
-import Data.Ord (Down(..))
+import           Control.Monad.ST    (ST, runST)
+import           Data.Foldable       (for_)
+import           Data.List           (sort, sortOn)
+import           Data.Ord            (Down(..))
 import qualified Data.Vector.Mutable as V
 
-import Utils
+import           Utils
 
 data AttackType
   = Fire

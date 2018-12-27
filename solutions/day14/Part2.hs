@@ -1,7 +1,7 @@
-import Control.Monad.ST (ST, runST)
+import           Control.Monad.ST            (ST, runST)
 import qualified Data.Vector.Unboxed.Mutable as V
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 14 (map parseDigit . init) (show . solve)

@@ -3,8 +3,8 @@
 
 import qualified Data.PQueue.Prio.Max as P
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 23 parse (show . solve)

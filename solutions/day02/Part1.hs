@@ -1,6 +1,6 @@
-import Data.List (foldl', group, sort)
+import           Data.List (foldl', group, sort)
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 2 lines (show . solve)

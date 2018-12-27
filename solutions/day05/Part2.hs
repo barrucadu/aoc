@@ -1,9 +1,9 @@
 {-# LANGUAGE BangPatterns #-}
 
+import           Data.Char   (chr, ord)
 import qualified Data.IntSet as S
-import Data.Char (chr, ord)
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 5 init (show . solve)

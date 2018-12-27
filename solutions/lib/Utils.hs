@@ -3,10 +3,10 @@
 
 module Utils where
 
-import Control.Monad.ST (ST, runST)
-import Data.Char (chr, ord)
-import Data.List (foldl')
-import qualified Data.Vector.Unboxed as V
+import           Control.Monad.ST            (ST, runST)
+import           Data.Char                   (chr, ord)
+import           Data.List                   (foldl')
+import qualified Data.Vector.Unboxed         as V
 import qualified Data.Vector.Unboxed.Mutable as VM
 
 -- | Common main function

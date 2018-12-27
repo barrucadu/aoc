@@ -1,5 +1,5 @@
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 16 parse (show . solve)

@@ -1,9 +1,9 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Control.Monad.ST (ST, runST)
+import           Control.Monad.ST (ST, runST)
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 18 id (show . solve)

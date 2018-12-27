@@ -1,7 +1,7 @@
 module Common where
 
-import qualified Data.IntSet as S
 import qualified Data.Graph.Inductive as G
+import qualified Data.IntSet          as S
 
 parse :: String -> G.UGr
 {-# INLINABLE parse #-}

@@ -1,8 +1,8 @@
-import Data.List (maximumBy)
-import Data.Ord (comparing)
+import           Data.List (maximumBy)
+import           Data.Ord  (comparing)
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 23 parse (show . solve)

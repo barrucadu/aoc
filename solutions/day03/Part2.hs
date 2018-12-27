@@ -1,10 +1,10 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Control.Monad.ST (ST, runST)
-import Data.Foldable (for_)
+import           Control.Monad.ST            (ST, runST)
+import           Data.Foldable               (for_)
 import qualified Data.Vector.Unboxed.Mutable as V
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 3 lines solve

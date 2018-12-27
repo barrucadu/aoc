@@ -1,7 +1,7 @@
 module Common where
 
 import qualified Data.Map.Strict as M
-import qualified Data.Set as S
+import qualified Data.Set        as S
 
 parse :: String -> M.Map Char (Int, S.Set Char)
 {-# INLINABLE parse #-}

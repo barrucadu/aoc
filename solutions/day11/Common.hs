@@ -2,10 +2,10 @@
 
 module Common where
 
-import Control.Monad.ST (ST, runST)
-import Data.Foldable (for_)
+import           Control.Monad.ST (ST, runST)
+import           Data.Foldable    (for_)
 
-import Utils
+import           Utils
 
 solve :: [Int] -> Int -> (Int, Int, Int)
 solve sizes serial = runST (findSlidingWindow =<< summedArray) where

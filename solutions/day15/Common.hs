@@ -5,15 +5,15 @@
 
 module Common where
 
-import Control.Arrow (first)
-import Control.Monad (filterM)
-import Control.Monad.ST (ST)
-import Data.List (sort)
-import qualified Data.Map.Strict as M
-import Data.Maybe (fromJust, listToMaybe, maybeToList)
-import qualified Data.Set as S
+import           Control.Arrow    (first)
+import           Control.Monad    (filterM)
+import           Control.Monad.ST (ST)
+import           Data.List        (sort)
+import qualified Data.Map.Strict  as M
+import           Data.Maybe       (fromJust, listToMaybe, maybeToList)
+import qualified Data.Set         as S
 
-import Utils
+import           Utils
 
 type Cell = Int
 pattern COpen   <- 0 where COpen   = 0

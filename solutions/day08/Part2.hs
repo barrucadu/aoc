@@ -1,9 +1,9 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Control.Arrow (first)
-import Data.List (foldl')
+import           Control.Arrow (first)
+import           Data.List     (foldl')
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 8 words (show . solve)

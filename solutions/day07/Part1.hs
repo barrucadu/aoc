@@ -1,8 +1,8 @@
 import qualified Data.Map.Strict as M
-import qualified Data.Set as S
+import qualified Data.Set        as S
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 7 parse solve

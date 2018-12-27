@@ -2,9 +2,9 @@
 
 module Common where
 
-import Control.Arrow (first)
+import           Control.Arrow (first)
 
-import Utils
+import           Utils
 
 parse :: String -> [((Int, Int), (Int, Int))]
 {-# INLINABLE parse #-}

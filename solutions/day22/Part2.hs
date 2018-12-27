@@ -1,13 +1,13 @@
 {-# LANGUAGE PatternSynonyms #-}
 
-import Control.Monad.ST (ST, runST)
-import Data.Foldable (for_)
-import qualified Data.HashSet as S
-import Data.Maybe (fromJust)
-import Data.Graph.AStar
+import           Control.Monad.ST (ST, runST)
+import           Data.Foldable    (for_)
+import           Data.Graph.AStar
+import qualified Data.HashSet     as S
+import           Data.Maybe       (fromJust)
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 type Tool = Int
 pattern T <- 0 where T = 0

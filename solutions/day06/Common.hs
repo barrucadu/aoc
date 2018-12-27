@@ -4,7 +4,7 @@ module Common where
 
 import qualified Data.Vector.Unboxed as V
 
-import Utils
+import           Utils
 
 parse :: String -> V.Vector (Int, Int)
 {-# INLINABLE parse #-}

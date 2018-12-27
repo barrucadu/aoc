@@ -1,10 +1,10 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Data.List (sort)
+import           Data.List           (sort)
 import qualified Data.Vector.Unboxed as V
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 6 parse (show . solve)

@@ -1,10 +1,10 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Control.Monad.ST (ST, runST)
-import Data.Foldable (for_)
+import           Control.Monad.ST (ST, runST)
+import           Data.Foldable    (for_)
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 22 parse (show . solve)

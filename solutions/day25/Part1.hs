@@ -1,12 +1,12 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Control.Arrow (first)
-import Data.List (nub)
+import           Control.Arrow   (first)
+import           Data.List       (nub)
 import qualified Data.Map.Strict as M
-import Data.Maybe (mapMaybe)
-import qualified Data.Set as S
+import           Data.Maybe      (mapMaybe)
+import qualified Data.Set        as S
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 25 parse (show . solve)

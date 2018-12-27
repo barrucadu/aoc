@@ -1,8 +1,8 @@
 import qualified Data.IntMap.Strict as M
-import qualified Data.Set as S
+import qualified Data.Set           as S
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 16 parse (show . solve)

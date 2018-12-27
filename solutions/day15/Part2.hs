@@ -1,13 +1,13 @@
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE LambdaCase #-}
 
-import Control.Monad.ST (runST)
-import qualified Data.Map.Strict as M
-import Data.Maybe (fromJust)
-import Data.Ord (Ordering(..), compare)
+import           Control.Monad.ST (runST)
+import qualified Data.Map.Strict  as M
+import           Data.Maybe       (fromJust)
+import           Data.Ord         (Ordering(..), compare)
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 15 id (show . solve)

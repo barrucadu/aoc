@@ -1,6 +1,6 @@
-import Data.Maybe (fromMaybe)
+import           Data.Maybe (fromMaybe)
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 2 lines solve

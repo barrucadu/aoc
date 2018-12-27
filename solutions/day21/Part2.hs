@@ -1,9 +1,9 @@
-import Control.Monad.ST (runST)
-import qualified Data.IntSet as S
+import           Control.Monad.ST    (runST)
+import qualified Data.IntSet         as S
 import qualified Data.Vector.Unboxed as V
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 21 parse (show . solve)

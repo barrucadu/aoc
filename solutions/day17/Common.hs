@@ -4,11 +4,11 @@
 
 module Common where
 
-import Control.Monad (when)
-import Control.Monad.ST (ST)
-import Data.Foldable (for_)
+import           Control.Monad    (when)
+import           Control.Monad.ST (ST)
+import           Data.Foldable    (for_)
 
-import Utils
+import           Utils
 
 type SqM = Int
 pattern SSand <- 0 where SSand = 0

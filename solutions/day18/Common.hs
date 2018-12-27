@@ -4,10 +4,10 @@
 
 module Common where
 
-import Control.Monad.ST (ST, runST)
-import Data.Foldable (for_)
+import           Control.Monad.ST (ST, runST)
+import           Data.Foldable    (for_)
 
-import Utils
+import           Utils
 
 type Cell = Int
 pattern COpen <- 0 where COpen = 0

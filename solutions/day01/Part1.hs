@@ -1,7 +1,7 @@
-import Data.List (foldl')
+import           Data.List (foldl')
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 1 parse (show . solve)

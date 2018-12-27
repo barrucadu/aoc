@@ -4,11 +4,11 @@
 
 module Common where
 
-import Data.Foldable (for_)
+import           Data.Foldable   (for_)
 import qualified Data.Map.Strict as M
-import Data.Word (Word8)
+import           Data.Word       (Word8)
 
-import Utils
+import           Utils
 
 -- (Y, X) so that iterating over a map goes in the right order for the
 -- carts.

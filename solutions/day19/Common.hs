@@ -3,14 +3,14 @@
 
 module Common where
 
-import Control.Monad (when)
-import Control.Monad.ST (ST)
-import Data.Foldable (for_)
-import qualified Data.Vector.Unboxed as V
+import           Control.Monad               (when)
+import           Control.Monad.ST            (ST)
+import           Data.Bits                   ((.&.), (.|.))
+import           Data.Foldable               (for_)
+import qualified Data.Vector.Unboxed         as V
 import qualified Data.Vector.Unboxed.Mutable as VM
-import Data.Bits ((.&.), (.|.))
 
-import Utils
+import           Utils
 
 type Op = Int
 pattern AddR <- 0  where AddR = 0

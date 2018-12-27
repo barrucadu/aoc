@@ -2,10 +2,10 @@
 
 module Common where
 
-import Control.Arrow (first)
-import Data.Bits ((.&.), (.|.))
+import           Control.Arrow (first)
+import           Data.Bits     ((.&.), (.|.))
 
-import Utils
+import           Utils
 
 type Example = (Regs, EncodedInstr, Regs)
 type Regs = (Int, Int, Int, Int)
