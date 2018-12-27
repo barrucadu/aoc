@@ -111,6 +111,10 @@ writeArray :: VM.Unbox a => STArray s a -> Int -> Int -> a -> ST s ()
 {-# INLINE writeArray #-}
 writeArray (width, v) x y = VM.unsafeWrite v (x + y * width)
 
+setArray :: VM.Unbox a => STArray s a -> a -> ST s ()
+{-# INLINE setArray #-}
+setArray (_, v) = VM.set v
+
 readArray :: VM.Unbox a => STArray s a -> Int -> Int -> ST s a
 {-# INLINE readArray #-}
 readArray (width, v) x y = VM.unsafeRead v (x + y * width)
@@ -121,6 +125,14 @@ createArray ma = runST $ do
   (width, v) <- ma
   frozen <- V.unsafeFreeze v
   pure (width, frozen)
+
+widthArray' :: STArray s a -> Int
+{-# INLINE widthArray' #-}
+widthArray' (width, _) = width
+
+heightArray' :: V.Unbox a => STArray s a -> Int
+{-# INLINE heightArray' #-}
+heightArray' (width, v) = VM.length v `div` width
 
 indexArray :: V.Unbox a => Array a -> Int -> Int -> a
 {-# INLINE indexArray #-}

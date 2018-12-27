@@ -199,6 +199,12 @@ executable Day14Part2
   build-depends:       vector
   hs-source-dirs:      day14
 
+executable Day15Part1
+  import:              exe
+  main-is:             Part1.hs
+  build-depends:       containers
+  hs-source-dirs:      day15
+
 executable Day16Part1
   import:              exe
   main-is:             Part1.hs
