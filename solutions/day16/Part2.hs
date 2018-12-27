@@ -7,8 +7,8 @@ import Utils
 main :: IO ()
 main = mainFor 16 parse (show . solve)
 
-solve :: ([Example], [EncodedInstr]) -> Regs
-solve (es0, program) = run (infer es0) program where
+solve :: ([Example], [EncodedInstr]) -> Int
+solve (es0, program) = let (r0, _, _, _) = run (infer es0) program in r0 where
   infer :: [Example] -> M.IntMap (S.Set Op)
   infer = go (M.fromList [(i, S.fromList [minBound..maxBound]) | i <- keys]) where
     go known (e@(_, (op, _, _, _), _):es) =
