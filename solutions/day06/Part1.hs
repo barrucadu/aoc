@@ -36,9 +36,9 @@ solve points = search 0 0 where
     go !n
       | n == -1 = True
       | n == n0 = go (n-1)
-      | otherwise = dist < manhattan (V.unsafeIndex points n) xy && go (n-1)
+      | otherwise = dist < manhattan2 (V.unsafeIndex points n) xy && go (n-1)
 
-    dist = manhattan p0 xy
+    dist = manhattan2 p0 xy
 
   edge (x, y) = x == xmin || x == xmax || y == ymin || y == ymax
 

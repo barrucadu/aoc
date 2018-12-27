@@ -98,5 +98,5 @@ solve (depth, (tX, tY)) = pathLen path where
     go _ _ = 0
 
   nodeDist (xy1, t1) (xy2, t2)
-    | t1 == t2  = manhattan xy1 xy2
-    | otherwise = manhattan xy1 xy2 + 7
+    | t1 == t2  = manhattan2 xy1 xy2
+    | otherwise = manhattan2 xy1 xy2 + 7

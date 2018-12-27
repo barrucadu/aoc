@@ -17,10 +17,10 @@ mainFor dayN parse solve = do
   input <- parse <$> readFile ("../inputs/day" ++ n ++ ".txt")
   putStrLn (solve input)
 
--- | Manhattan distance between two points
-manhattan :: (Int, Int) -> (Int, Int) -> Int
-{-# INLINE manhattan #-}
-manhattan (x1,y1) (x2,y2) = abs (x1 - x2) + abs (y1 - y2)
+-- | Manhattan distance between two points in 2D space
+manhattan2 :: (Int, Int) -> (Int, Int) -> Int
+{-# INLINE manhattan2 #-}
+manhattan2 (x1,y1) (x2,y2) = abs (x1 - x2) + abs (y1 - y2)
 
 -- | Manhattan distance between two points in 3D space
 manhattan3 :: (Int, Int, Int) -> (Int, Int, Int) -> Int

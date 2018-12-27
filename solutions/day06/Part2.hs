@@ -27,4 +27,4 @@ solve points = go 1 1 where
     let lpoints = V.toList points
     in (median (sort (map fst lpoints)), median (sort (map snd lpoints)))
 
-  inRange xy = V.foldl' (\acc p -> acc + manhattan xy p) 0 points < 10000
+  inRange xy = V.foldl' (\acc p -> acc + manhattan2 xy p) 0 points < 10000
