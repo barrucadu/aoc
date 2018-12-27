@@ -203,6 +203,14 @@ executable Day15Part1
   import:              exe
   main-is:             Part1.hs
   build-depends:       containers
+  other-modules:       Common
+  hs-source-dirs:      day15
+
+executable Day15Part2
+  import:              exe
+  main-is:             Part2.hs
+  build-depends:       containers
+  other-modules:       Common
   hs-source-dirs:      day15
 
 executable Day16Part1

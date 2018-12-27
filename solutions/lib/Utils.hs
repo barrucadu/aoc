@@ -119,6 +119,12 @@ readArray :: VM.Unbox a => STArray s a -> Int -> Int -> ST s a
 {-# INLINE readArray #-}
 readArray (width, v) x y = VM.unsafeRead v (x + y * width)
 
+cloneArray :: VM.Unbox a => STArray s a -> ST s (STArray s a)
+{-# INLINE cloneArray #-}
+cloneArray (width, v) = do
+  v' <- VM.clone v
+  pure (width, v')
+
 createArray :: VM.Unbox a => (forall s. ST s (STArray s a)) -> Array a
 {-# INLINE createArray #-}
 createArray ma = runST $ do
