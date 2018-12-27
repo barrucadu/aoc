@@ -14,14 +14,14 @@ solve sizes serial = runST (findSlidingWindow =<< summedArray) where
     -- use dimension+1 so we can index from 1..dimension, like the puzzle
     v <- newArray (dimension + 1) (dimension + 1)
     writeArray v 1 1 (power 1 1)
-    for_ [x | x <- [2..dimension]] $ \x -> do
+    for_ [2..dimension] $ \x -> do
       s1 <- readArray v (x - 1) 1
       writeArray v x 1 (power x 1 + s1)
-    for_ [y | y <- [2..dimension]] $ \y -> do
+    for_ [2..dimension] $ \y -> do
       s1 <- readArray v 1 (y - 1)
       writeArray v 1 y (power 1 y + s1)
-    for_ [x | x <- [2..dimension]] $ \x ->
-      for_ [y | y <- [2..dimension]] $ \y -> do
+    for_ [2..dimension] $ \x ->
+      for_ [2..dimension] $ \y -> do
         s1 <- readArray v x (y - 1)
         s2 <- readArray v (x - 1) y
         s3 <- readArray v (x - 1) (y - 1)

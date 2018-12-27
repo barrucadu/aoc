@@ -19,7 +19,7 @@ solve = fst . goN where
   goN _ = error "invalid input"
 
   goC = goC' [] where
-    goC' values !0 rest = (reverse values, rest)
+    goC' values  0 rest = (reverse values, rest)
     goC' values !n rest =
       let (value, rest') = goN rest
       in goC' (value:values) (n-1) rest'

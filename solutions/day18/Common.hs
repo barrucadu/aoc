@@ -175,8 +175,8 @@ rules CTrees ns
 -- adjacent to at least one other lumberyard and at least one acre
 -- containing trees. Otherwise, it becomes open.
 rules CLumberyard ns
-  | null (filter (==CLumberyard) ns) = COpen
-  | null (filter (==CTrees) ns) = COpen
+  | CLumberyard `notElem` ns = COpen
+  | CTrees `notElem` ns = COpen
   | otherwise = CLumberyard
 rules c _ = c
 

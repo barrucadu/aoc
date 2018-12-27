@@ -7,6 +7,7 @@ module Common where
 import Control.Monad.ST (ST, runST)
 import Data.Foldable (for_)
 import Data.List (sort, sortOn)
+import Data.Ord (Down(..))
 import qualified Data.Vector.Mutable as V
 
 import Utils
@@ -92,7 +93,7 @@ fight (immuneSystem0, infection0) = runST $ do
 toArmies :: [Army] -> ST s (V.STVector s (Army, Maybe Int))
 {-# INLINABLE toArmies #-}
 toArmies as = do
-  let sorted = reverse (sortOn initiative as)
+  let sorted = sortOn (Down . initiative) as
   let len = length as
   v <- V.unsafeNew len
   for_ (zip [0..] sorted) $ \(i, a) -> V.unsafeWrite v i (a, Nothing)
@@ -116,7 +117,7 @@ battle group1 group2 = loop (-1) (-1) where
   epowerOrder = do
       o1 <- go 1 group1 0
       o2 <- go 2 group2 0
-      pure (reverse (sort (o1 ++ o2)))
+      pure (sortOn Down (o1 ++ o2))
     where
       go g v !i
         | i == V.length v = pure []

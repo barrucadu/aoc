@@ -30,7 +30,7 @@ solve (nplayers, lastmarble) = runST $ do
       go' !countdown !marble !player anticlockwise clockwise
         | marble == lastmarble + 1 = pure scores
         | countdown == 0 = do
-          let (anticlockwise', (m:clockwise')) = rotateA 7 anticlockwise clockwise
+          let (anticlockwise', m:clockwise') = rotateA 7 anticlockwise clockwise
           let (anticlockwise'', clockwise'') = rotateC 1 anticlockwise' clockwise'
           let score = marble + m
           let player' = player `mod` nplayers

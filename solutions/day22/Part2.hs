@@ -1,4 +1,3 @@
-{-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE PatternSynonyms #-}
 
 import Control.Monad.ST (ST, runST)

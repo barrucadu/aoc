@@ -54,9 +54,12 @@ solve = M.size . go M.empty M.empty where
   merge _ rm m [] = (rm, m)
 
   allReps :: Ord k => k -> [k] -> M.Map k k -> [k]
-  allReps p neighbours rm = case mapMaybe (\p' -> M.lookup p' rm) (p:neighbours) of
+  allReps p neighbours rm = case mapMaybe (`M.lookup` rm) (p:neighbours) of
     [] -> [p]
     rs -> nub rs
 
-  setRep rep = foldr (\p -> M.insert p rep)
-  connect rep = M.insertWith S.union rep
+  setRep :: (Foldable f, Ord k) => k -> M.Map k k -> f k -> M.Map k k
+  setRep rep = foldr (`M.insert` rep)
+
+  connect :: Ord k => k -> S.Set k -> M.Map k (S.Set k) -> M.Map k (S.Set k)
+  connect = M.insertWith S.union

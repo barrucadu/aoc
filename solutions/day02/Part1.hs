@@ -11,6 +11,6 @@ solve input = twos * threes where
 
   go (tw, th) line =
     let counts = map length (group (sort line))
-    in ( tw + if any (==2) counts then 1 else 0
-       , th + if any (==3) counts then 1 else 0
+    in ( tw + if 2 `elem` counts then 1 else 0
+       , th + if 3 `elem` counts then 1 else 0
        )

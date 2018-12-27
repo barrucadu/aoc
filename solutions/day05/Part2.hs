@@ -13,8 +13,7 @@ solve input0 = minimum [ count | p <- S.toList polymers, let (count, _) = shrink
   (_, input) = shrink input0
 
   polymers = S.map lowercase' (go S.empty input) where
-    go acc (p:ps) = go (S.insert (ord p) acc) ps
-    go acc [] = acc
+    go = foldl (\acc p -> S.insert (ord p) acc)
 
   remove p = filter (\c -> ord (lowercase c) /= p)
 

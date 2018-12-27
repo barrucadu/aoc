@@ -1,5 +1,3 @@
-{-# LANGUAGE LambdaCase #-}
-
 import qualified Data.IntMap.Strict as M
 
 import Common

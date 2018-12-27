@@ -43,10 +43,7 @@ solve (es0, program) = run (infer es0) program where
           in (k' . k, known'')
 
   run :: M.IntMap (S.Set Op) -> [EncodedInstr] -> Regs
-  run ops = go (0, 0, 0, 0) where
-    go regs [] = regs
-    go regs (e:es) = go (exec e regs) es
-
+  run ops = foldl (flip exec) (0, 0, 0, 0) where
     exec e@(op, _, _, _) =
       let instr = S.elemAt 0 (M.findWithDefault undefined op ops)
       in action instr e
