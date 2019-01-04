@@ -114,20 +114,15 @@ restrictBots r@Region{..} = r { rbots = nanobots, rnumbots = length nanobots } w
   nanobots = filter (inRange r) rbots
 
 inRange :: Region -> Bot -> Bool
-inRange Region{..} (c@(x, y, z), range)
-  -- bot inside region
-  | in_ x rminX rmaxX && in_ y rminY rmaxY && in_ z rminZ rmaxZ = True
-  -- bot next to a face
-  | in_ x rminX rmaxX && in_ y rminY rmaxY = in_ z (rminZ - range) (rmaxZ + range)
-  | in_ x rminX rmaxX && in_ z rminZ rmaxZ = in_ y (rminY - range) (rmaxY + range)
-  | in_ y rminY rmaxY && in_ z rminZ rmaxZ = in_ x (rminX - range) (rmaxX + range)
-  -- otherwise, if any of the region is in range a corner must be
-  | otherwise =
-    let corners = [(xp, yp, zp) | xp <- [rminX, rmaxX], yp <- [rminY, rmaxY], zp <- [rminZ, rmaxZ]]
-    in any (\p -> manhattan3 c p <= range) corners
+inRange Region{..} ((x, y, z), range) = (cx + cy + cz) <= range where
+  cx = c rminX rmaxX x
+  cy = c rminY rmaxY y
+  cz = c rminZ rmaxZ z
 
-in_ :: Int -> Int -> Int -> Bool
-in_ a minA maxA = a >= minA && a <= maxA
+  c rmin rmax p
+    | p < rmin = rmin - p
+    | p > rmax = p - rmax
+    | otherwise = 0
 
 mid :: Int -> Int -> Int
 mid lo hi = lo + range `div` 2 where
