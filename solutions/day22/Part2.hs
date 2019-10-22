@@ -19,8 +19,8 @@ main = mainFor 22 parse (show . solve)
 
 solve :: (Int, (Int, Int)) -> Int
 solve (depth, (tX, tY)) = pathLen path where
-  maxX = tX * 100
-  maxY = tY * 100
+  maxX = tX * 10
+  maxY = tY * 10
 
   path = runST $ do
     gIs <- newArray (maxX+1) (maxY+1)
