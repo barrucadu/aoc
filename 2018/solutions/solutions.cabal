@@ -20,7 +20,7 @@ library
   import:              base
   exposed-modules:     Utils
   build-depends:       vector
-  hs-source-dirs:      lib
+  hs-source-dirs:      ../../shared
 
 executable Day01Part1
   import:              exe
