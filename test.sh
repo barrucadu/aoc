@@ -16,7 +16,11 @@ cabal new-build
 for f in dist-newstyle/build/*/*/*/x/*/build/*/Day*Part*; do
   if [[ -f $f ]] && [[ -x $f ]]; then
     exe=$(basename $f)
-    expected=$(cat ../outputs/$exe)
+    if [[ -e ../outputs/$exe ]]; then
+      expected=$(cat ../outputs/$exe)
+    else
+      expected=""
+    fi
     actual=$($f)
     if [[ "$expected" == "$actual" ]]; then
       echo -en "\033[0;32m.\033[0m"
@@ -27,6 +31,11 @@ for f in dist-newstyle/build/*/*/*/x/*/build/*/Day*Part*; do
       echo -e "\n$expected\n" | sed 's/^/    /'
       echo -e "\033[0;31mbut found:\033[0m"
       echo -e "\n$actual\n" | sed 's/^/    /'
+
+      if [[ -n "${ACCEPT:-}" ]]; then
+        echo -e "\033[0;32maccepting new solution\033[0m"
+        echo "$actual" > "../outputs/${exe}"
+      fi
     fi
   fi
 done
