@@ -7,4 +7,5 @@ Current benchmark results:
 
 |Problem|Time (s)|Variance|
 |-|-|-|
-||||
+|Day01Part1|-|-|
+|Day01Part2|-|-|
