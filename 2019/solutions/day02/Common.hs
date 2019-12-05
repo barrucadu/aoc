@@ -38,19 +38,15 @@ run :: Memory s -> ST s ()
 run mem = go 0 where
   go !ip = VUM.unsafeRead mem ip >>= \case
     OpAdd -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
+      a <- VUM.unsafeRead mem =<< VUM.unsafeRead mem (ip+1)
+      b <- VUM.unsafeRead mem =<< VUM.unsafeRead mem (ip+2)
       out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
-      b <- VUM.unsafeRead mem inB
       VUM.unsafeWrite mem out (a + b)
       go (ip+4)
     OpMul -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
+      a <- VUM.unsafeRead mem =<< VUM.unsafeRead mem (ip+1)
+      b <- VUM.unsafeRead mem =<< VUM.unsafeRead mem (ip+2)
       out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
-      b <- VUM.unsafeRead mem inB
       VUM.unsafeWrite mem out (a * b)
       go (ip+4)
     _ -> pure ()

@@ -64,170 +64,148 @@ run :: Memory s -> [Int] -> ST s [Int]
 run mem = go 0 where
   go !ip input = VUM.unsafeRead mem ip >>= \case
     OpAddPP -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
-      b <- VUM.unsafeRead mem inB
+      a <- readP (ip+1)
+      b <- readP (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (a + b)
       go (ip+4) input
     OpAddPI -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
+      a <- readP (ip+1)
+      b <- readI (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (a + b)
       go (ip+4) input
     OpAddIP -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      b <- VUM.unsafeRead mem inB
+      a <- readI (ip+1)
+      b <- readP (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (a + b)
       go (ip+4) input
     OpAddII -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
+      a <- readI (ip+1)
+      b <- readI (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (a + b)
       go (ip+4) input
     OpMulPP -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
-      b <- VUM.unsafeRead mem inB
+      a <- readP (ip+1)
+      b <- readP (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (a * b)
       go (ip+4) input
     OpMulPI -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
+      a <- readP (ip+1)
+      b <- readI (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (a * b)
       go (ip+4) input
     OpMulIP -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      b <- VUM.unsafeRead mem inB
+      a <- readI (ip+1)
+      b <- readP (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (a * b)
       go (ip+4) input
     OpMulII -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
+      a <- readI (ip+1)
+      b <- readI (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (a * b)
       go (ip+4) input
     OpRead -> do
-      out <- VUM.unsafeRead mem (ip+1)
+      out <- readI (ip+1)
       VUM.unsafeWrite mem out (head input)
       go (ip+2) (tail input)
     OpWriteP -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      a <- VUM.unsafeRead mem inA
+      a <- readP (ip+1)
       (a:) <$> go (ip+2) input
     OpWriteI -> do
-      a <- VUM.unsafeRead mem (ip+1)
+      a <- readI (ip+1)
       (a:) <$> go (ip+2) input
     OpJmtPP -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      a <- VUM.unsafeRead mem inA
-      b <- VUM.unsafeRead mem inB
+      a <- readP (ip+1)
+      b <- readP (ip+2)
       go (if a /= 0 then b else ip+3) input
     OpJmtPI -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      a <- VUM.unsafeRead mem inA
+      a <- readP (ip+1)
+      b <- readI (ip+2)
       go (if a /= 0 then b else ip+3) input
     OpJmtIP -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      b <- VUM.unsafeRead mem inB
+      a <- readI (ip+1)
+      b <- readP (ip+2)
       go (if a /= 0 then b else ip+3) input
     OpJmtII -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
+      a <- readI (ip+1)
+      b <- readI (ip+2)
       go (if a /= 0 then b else ip+3) input
     OpJmfPP -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      a <- VUM.unsafeRead mem inA
-      b <- VUM.unsafeRead mem inB
+      a <- readP (ip+1)
+      b <- readP (ip+2)
       go (if a == 0 then b else ip+3) input
     OpJmfPI -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      a <- VUM.unsafeRead mem inA
+      a <- readP (ip+1)
+      b <- readI (ip+2)
       go (if a == 0 then b else ip+3) input
     OpJmfIP -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      b <- VUM.unsafeRead mem inB
+      a <- readI (ip+1)
+      b <- readP (ip+2)
       go (if a == 0 then b else ip+3) input
     OpJmfII -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
+      a <- readI (ip+1)
+      b <- readI (ip+2)
       go (if a == 0 then b else ip+3) input
     OpLtPP -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
-      b <- VUM.unsafeRead mem inB
+      a <- readP (ip+1)
+      b <- readP (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (if a < b then 1 else 0)
       go (ip+4) input
     OpLtPI -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
+      a <- readP (ip+1)
+      b <- readI (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (if a < b then 1 else 0)
       go (ip+4) input
     OpLtIP -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      b <- VUM.unsafeRead mem inB
+      a <- readI (ip+1)
+      b <- readP (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (if a < b then 1 else 0)
       go (ip+4) input
     OpLtII -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
+      a <- readI (ip+1)
+      b <- readI (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (if a < b then 1 else 0)
       go (ip+4) input
     OpEqPP -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
-      b <- VUM.unsafeRead mem inB
+      a <- readP (ip+1)
+      b <- readP (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (if a == b then 1 else 0)
       go (ip+4) input
     OpEqPI -> do
-      inA <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      a <- VUM.unsafeRead mem inA
+      a <- readP (ip+1)
+      b <- readI (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (if a == b then 1 else 0)
       go (ip+4) input
     OpEqIP -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      inB <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
-      b <- VUM.unsafeRead mem inB
+      a <- readI (ip+1)
+      b <- readP (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (if a == b then 1 else 0)
       go (ip+4) input
     OpEqII -> do
-      a <- VUM.unsafeRead mem (ip+1)
-      b <- VUM.unsafeRead mem (ip+2)
-      out <- VUM.unsafeRead mem (ip+3)
+      a <- readI (ip+1)
+      b <- readI (ip+2)
+      out <- readI (ip+3)
       VUM.unsafeWrite mem out (if a == b then 1 else 0)
       go (ip+4) input
     OpHlt -> pure []
     i -> error ("unexpected opcode: " ++ show i)
+    
+  readI = VUM.unsafeRead mem
+  readP addr = VUM.unsafeRead mem =<< VUM.unsafeRead mem addr
 
 -- 1024 ints should be enough for anyone
 memorySize :: Int
