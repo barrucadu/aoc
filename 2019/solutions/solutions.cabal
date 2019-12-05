@@ -33,3 +33,17 @@ executable Day01Part2
   main-is:             Part2.hs
   other-modules:       Common
   hs-source-dirs:      day01
+
+executable Day02Part1
+  import:              exe
+  main-is:             Part1.hs
+  other-modules:       Common
+  build-depends:       vector
+  hs-source-dirs:      day02
+
+executable Day02Part2
+  import:              exe
+  main-is:             Part2.hs
+  other-modules:       Common
+  build-depends:       vector
+  hs-source-dirs:      day02
