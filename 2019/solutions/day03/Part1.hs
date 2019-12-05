@@ -1,6 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
 
-import           Data.List (sort)
+import           Data.List (minimum)
 import qualified Data.Set  as S
 
 import           Utils
@@ -36,7 +36,7 @@ parse = go . lines where
   goI !acc [] = (acc, [])
 
 solve :: (S.Set (Int, Int), S.Set (Int, Int)) -> Int
-solve (wire1, wire2) = head . sort . map (manhattan2 origin)  $ S.toList crossings where
+solve (wire1, wire2) = minimum . map (manhattan2 origin)  $ S.toList crossings where
   crossings = S.intersection wire1' wire2'
   wire1' = S.delete origin wire1
   wire2' = S.delete origin wire2
