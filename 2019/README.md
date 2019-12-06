@@ -7,15 +7,15 @@ Current benchmark results:
 
 |Problem|Time (s)|Variance|
 |-|-|-|
-|Day01Part1|-|-|
-|Day01Part2|-|-|
-|Day02Part1|-|-|
-|Day02Part2|-|-|
-|Day03Part1|-|-|
-|Day03Part2|-|-|
-|Day04Part1|-|-|
-|Day04Part2|-|-|
-|Day05Part1|-|-|
-|Day05Part2|-|-|
-|Day06Part1|-|-|
-|Day06Part2|-|-|
+|Day01Part1|0.00090572|+-  0.88%|
+|Day01Part2|0.00089433|+-  0.91%|
+|Day02Part1|0.00087109|+-  0.84%|
+|Day02Part2|0.00513231|+-  0.16%|
+|Day03Part1|0.173163|+-  0.15%|
+|Day03Part2|0.191374|+-  0.29%|
+|Day04Part1|0.00085768|+-  0.88%|
+|Day04Part2|0.00085930|+-  0.89%|
+|Day05Part1|0.00094766|+-  0.93%|
+|Day05Part2|0.00093695|+-  0.75%|
+|Day06Part1|0.00312024|+-  0.22%|
+|Day06Part2|0.00303978|+-  0.18%|
