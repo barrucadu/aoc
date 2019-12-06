@@ -16,22 +16,24 @@ parse = go . lines where
   go _ = error "bad input"
 
   goW p !set !x !y ('R':rest) =
-    let (range, rest') = goI 0 rest
-        set' = S.union set (S.fromList [point | d <- [0..range], let point = (x + d, y), p point])
+    let (range, rest', set') = goW' (\d -> (x + d, y)) p set rest
     in goW p set' (x + range) y rest'
   goW p !set !x !y ('L':rest) =
-    let (range, rest') = goI 0 rest
-        set' = S.union set (S.fromList [point | d <- [0..range], let point = (x - d, y), p point])
+    let (range, rest', set') = goW' (\d -> (x - d, y)) p set rest
     in goW p set' (x - range) y rest'
   goW p !set !x !y ('U':rest) =
-    let (range, rest') = goI 0 rest
-        set' = S.union set (S.fromList [point | d <- [0..range], let point = (x, y - d), p point])
+    let (range, rest', set') = goW' (\d -> (x, y - d)) p set rest
     in goW p set' x (y - range) rest'
   goW p !set !x !y ('D':rest) =
-    let (range, rest') = goI 0 rest
-        set' = S.union set (S.fromList [point | d <- [0..range], let point = (x, y + d), p point])
+    let (range, rest', set') = goW' (\d -> (x, y + d)) p set rest
     in goW p set' x (y + range) rest'
   goW _ !set _ _ _ = set
+
+  {-# INLINE goW' #-}
+  goW' pf p !set rest =
+    let (range, rest') = goI 0 rest
+        set' = S.union set (S.fromList [point | d <- [0..range], let point = pf d, p point])
+    in (range, rest', set')
 
   goI !acc (',':rest) = (acc, rest)
   goI !acc (c:rest) = goI (stepParseInt acc c) rest

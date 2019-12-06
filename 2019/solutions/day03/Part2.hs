@@ -17,22 +17,24 @@ parse = go . lines where
   go _ = error "bad input"
 
   goW f !map_ !x !y !steps ('R':rest) =
-    let (range, rest') = goI 0 rest
-        map_' = M.union map_ (M.fromList [(point, steps + d + cost) | d <- [0..range], let point = (x + d, y), cost <- maybeToList $ f point])
+    let (range, rest', map_') = goW' (\d -> (x + d, y)) f map_ steps rest
     in goW f map_' (x + range) y (steps + range) rest'
   goW f !map_ !x !y !steps ('L':rest) =
-    let (range, rest') = goI 0 rest
-        map_' = M.union map_ (M.fromList [(point, steps + d + cost) | d <- [0..range], let point = (x - d, y), cost <- maybeToList $ f point])
+    let (range, rest', map_') = goW' (\d -> (x - d, y)) f map_ steps rest
     in goW f map_' (x - range) y (steps + range) rest'
   goW f !map_ !x !y !steps ('U':rest) =
-    let (range, rest') = goI 0 rest
-        map_' = M.union map_ (M.fromList [(point, steps + d + cost) | d <- [0..range], let point = (x, y - d), cost <- maybeToList $ f point])
+    let (range, rest', map_') = goW' (\d -> (x, y - d)) f map_ steps rest
     in goW f map_' x (y - range) (steps + range) rest'
   goW f !map_ !x !y !steps ('D':rest) =
-    let (range, rest') = goI 0 rest
-        map_' = M.union map_ (M.fromList [(point, steps + d + cost) | d <- [0..range], let point = (x, y + d), cost <- maybeToList $ f point])
+    let (range, rest', map_') = goW' (\d -> (x, y + d)) f map_ steps rest
     in goW f map_' x (y + range) (steps + range) rest'
   goW _ !map_ _ _ _ _ = map_
+
+  {-# INLINE goW' #-}
+  goW' pf f !map_ !steps rest =
+    let (range, rest') = goI 0 rest
+        map_' = M.union map_ (M.fromList [(point, steps + d + cost) | d <- [0..range], let point = pf d, cost <- maybeToList $ f point])
+    in (range, rest', map_')
 
   goI !acc (',':rest) = (acc, rest)
   goI !acc (c:rest) = goI (stepParseInt acc c) rest
