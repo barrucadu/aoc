@@ -41,7 +41,7 @@ runNetwork program pA pB pC pD pE = unsafePerformIO $ do
     setup phase = do
       memory <- initialise program
       input  <- newMVar phase
-      pure (runPartial memory 0, input)
+      pure (runPartial memory, input)
 
     runOne :: (Int -> IO ()) -> IO Int -> IO (Partial IO) -> IO ()
     runOne put get = go where

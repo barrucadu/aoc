@@ -1,6 +1,7 @@
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Intcode where
 
@@ -10,35 +11,6 @@ import           Control.Monad.ST            (ST)
 import qualified Data.Vector.Unboxed.Mutable as VUM
 
 import           Utils
-
-pattern OpAddPP  <- 0001
-pattern OpAddPI  <- 1001
-pattern OpAddIP  <- 0101
-pattern OpAddII  <- 1101
-pattern OpMulPP  <- 0002
-pattern OpMulPI  <- 1002
-pattern OpMulIP  <- 0102
-pattern OpMulII  <- 1102
-pattern OpRead   <- 0003
-pattern OpWriteP <- 0004
-pattern OpWriteI <- 0104
-pattern OpJmtPP  <- 0005
-pattern OpJmtPI  <- 1005
-pattern OpJmtIP  <- 0105
-pattern OpJmtII  <- 1105
-pattern OpJmfPP  <- 0006
-pattern OpJmfPI  <- 1006
-pattern OpJmfIP  <- 0106
-pattern OpJmfII  <- 1106
-pattern OpLtPP   <- 0007
-pattern OpLtPI   <- 1007
-pattern OpLtIP   <- 0107
-pattern OpLtII   <- 1107
-pattern OpEqPP   <- 0008
-pattern OpEqPI   <- 1008
-pattern OpEqIP   <- 0108
-pattern OpEqII   <- 1108
-pattern OpHlt    <- 0099
 
 type Program = [Int]
 type Memory m = VUM.STVector (PrimState m) Int
@@ -55,7 +27,7 @@ parse = go id 0 where
 initialise :: PrimMonad m => Program -> m (Memory m)
 {-# INLINABLE initialise #-}
 initialise program = do
-    mem <- VUM.new (length program)
+    mem <- VUM.new 2048
     go mem
     pure mem
   where
@@ -69,7 +41,7 @@ runNoIO mem = void (run mem [])
 
 run :: PrimMonad m => Memory m -> [Int] -> m [Int]
 {-# INLINABLE run #-}
-run mem = go (runPartial mem 0) where
+run mem = go (runPartial mem) where
   go k input@(i:is) = k >>= \case
     In  k' m -> m i >> go k' is
     Out k' a -> (a:) <$> go k' input
@@ -84,60 +56,86 @@ data Partial m
   | Out (m (Partial m)) {-# UNPACK #-} !Int
   | Stop
 
-runPartial :: PrimMonad m => Memory m -> Int -> m (Partial m)
+pattern OpAdd   <- 1 :: Int
+pattern OpMul   <- 2 :: Int
+pattern OpRead  <- 3 :: Int
+pattern OpWrite <- 4 :: Int
+pattern OpJmT   <- 5 :: Int
+pattern OpJmF   <- 6 :: Int
+pattern OpLt    <- 7 :: Int
+pattern OpEq    <- 8 :: Int
+pattern OpChRb  <- 9 :: Int
+pattern OpHalt  <- 99 :: Int
+
+pattern ArgP <- 0 :: Int
+pattern ArgI <- 1 :: Int
+pattern ArgR <- 2 :: Int
+
+runPartial :: forall m. PrimMonad m => Memory m -> m (Partial m)
 {-# INLINABLE runPartial #-}
-runPartial mem = go where
-  go !ip = readI ip >>= \case
-      OpAddPP -> primBinOp (+) readP readP
-      OpAddPI -> primBinOp (+) readP readI
-      OpAddIP -> primBinOp (+) readI readP
-      OpAddII -> primBinOp (+) readI readI
-      OpMulPP -> primBinOp (*) readP readP
-      OpMulPI -> primBinOp (*) readP readI
-      OpMulIP -> primBinOp (*) readI readP
-      OpMulII -> primBinOp (*) readI readI
-      OpJmtPP -> primJumpIf (/=0) readP readP
-      OpJmtPI -> primJumpIf (/=0) readP readI
-      OpJmtIP -> primJumpIf (/=0) readI readP
-      OpJmtII -> primJumpIf (/=0) readI readI
-      OpJmfPP -> primJumpIf (==0) readP readP
-      OpJmfPI -> primJumpIf (==0) readP readI
-      OpJmfIP -> primJumpIf (==0) readI readP
-      OpJmfII -> primJumpIf (==0) readI readI
-      OpLtPP -> primCompare (<)  readP readP
-      OpLtPI -> primCompare (<)  readP readI
-      OpLtIP -> primCompare (<)  readI readP
-      OpLtII -> primCompare (<)  readI readI
-      OpEqPP -> primCompare (==) readP readP
-      OpEqPI -> primCompare (==) readP readI
-      OpEqIP -> primCompare (==) readI readP
-      OpEqII -> primCompare (==) readI readI
-      OpRead -> pure . In (go (ip+2)) $ \a -> do
-        out <- readI (ip+1)
-        VUM.unsafeWrite mem out a
-      OpWriteP -> Out (go (ip+2)) <$> readP (ip+1)
-      OpWriteI -> Out (go (ip+2)) <$> readI (ip+1)
-      OpHlt -> pure Stop
-      i -> error ("unexpected opcode: " ++ show i)
-    where
-      primBinOp f readA readB = do
-        a <- readA (ip+1)
-        b <- readB (ip+2)
-        out <- readI (ip+3)
-        VUM.unsafeWrite mem out (f a b)
-        go (ip+4)
+runPartial mem = go 0 0 where
+  go !rb !ip = decode =<< readI ip where
+    decode :: Int -> m (Partial m)
+    decode instr = case instr `mod` 100 of
+      OpAdd   -> primBinOp (+) (decodeReadArg 0 instr) (decodeReadArg 1 instr) (decodeWriteArg 2 instr)
+      OpMul   -> primBinOp (*) (decodeReadArg 0 instr) (decodeReadArg 1 instr) (decodeWriteArg 2 instr)
+      OpRead  -> primRead (decodeWriteArg 0 instr)
+      OpWrite -> primWrite (decodeReadArg 0 instr)
+      OpJmT   -> primJumpIf (/=0) (decodeReadArg 0 instr) (decodeReadArg 1 instr)
+      OpJmF   -> primJumpIf (==0) (decodeReadArg 0 instr) (decodeReadArg 1 instr)
+      OpLt    -> primCompare (<) (decodeReadArg 0 instr) (decodeReadArg 1 instr) (decodeWriteArg 2 instr)
+      OpEq    -> primCompare (==) (decodeReadArg 0 instr) (decodeReadArg 1 instr) (decodeWriteArg 2 instr)
+      OpChRb  -> primChRb (decodeReadArg 0 instr)
+      OpHalt  -> pure Stop
+      op -> error ("unexpected opcode: " ++ show op ++ " (instruction: " ++ show instr ++ ")")
 
-      primJumpIf f readA readB = do
-        a <- readA (ip+1)
-        b <- readB (ip+2)
-        go (if f a then b else ip+3)
+    decodeReadArg :: Int -> Int -> Int -> m Int
+    decodeReadArg i instr = case (instr `div` (10^(i+2))) `mod` 10 of
+      ArgP -> readP
+      ArgI -> readI
+      ArgR -> readR rb
+      mode -> error ("unexpected read parameter mode: " ++ show mode ++ " in position " ++ show i ++ " (instruction: " ++ show instr ++ ")")
 
-      primCompare f readA readB = do
-        a <- readA (ip+1)
-        b <- readB (ip+2)
-        out <- readI (ip+3)
-        VUM.unsafeWrite mem out (if f a b then 1 else 0)
-        go (ip+4)
+    decodeWriteArg :: Int -> Int -> Int -> Int -> m ()
+    decodeWriteArg i instr = case (instr `div` (10^(i+2))) `mod` 10 of
+      ArgP -> writeP
+      ArgR -> writeR rb
+      mode -> error ("unexpected write parameter mode: " ++ show mode ++ " in position " ++ show i ++ " (instruction: " ++ show instr ++ ")")
+
+    primBinOp f read0 read1 write2 = do
+      a <- read0 (ip+1)
+      b <- read1 (ip+2)
+      write2 (ip+3) (f a b)
+      go rb (ip+4)
+
+    primJumpIf f read0 read1 = do
+      a <- read0 (ip+1)
+      b <- read1 (ip+2)
+      go rb (if f a then b else ip+3)
+
+    primCompare f read0 read1 write2 = do
+      a <- read0 (ip+1)
+      b <- read1 (ip+2)
+      write2 (ip+3) (if f a b then 1 else 0)
+      go rb (ip+4)
+
+    primRead write0 = pure $ In (go rb (ip+2)) (write0 (ip+1))
+
+    primWrite read0 = Out (go rb (ip+2)) <$> read0 (ip+1)
+
+    primChRb read0 = do
+      rbOff <- read0 (ip+1)
+      go (rb + rbOff) (ip+2)
 
   readI = VUM.unsafeRead mem
   readP addr = VUM.unsafeRead mem =<< VUM.unsafeRead mem addr
+  readR rb addr = do
+    off <- VUM.unsafeRead mem addr
+    VUM.unsafeRead mem (rb + off)
+
+  writeP addr a = do
+    target <- VUM.unsafeRead mem addr
+    VUM.unsafeWrite mem target a
+  writeR rb addr a = do
+    off <- VUM.unsafeRead mem addr
+    VUM.unsafeWrite mem (rb + off) a
