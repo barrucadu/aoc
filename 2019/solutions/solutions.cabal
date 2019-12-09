@@ -25,7 +25,7 @@ library
 library intcode
   import:              base
   exposed-modules:     Intcode
-  build-depends:       solutions, vector
+  build-depends:       primitive, solutions, vector
   hs-source-dirs:      lib-intcode
 
 executable Day01Part1
@@ -106,14 +106,14 @@ executable Day07Part1
   import:              exe
   main-is:             Part1.hs
   other-modules:       Common
-  build-depends:       async, vector
+  build-depends:       async, intcode
   hs-source-dirs:      day07
 
 executable Day07Part2
   import:              exe
   main-is:             Part2.hs
   other-modules:       Common
-  build-depends:       async, vector
+  build-depends:       async, intcode
   hs-source-dirs:      day07
 
 executable Day08Part1

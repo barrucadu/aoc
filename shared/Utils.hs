@@ -17,14 +17,6 @@ mainFor dayN parse solve = do
   input <- parse <$> readFile ("../inputs/day" ++ n ++ ".txt")
   putStrLn (solve input)
 
--- | Common main function (puzzles which need IO)
-iomainFor :: Int -> (String -> a) -> (a -> IO String) -> IO ()
-{-# INLINE iomainFor #-}
-iomainFor dayN parse solve = do
-  let n = if dayN < 10 then '0' : show dayN else show dayN
-  input <- parse <$> readFile ("../inputs/day" ++ n ++ ".txt")
-  putStrLn =<< solve input
-
 -- | Manhattan distance between two points in 2D space
 manhattan2 :: (Int, Int) -> (Int, Int) -> Int
 {-# INLINE manhattan2 #-}

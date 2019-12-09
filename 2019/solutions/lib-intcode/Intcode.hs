@@ -5,6 +5,7 @@
 module Intcode where
 
 import           Control.Monad               (void)
+import           Control.Monad.Primitive     (PrimMonad, PrimState)
 import           Control.Monad.ST            (ST)
 import qualified Data.Vector.Unboxed.Mutable as VUM
 
@@ -40,7 +41,7 @@ pattern OpEqII   <- 1108
 pattern OpHlt    <- 0099
 
 type Program = [Int]
-type Memory s = VUM.STVector s Int
+type Memory m = VUM.STVector (PrimState m) Int
 
 parse :: String -> Program
 {-# INLINABLE parse #-}
@@ -51,23 +52,22 @@ parse = go id 0 where
   go _ !acc ('-':rest) = go negate acc rest
   go f !acc (c:rest) = go f (stepParseInt acc c) rest
 
-initialise :: Program -> ST s (Memory s)
+initialise :: PrimMonad m => Program -> m (Memory m)
 {-# INLINABLE initialise #-}
 initialise program = do
     mem <- VUM.new (length program)
     go mem
     pure mem
   where
-    go :: Memory s -> ST s ()
     go mem = go' 0 program where
       go' !p (v:vs) = VUM.write mem p v >> go' (p+1) vs
       go' _ [] = pure ()
 
-runNoIO :: Memory s -> ST s ()
+runNoIO :: PrimMonad m => Memory m -> m ()
 {-# INLINABLE runNoIO #-}
 runNoIO mem = void (run mem [])
 
-run :: Memory s -> [Int] -> ST s [Int]
+run :: PrimMonad m => Memory m -> [Int] -> m [Int]
 {-# INLINABLE run #-}
 run mem = go (runPartial mem 0) where
   go k input@(i:is) = k >>= \case
@@ -79,12 +79,12 @@ run mem = go (runPartial mem 0) where
     Out k' a -> (a:) <$> go k' []
     Stop -> pure []
 
-data Partial s
-  = In  (ST s (Partial s)) (Int -> ST s ())
-  | Out (ST s (Partial s)) {-# UNPACK #-} !Int
+data Partial m
+  = In  (m (Partial m)) (Int -> m ())
+  | Out (m (Partial m)) {-# UNPACK #-} !Int
   | Stop
 
-runPartial :: Memory s -> Int -> ST s (Partial s)
+runPartial :: PrimMonad m => Memory m -> Int -> m (Partial m)
 {-# INLINABLE runPartial #-}
 runPartial mem = go where
   go !ip = readI ip >>= \case
