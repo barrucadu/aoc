@@ -3,21 +3,24 @@
 
 module Common where
 
-import           Control.Concurrent.Async (async, wait)
-import           Control.Concurrent.MVar  (newMVar, putMVar, takeMVar)
-import           Data.IORef               (newIORef, readIORef, writeIORef)
-import           System.IO.Unsafe         (unsafePerformIO)
+import           Control.Concurrent.Async    (async, wait)
+import           Control.Concurrent.MVar     (newMVar, putMVar, takeMVar)
+import           Data.IORef                  (newIORef, readIORef, writeIORef)
+import qualified Data.Vector.Unboxed.Mutable as VUM
+import           System.IO.Unsafe            (unsafePerformIO)
 
 import           Intcode
 
 -- this is actually safe because there are no externally visible effects
 runNetwork :: Program -> Int -> Int -> Int -> Int -> Int -> Int
 runNetwork program pA pB pC pD pE = unsafePerformIO $ do
-    (kA, inputA) <- setup pA
-    (kB, inputB) <- setup pB
-    (kC, inputC) <- setup pC
-    (kD, inputD) <- setup pD
-    (kE, inputE) <- setup pE
+    mem0 <- initialise program
+
+    (kA, inputA) <- setup mem0 pA
+    (kB, inputB) <- setup mem0 pB
+    (kC, inputC) <- setup mem0 pC
+    (kD, inputD) <- setup mem0 pD
+    (kE, inputE) <- setup mem0 pE
 
     out <- newIORef 0
     let doOutputE i = writeIORef out i >> putMVar inputA i
@@ -38,8 +41,8 @@ runNetwork program pA pB pC pD pE = unsafePerformIO $ do
 
     readIORef out
   where
-    setup phase = do
-      memory <- initialise program
+    setup mem0 phase = do
+      memory <- VUM.clone mem0
       input  <- newMVar phase
       pure (runPartial memory, input)
 
