@@ -22,6 +22,12 @@ library
   build-depends:       vector
   hs-source-dirs:      ../../shared
 
+library intcode
+  import:              base
+  exposed-modules:     Intcode
+  build-depends:       solutions, vector
+  hs-source-dirs:      lib-intcode
+
 executable Day01Part1
   import:              exe
   main-is:             Part1.hs
@@ -37,15 +43,13 @@ executable Day01Part2
 executable Day02Part1
   import:              exe
   main-is:             Part1.hs
-  other-modules:       Common
-  build-depends:       vector
+  build-depends:       intcode, vector
   hs-source-dirs:      day02
 
 executable Day02Part2
   import:              exe
   main-is:             Part2.hs
-  other-modules:       Common
-  build-depends:       vector
+  build-depends:       intcode, vector
   hs-source-dirs:      day02
 
 executable Day03Part1
@@ -75,15 +79,13 @@ executable Day04Part2
 executable Day05Part1
   import:              exe
   main-is:             Part1.hs
-  other-modules:       Common
-  build-depends:       vector
+  build-depends:       intcode
   hs-source-dirs:      day05
 
 executable Day05Part2
   import:              exe
   main-is:             Part2.hs
-  other-modules:       Common
-  build-depends:       vector
+  build-depends:       intcode
   hs-source-dirs:      day05
 
 executable Day06Part1

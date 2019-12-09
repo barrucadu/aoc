@@ -1,7 +1,7 @@
 import           Control.Monad.ST            (runST)
 import qualified Data.Vector.Unboxed.Mutable as VUM
 
-import           Common
+import           Intcode
 import           Utils
 
 main :: IO ()
@@ -13,7 +13,7 @@ solve program = runST $ search [(noun, verb) | noun <- [0..99], verb <- [0..99]]
     mem <- initialise program
     VUM.unsafeWrite mem 1 noun
     VUM.unsafeWrite mem 2 verb
-    run mem
+    runNoIO mem
     res <- VUM.unsafeRead mem 0
     if res == target
       then pure (100 * noun + verb)

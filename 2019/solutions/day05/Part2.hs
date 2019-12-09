@@ -1,6 +1,6 @@
 import           Control.Monad.ST (runST)
 
-import           Common
+import           Intcode
 import           Utils
 
 main :: IO ()

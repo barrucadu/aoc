@@ -2,8 +2,9 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE PatternSynonyms #-}
 
-module Common where
+module Intcode where
 
+import           Control.Monad               (void)
 import           Control.Monad.ST            (ST)
 import qualified Data.Vector.Unboxed.Mutable as VUM
 
@@ -42,6 +43,7 @@ type Program = [Int]
 type Memory s = VUM.STVector s Int
 
 parse :: String -> Program
+{-# INLINABLE parse #-}
 parse = go id 0 where
   go f !acc [] = [f acc]
   go f !acc ['\n'] = [f acc]
@@ -50,8 +52,9 @@ parse = go id 0 where
   go f !acc (c:rest) = go f (stepParseInt acc c) rest
 
 initialise :: Program -> ST s (Memory s)
+{-# INLINABLE initialise #-}
 initialise program = do
-    mem <- VUM.new memorySize
+    mem <- VUM.new (length program)
     go mem
     pure mem
   where
@@ -60,7 +63,12 @@ initialise program = do
       go' !p (v:vs) = VUM.write mem p v >> go' (p+1) vs
       go' _ [] = pure ()
 
+runNoIO :: Memory s -> ST s ()
+{-# INLINABLE runNoIO #-}
+runNoIO mem = void (run mem [])
+
 run :: Memory s -> [Int] -> ST s [Int]
+{-# INLINABLE run #-}
 run mem = go 0 where
   go !ip input = VUM.unsafeRead mem ip >>= \case
       OpAddPP -> primBinOp (+) readP readP
@@ -121,7 +129,3 @@ run mem = go 0 where
 
   readI = VUM.unsafeRead mem
   readP addr = VUM.unsafeRead mem =<< VUM.unsafeRead mem addr
-
--- 1024 ints should be enough for anyone
-memorySize :: Int
-memorySize = 1024
