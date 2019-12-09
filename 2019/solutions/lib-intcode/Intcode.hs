@@ -90,17 +90,25 @@ runPartial mem = go 0 0 where
       op -> error ("unexpected opcode: " ++ show op ++ " (instruction: " ++ show instr ++ ")")
 
     decodeReadArg :: Int -> Int -> Int -> m Int
-    decodeReadArg i instr = case (instr `div` (10^(i+2))) `mod` 10 of
-      ArgP -> readP
-      ArgI -> readI
-      ArgR -> readR rb
-      mode -> error ("unexpected read parameter mode: " ++ show mode ++ " in position " ++ show i ++ " (instruction: " ++ show instr ++ ")")
+    decodeReadArg i instr
+      | instr < pos = readP
+      | otherwise = case (instr `div` pos) `mod` 10 of
+          ArgP -> readP
+          ArgI -> readI
+          ArgR -> readR rb
+          mode -> error ("unexpected read parameter mode: " ++ show mode ++ " in position " ++ show i ++ " (instruction: " ++ show instr ++ ")")
+      where
+        pos = 10^(i+2)
 
     decodeWriteArg :: Int -> Int -> Int -> Int -> m ()
-    decodeWriteArg i instr = case (instr `div` (10^(i+2))) `mod` 10 of
-      ArgP -> writeP
-      ArgR -> writeR rb
-      mode -> error ("unexpected write parameter mode: " ++ show mode ++ " in position " ++ show i ++ " (instruction: " ++ show instr ++ ")")
+    decodeWriteArg i instr
+      | instr < pos = writeP
+      | otherwise = case (instr `div` pos) `mod` 10 of
+          ArgP -> writeP
+          ArgR -> writeR rb
+          mode -> error ("unexpected write parameter mode: " ++ show mode ++ " in position " ++ show i ++ " (instruction: " ++ show instr ++ ")")
+      where
+        pos = 10^(i+2)
 
     primBinOp f read0 read1 write2 = do
       a <- read0 (ip+1)
