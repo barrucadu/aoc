@@ -69,8 +69,25 @@ runNoIO mem = void (run mem [])
 
 run :: Memory s -> [Int] -> ST s [Int]
 {-# INLINABLE run #-}
-run mem = go 0 where
-  go !ip input = VUM.unsafeRead mem ip >>= \case
+run mem = go (runPartial mem 0) where
+  go k input@(i:is) = k >>= \case
+    In  k' m -> m i >> go k' is
+    Out k' a -> (a:) <$> go k' input
+    Stop -> pure []
+  go k [] = k >>= \case
+    In  _ _ -> error "expected input but there is none"
+    Out k' a -> (a:) <$> go k' []
+    Stop -> pure []
+
+data Partial s
+  = In  (ST s (Partial s)) (Int -> ST s ())
+  | Out (ST s (Partial s)) {-# UNPACK #-} !Int
+  | Stop
+
+runPartial :: Memory s -> Int -> ST s (Partial s)
+{-# INLINABLE runPartial #-}
+runPartial mem = go where
+  go !ip = readI ip >>= \case
       OpAddPP -> primBinOp (+) readP readP
       OpAddPI -> primBinOp (+) readP readI
       OpAddIP -> primBinOp (+) readI readP
@@ -95,17 +112,12 @@ run mem = go 0 where
       OpEqPI -> primCompare (==) readP readI
       OpEqIP -> primCompare (==) readI readP
       OpEqII -> primCompare (==) readI readI
-      OpRead -> do
+      OpRead -> pure . In (go (ip+2)) $ \a -> do
         out <- readI (ip+1)
-        VUM.unsafeWrite mem out (head input)
-        go (ip+2) (tail input)
-      OpWriteP -> do
-        a <- readP (ip+1)
-        (a:) <$> go (ip+2) input
-      OpWriteI -> do
-        a <- readI (ip+1)
-        (a:) <$> go (ip+2) input
-      OpHlt -> pure []
+        VUM.unsafeWrite mem out a
+      OpWriteP -> Out (go (ip+2)) <$> readP (ip+1)
+      OpWriteI -> Out (go (ip+2)) <$> readI (ip+1)
+      OpHlt -> pure Stop
       i -> error ("unexpected opcode: " ++ show i)
     where
       primBinOp f readA readB = do
@@ -113,19 +125,19 @@ run mem = go 0 where
         b <- readB (ip+2)
         out <- readI (ip+3)
         VUM.unsafeWrite mem out (f a b)
-        go (ip+4) input
+        go (ip+4)
 
       primJumpIf f readA readB = do
         a <- readA (ip+1)
         b <- readB (ip+2)
-        go (if f a then b else ip+3) input
+        go (if f a then b else ip+3)
 
       primCompare f readA readB = do
         a <- readA (ip+1)
         b <- readB (ip+2)
         out <- readI (ip+3)
         VUM.unsafeWrite mem out (if f a b then 1 else 0)
-        go (ip+4) input
+        go (ip+4)
 
   readI = VUM.unsafeRead mem
   readP addr = VUM.unsafeRead mem =<< VUM.unsafeRead mem addr
