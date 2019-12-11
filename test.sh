@@ -13,6 +13,8 @@ fi
 cd "$year/solutions"
 cabal new-build
 
+ret=0
+
 for f in dist-newstyle/build/*/*/*/x/*/build/*/Day*Part*; do
   if [[ -f $f ]] && [[ -x $f ]]; then
     exe=$(basename $f)
@@ -35,9 +37,13 @@ for f in dist-newstyle/build/*/*/*/x/*/build/*/Day*Part*; do
       if [[ -n "${ACCEPT:-}" ]]; then
         echo -e "\033[0;32maccepting new solution\033[0m"
         echo "$actual" > "../outputs/${exe}"
+      else
+        ret=1
       fi
     fi
   fi
 done
 
 echo
+
+exit $ret
