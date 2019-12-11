@@ -151,3 +151,17 @@ executable Day10Part2
   other-modules:       Common
   build-depends:       containers
   hs-source-dirs:      day10
+
+executable Day11Part1
+  import:              exe
+  main-is:             Part1.hs
+  other-modules:       Common
+  build-depends:       containers, intcode
+  hs-source-dirs:      day11
+
+executable Day11Part2
+  import:              exe
+  main-is:             Part2.hs
+  other-modules:       Common
+  build-depends:       containers, intcode
+  hs-source-dirs:      day11
