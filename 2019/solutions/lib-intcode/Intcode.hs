@@ -27,13 +27,15 @@ parse = go id 0 where
 initialise :: PrimMonad m => Program -> m (Memory m)
 {-# INLINABLE initialise #-}
 initialise program = do
-    mem <- VUM.new 2048
-    go mem
-    pure mem
-  where
-    go mem = go' 0 program where
-      go' !p (v:vs) = VUM.write mem p v >> go' (p+1) vs
-      go' _ [] = pure ()
+  mem <- VUM.new 2048
+  initialise' mem program
+  pure mem
+
+initialise' :: PrimMonad m => Memory m -> Program -> m ()
+{-# INLINABLE initialise' #-}
+initialise' mem = go 0 where
+  go !p (v:vs) = VUM.write mem p v >> go (p+1) vs
+  go _ [] = pure ()
 
 runNoIO :: PrimMonad m => Memory m -> m ()
 {-# INLINABLE runNoIO #-}
