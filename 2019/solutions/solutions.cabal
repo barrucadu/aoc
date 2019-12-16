@@ -181,7 +181,7 @@ executable Day12Part2
 executable Day13Part1
   import:              exe
   main-is:             Part1.hs
-  build-depends:       containers, intcode, vector
+  build-depends:       intcode, vector
   hs-source-dirs:      day13
 
 executable Day13Part2
