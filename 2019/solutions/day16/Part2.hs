@@ -14,7 +14,7 @@ solve digits0 = take 8 solution where
     -- At sufficiently high indices, the pattern is just a bunch of
     -- zeroes followed by a bunch of ones, so we can just throw away a
     -- big chunk of the input and do addition.
-    | offset >= length longInput `div` 2 = fastFFT 100 $ drop offset longInput
+    | offset >= length longInput `div` 2 = reverse . fastFFT 100 . reverse $ drop offset longInput
     | otherwise = drop offset . fftN 100 $ longInput
 
   offset =
@@ -23,11 +23,9 @@ solve digits0 = take 8 solution where
 
   fastFFT n digits
     | n == 0 = digits
-    | otherwise = fastFFT (n-1) (fastStep digits)
+    | otherwise = fastFFT (n-1) (fastStep 0 digits)
 
-  fastStep = reverse . partialSum 0 . reverse
-
-  partialSum !acc (d:ds) = let acc' = (d + acc) `rem` 10 in acc' : partialSum acc' ds
-  partialSum _ [] = []
+  fastStep !acc (d:ds) = let acc' = (d + acc) `rem` 10 in acc' : fastStep acc' ds
+  fastStep _ [] = []
 
   longInput = concat (replicate 10000 digits0)
