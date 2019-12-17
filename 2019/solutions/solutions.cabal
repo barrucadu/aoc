@@ -213,5 +213,6 @@ executable Day16Part1
 executable Day16Part2
   import:              exe
   main-is:             Part2.hs
+  build-depends:       vector
   other-modules:       Common
   hs-source-dirs:      day16
