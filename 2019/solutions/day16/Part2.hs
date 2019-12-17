@@ -17,7 +17,7 @@ solve digits0 = take 8 solution where
     -- At sufficiently high indices, the pattern is just a bunch of
     -- zeroes followed by a bunch of ones, so we can just throw away a
     -- big chunk of the input and do addition.
-    | offset >= longInputLen `div` 2 = reverse . fastFFT 100 . reverse $ drop offset longInput
+    | offset >= longInputLen `div` 2 = fastFFT 100 $ drop offset longInput
     | otherwise = drop offset . fftN 100 $ longInput
 
   offset =
@@ -36,10 +36,11 @@ fastFFT lim digits0 = runST $ fastFFT' =<< VU.thaw (VU.fromList digits0) where
       | n == lim = VU.toList <$> VU.freeze vec
       | otherwise = step >> fgo (n+1)
 
-    step = sgo 0 [0..VUM.length vec-1] where
-      sgo !acc (i:is) = do
-        here <- VUM.read vec i
-        let acc' = (here + acc) `rem` 10
-        VUM.write vec i acc'
-        sgo acc' is
-      sgo _ [] = pure ()
+    step = sgo 0 (VUM.length vec - 1) where
+      sgo !acc i
+        | i == -1 = pure ()
+        | otherwise = do
+            here <- VUM.read vec i
+            let acc' = (here + acc) `rem` 10
+            VUM.write vec i acc'
+            sgo acc' (i-1)
