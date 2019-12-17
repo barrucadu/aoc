@@ -17,14 +17,17 @@ solve digits0 = take 8 solution where
     -- At sufficiently high indices, the pattern is just a bunch of
     -- zeroes followed by a bunch of ones, so we can just throw away a
     -- big chunk of the input and do addition.
-    | offset >= length longInput `div` 2 = reverse . fastFFT 100 . reverse $ drop offset longInput
+    | offset >= longInputLen `div` 2 = reverse . fastFFT 100 . reverse $ drop offset longInput
     | otherwise = drop offset . fftN 100 $ longInput
 
   offset =
     let (d1:d2:d3:d4:d5:d6:d7:_) = longInput
     in d7 + d6 * 10 + d5 * 100 + d4 * 1000 + d3 * 10000 + d2 * 100000 + d1 * 1000000
 
-  longInput = concat (replicate 10000 digits0)
+  longInput    = concat (replicate repetitions digits0)
+  longInputLen = length digits0 * repetitions
+  repetitions  = 10000
+
 fastFFT :: Int -> [Int] -> [Int]
 {-# INLINABLE fastFFT #-}
 fastFFT lim digits0 = runST $ fastFFT' =<< VU.thaw (VU.fromList digits0) where
