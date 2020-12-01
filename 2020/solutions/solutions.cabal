@@ -21,3 +21,13 @@ library
   exposed-modules:     Utils
   build-depends:       vector
   hs-source-dirs:      ../../shared
+
+executable Day01Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day01
+
+executable Day01Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day01
