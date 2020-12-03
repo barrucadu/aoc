@@ -1,7 +1,7 @@
 cabal-version:       2.2
 
 name:                solutions
-version:             2019
+version:             2020
 license:             MIT
 author:              Michael Walker
 maintainer:          mike@barrucadu.co.uk
