@@ -20,7 +20,7 @@ parse input0 = go M.empty 0 css0 where
   go' !acc _ _ [] = acc
 
 slope :: TreeMap -> Int -> Int -> Int
-slope (treemap, ymin, xmax) dx dy = go 0 0 0 where
+slope (treemap, ymin, xmin) dx dy = go 0 0 0 where
   go !x !y !acc
     | y <= ymin = acc
-    | otherwise = go ((x+dx) `mod` xmax) (y+dy) $ if x `S.member` M.findWithDefault S.empty y treemap then acc+1 else acc
+    | otherwise = go ((x+dx) `mod` xmin) (y+dy) $ if x `S.member` M.findWithDefault S.empty y treemap then acc+1 else acc
