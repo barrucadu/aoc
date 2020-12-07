@@ -35,15 +35,15 @@ type InvertedBagRules = M.Map Colour (S.Set Colour)
 parse :: String -> InvertedBagRules
 parse = foldl' parseLine M.empty . map words . lines where
   parseLine :: InvertedBagRules -> [String] -> InvertedBagRules
-  parseLine acc (c1:c2:"bags":"contain":contains) = parseContains (c1, c2) acc contains
+  parseLine acc (c1:c2:_:_:contains) = parseContains (c1, c2) acc contains
   parseLine _ _ = error "invalid input"
 
   parseContains :: Colour -> InvertedBagRules -> [String] -> InvertedBagRules
   parseContains col = parseContains' where
     parseContains' :: InvertedBagRules -> [String] -> InvertedBagRules
-    parseContains' acc ["no", "other", "bags."] = acc
     parseContains' acc (_:c1:c2:_:contains) =
       let acc' = M.insertWith S.union (c1, c2) (S.singleton col) acc
       in parseContains' acc' contains
     parseContains' acc [] = acc
+    parseContains' acc [_, _, _] = acc
     parseContains' _ _ = error "invalid input"

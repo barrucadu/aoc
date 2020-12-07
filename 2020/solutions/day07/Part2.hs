@@ -27,15 +27,15 @@ type BagRules = M.Map Colour (M.Map Colour Int)
 parse :: String -> BagRules
 parse = foldl' parseLine M.empty . map words . lines where
   parseLine :: BagRules -> [String] -> BagRules
-  parseLine acc (c1:c2:"bags":"contain":contains) = parseContains (c1, c2) acc contains
+  parseLine acc (c1:c2:_:_:contains) = parseContains (c1, c2) acc contains
   parseLine _ _ = error "invalid input"
 
   parseContains :: Colour -> BagRules -> [String] -> BagRules
   parseContains col = parseContains' where
     parseContains' :: BagRules -> [String] -> BagRules
-    parseContains' acc ["no", "other", "bags."] = acc
     parseContains' acc (n:c1:c2:_:contains) =
       let acc' = M.insertWith M.union col (M.singleton (c1, c2) (parseInt n)) acc
       in parseContains' acc' contains
     parseContains' acc [] = acc
+    parseContains' acc [_, _, _] = acc
     parseContains' _ _ = error "invalid input"
