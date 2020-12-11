@@ -92,6 +92,13 @@ parseDigit :: Char -> Int
 {-# INLINE parseDigit #-}
 parseDigit c = ord c - ord '0'
 
+-- | Iterate a function until it reaches a fixed point.
+fixEq :: Eq a => (a -> a) -> a -> a
+fixEq f a0 = go a0 (f a0) where
+  go a a'
+    | a == a'   = a
+    | otherwise = go a' (f a')
+
 -------------------------------------------------------------------------------
 -- * Vector-backed Arrays
 
