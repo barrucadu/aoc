@@ -200,3 +200,16 @@ executable Day15Part2
   other-modules:       Common
   build-depends:       vector
   hs-source-dirs:      day15
+
+executable Day16Part1
+  import:              exe
+  main-is:             Part1.hs
+  other-modules:       Common
+  hs-source-dirs:      day16
+
+executable Day16Part2
+  import:              exe
+  main-is:             Part2.hs
+  other-modules:       Common
+  build-depends:       containers
+  hs-source-dirs:      day16
