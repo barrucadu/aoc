@@ -186,3 +186,17 @@ executable Day14Part2
   main-is:             Part2.hs
   build-depends:       containers
   hs-source-dirs:      day14
+
+executable Day15Part1
+  import:              exe
+  main-is:             Part1.hs
+  other-modules:       Common
+  build-depends:       vector
+  hs-source-dirs:      day15
+
+executable Day15Part2
+  import:              exe
+  main-is:             Part2.hs
+  other-modules:       Common
+  build-depends:       vector
+  hs-source-dirs:      day15
