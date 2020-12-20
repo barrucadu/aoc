@@ -227,3 +227,15 @@ executable Day17Part2
   other-modules:       Common
   build-depends:       containers
   hs-source-dirs:      day17
+
+executable Day18Part1
+  import:              exe
+  main-is:             Part1.hs
+  other-modules:       Common
+  hs-source-dirs:      day18
+
+executable Day18Part2
+  import:              exe
+  main-is:             Part2.hs
+  other-modules:       Common
+  hs-source-dirs:      day18
