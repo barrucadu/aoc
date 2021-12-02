@@ -13,9 +13,22 @@ fi
 cd "$year/solutions"
 cabal new-build >/dev/null
 
+cat > ../README.md <<EOF
+Advent of Code ${year}
+===================
+
+https://adventofcode.com/${year}
+
+Benchmark results
+-----------------
+
+EOF
+
 for f in dist-newstyle/build/*/*/*/x/*/build/*/Day*Part*; do
   if [[ -f $f ]] && [[ -x $f ]]; then
-    echo "== $(basename $f)"
-    perf stat -r50 $f >/dev/null
+    echo "### $(basename $f)" | tee -a ../README.md
+    echo '```' >> ../README.md
+    perf stat -r50 $f 2>&1 >/dev/null | tee -a ../README.md
+    echo '```' >> ../README.md
   fi
 done
