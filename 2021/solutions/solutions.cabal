@@ -31,3 +31,13 @@ executable Day01Part2
   import:              exe
   main-is:             Part2.hs
   hs-source-dirs:      day01
+
+executable Day02Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day02
+
+executable Day02Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day02
