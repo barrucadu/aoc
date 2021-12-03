@@ -92,6 +92,12 @@ parseDigit :: Char -> Int
 {-# INLINE parseDigit #-}
 parseDigit c = ord c - ord '0'
 
+-- | Turn a sequence of bits, as bools, into an int.
+bitsToInt :: [Bool] -> Int
+{-# INLINE bitsToInt #-}
+bitsToInt = foldl' stepBitsToInt 0 where
+  stepBitsToInt acc b = 2*acc + (if b then 1 else 0)
+
 -- | Iterate a function until it reaches a fixed point.
 fixEq :: Eq a => (a -> a) -> a -> a
 fixEq f a0 = go a0 (f a0) where
