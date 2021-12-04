@@ -6,9 +6,19 @@ import qualified Data.IntMap.Strict as M
 
 import Utils (stepParseInt)
 
+-- this makes me sad, but it's faster than something like
+-- `numUnmarkedInColumn :: M.IntMap Int`
 data BingoState = BingoState
-  { numUnmarkedInColumn :: M.IntMap Int
-  , numUnmarkedInRow :: M.IntMap Int
+  { numUnmarkedInColumn0 :: !Int
+  , numUnmarkedInColumn1 :: !Int
+  , numUnmarkedInColumn2 :: !Int
+  , numUnmarkedInColumn3 :: !Int
+  , numUnmarkedInColumn4 :: !Int
+  , numUnmarkedInRow0 :: !Int
+  , numUnmarkedInRow1 :: !Int
+  , numUnmarkedInRow2 :: !Int
+  , numUnmarkedInRow3 :: !Int
+  , numUnmarkedInRow4 :: !Int
   , unmarked :: M.IntMap (Int, Int)
   } deriving (Eq, Ord, Read, Show)
 
@@ -30,8 +40,16 @@ parse = go . lines where
 
   parseBoard :: String -> String -> String -> String -> String -> BingoState
   parseBoard r1 r2 r3 r4 r5 = BingoState
-    { numUnmarkedInColumn = M.fromAscList [(0, 5), (1, 5), (2, 5), (3, 5), (4, 5)]
-    , numUnmarkedInRow = M.fromAscList [(0, 5), (1, 5), (2, 5), (3, 5), (4, 5)]
+    { numUnmarkedInColumn0 = 5
+    , numUnmarkedInColumn1 = 5
+    , numUnmarkedInColumn2 = 5
+    , numUnmarkedInColumn3 = 5
+    , numUnmarkedInColumn4 = 5
+    , numUnmarkedInRow0 = 5
+    , numUnmarkedInRow1 = 5
+    , numUnmarkedInRow2 = 5
+    , numUnmarkedInRow3 = 5
+    , numUnmarkedInRow4 = 5
     , unmarked = M.unions [parseBoardRow 0 r1, parseBoardRow 1 r2, parseBoardRow 2 r3, parseBoardRow 3 r4, parseBoardRow 4 r5]
     }
     where
@@ -50,16 +68,36 @@ playBingo first = go where
     bingo bs' (b:bs) = case M.lookup n (unmarked b) of
       Just (x, y) ->
         let b' = BingoState
-              { numUnmarkedInColumn = M.adjust (subtract 1) x (numUnmarkedInColumn b)
-              , numUnmarkedInRow = M.adjust (subtract 1) y (numUnmarkedInRow b)
+              { numUnmarkedInColumn0 = if x == 0 then numUnmarkedInColumn0 b - 1 else numUnmarkedInColumn0 b
+              , numUnmarkedInColumn1 = if x == 1 then numUnmarkedInColumn1 b - 1 else numUnmarkedInColumn1 b
+              , numUnmarkedInColumn2 = if x == 2 then numUnmarkedInColumn2 b - 1 else numUnmarkedInColumn2 b
+              , numUnmarkedInColumn3 = if x == 3 then numUnmarkedInColumn3 b - 1 else numUnmarkedInColumn3 b
+              , numUnmarkedInColumn4 = if x == 4 then numUnmarkedInColumn4 b - 1 else numUnmarkedInColumn4 b
+              , numUnmarkedInRow0 = if y == 0 then numUnmarkedInRow0 b - 1 else numUnmarkedInRow0 b
+              , numUnmarkedInRow1 = if y == 1 then numUnmarkedInRow1 b - 1 else numUnmarkedInRow1 b
+              , numUnmarkedInRow2 = if y == 2 then numUnmarkedInRow2 b - 1 else numUnmarkedInRow2 b
+              , numUnmarkedInRow3 = if y == 3 then numUnmarkedInRow3 b - 1 else numUnmarkedInRow3 b
+              , numUnmarkedInRow4 = if y == 4 then numUnmarkedInRow4 b - 1 else numUnmarkedInRow4 b
               , unmarked = M.delete n (unmarked b)
               }
-        in if M.lookup x (numUnmarkedInColumn b') == Just 0 || M.lookup y (numUnmarkedInRow b') == Just 0
+        in if gameOver b'
            then
              if first || (null bs' && null bs)
              then score b'
              else bingo bs' bs
            else bingo (b':bs') bs
       Nothing -> bingo (b:bs') bs
+
+    gameOver b =
+      numUnmarkedInColumn0 b == 0 ||
+      numUnmarkedInColumn1 b == 0 ||
+      numUnmarkedInColumn2 b == 0 ||
+      numUnmarkedInColumn3 b == 0 ||
+      numUnmarkedInColumn4 b == 0 ||
+      numUnmarkedInRow0 b == 0 ||
+      numUnmarkedInRow1 b == 0 ||
+      numUnmarkedInRow2 b == 0 ||
+      numUnmarkedInRow3 b == 0 ||
+      numUnmarkedInRow4 b == 0
 
     score b = sum (M.keys (unmarked b)) * n
