@@ -1,5 +1,4 @@
 {-# LANGUAGE BangPatterns #-}
-{-# LANGUAGE ParallelListComp #-}
 
 import Utils
 
@@ -30,10 +29,11 @@ parse = M.unionsWith (\_ _ -> True) . map go . lines where
   goY2 !x1 !y1 !x2 !y2 []
     | x1 == x2 = M.fromList [(P x1 y, False) | y <- [min y1 y2 .. max y1 y2]]
     | y1 == y2 = M.fromList [(P x y1, False) | x <- [min x1 x2 .. max x1 x2]]
-    | otherwise = M.fromList $
-      let dx = if x1 < x2 then (+1) else subtract 1
-          dy = if y1 < y2 then (+1) else subtract 1
-      in (P x2 y2, False) : [(P x y, False) | x <- takeWhile (/=x2) (iterate dx x1) | y <- takeWhile (/=y2) (iterate dy y1)]
+    | otherwise =
+      let dx = if x1 < x2 then 1 else -1
+          dy = if y1 < y2 then 1 else -1
+          count = abs (x1 - x2)
+      in M.fromList [(P (x1 + dx * i) (y1 + dy * i), False) | i <- [0..count]]
   goY2 !x1 !y1 !x2 !y2 (d:rest) = goY2 x1 y1 x2 (stepParseInt y2 d) rest
 
 solve :: M.Map a Bool -> Int
