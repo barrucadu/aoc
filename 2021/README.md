@@ -166,3 +166,43 @@ Benchmark results
         0.00215011 +- 0.00000953 seconds time elapsed  ( +-  0.44% )
 
 ```
+### Day05Part1
+```
+
+ Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-8.10.7/solutions-2019/x/Day05Part1/build/Day05Part1/Day05Part1' (50 runs):
+
+             57.39 msec task-clock:u              #    0.994 CPUs utilized            ( +-  0.19% )
+                 0      context-switches:u        #    0.000 K/sec                  
+                 0      cpu-migrations:u          #    0.000 K/sec                  
+             4,228      page-faults:u             #    0.074 M/sec                    ( +-  0.01% )
+       217,863,768      cycles:u                  #    3.796 GHz                      ( +-  0.12% )
+         3,744,487      stalled-cycles-frontend:u #    1.72% frontend cycles idle     ( +-  0.95% )
+        45,729,614      stalled-cycles-backend:u  #   20.99% backend cycles idle      ( +-  0.53% )
+       399,754,938      instructions:u            #    1.83  insn per cycle         
+                                                  #    0.11  stalled cycles per insn  ( +-  0.00% )
+        73,141,279      branches:u                # 1274.368 M/sec                    ( +-  0.00% )
+         1,826,445      branch-misses:u           #    2.50% of all branches          ( +-  0.06% )
+
+          0.057759 +- 0.000111 seconds time elapsed  ( +-  0.19% )
+
+```
+### Day05Part2
+```
+
+ Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-8.10.7/solutions-2019/x/Day05Part2/build/Day05Part2/Day05Part2' (50 runs):
+
+            174.59 msec task-clock:u              #    0.997 CPUs utilized            ( +-  0.16% )
+                 0      context-switches:u        #    0.000 K/sec                  
+                 0      cpu-migrations:u          #    0.000 K/sec                  
+             7,812      page-faults:u             #    0.045 M/sec                    ( +-  0.00% )
+       688,633,612      cycles:u                  #    3.944 GHz                      ( +-  0.06% )
+        11,469,853      stalled-cycles-frontend:u #    1.67% frontend cycles idle     ( +-  0.31% )
+       169,790,673      stalled-cycles-backend:u  #   24.66% backend cycles idle      ( +-  0.24% )
+     1,198,642,082      instructions:u            #    1.74  insn per cycle         
+                                                  #    0.14  stalled cycles per insn  ( +-  0.00% )
+       217,145,519      branches:u                # 1243.764 M/sec                    ( +-  0.00% )
+         5,286,987      branch-misses:u           #    2.43% of all branches          ( +-  0.01% )
+
+          0.175077 +- 0.000292 seconds time elapsed  ( +-  0.17% )
+
+```
