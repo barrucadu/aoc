@@ -89,3 +89,15 @@ executable Day06Part2
   main-is:             Part2.hs
   other-modules:       Common
   hs-source-dirs:      day06
+
+executable Day07Part1
+  import:              exe
+  main-is:             Part1.hs
+  other-modules:       Common
+  hs-source-dirs:      day07
+
+executable Day07Part2
+  import:              exe
+  main-is:             Part2.hs
+  other-modules:       Common
+  hs-source-dirs:      day07
