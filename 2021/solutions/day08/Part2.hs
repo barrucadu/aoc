@@ -1,5 +1,3 @@
-{-# LANGUAGE BangPatterns #-}
-
 import Data.List (foldl')
 import Data.Maybe (fromJust)
 import qualified Data.Set as S
