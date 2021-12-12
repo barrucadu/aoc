@@ -30,5 +30,6 @@ parse = foldr go M.empty . lines where
     | all isUpper o = Big o
     | otherwise = Small o
 
+  addRoute Start e = e
   addRoute to (Just exits) = Just (S.insert to exits)
   addRoute to Nothing = Just (S.singleton to)

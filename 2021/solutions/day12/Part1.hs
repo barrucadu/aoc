@@ -8,7 +8,7 @@ main :: IO ()
 main = mainFor 12 parse (show . solve)
 
 solve :: CaveGraph -> Int
-solve graph = go (S.singleton Start) Start where
+solve graph = go S.empty Start where
   -- assuming there are no cycles of big caves, as the question says
   -- (1) to find all paths and (2) a big cave can be visited any
   -- number of times
