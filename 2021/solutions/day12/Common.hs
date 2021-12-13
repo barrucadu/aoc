@@ -1,7 +1,7 @@
 module Common where
 
 import Data.Char (isUpper)
-import qualified Data.Map as M
+import qualified Data.Map.Strict as M
 import qualified Data.Set as S
 
 type CaveGraph = M.Map Cave (S.Set Cave)

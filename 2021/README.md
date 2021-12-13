@@ -451,19 +451,19 @@ Benchmark results
 
  Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-8.10.7/solutions-2019/x/Day12Part1/build/Day12Part1/Day12Part1' (50 runs):
 
-              6.33 msec task-clock:u              #    0.966 CPUs utilized            ( +-  0.13% )
+              6.20 msec task-clock:u              #    0.958 CPUs utilized            ( +-  0.09% )
                  0      context-switches:u        #    0.000 K/sec                  
                  0      cpu-migrations:u          #    0.000 K/sec                  
-               440      page-faults:u             #    0.069 M/sec                    ( +-  0.06% )
-        23,228,096      cycles:u                  #    3.672 GHz                      ( +-  0.06% )
-           432,276      stalled-cycles-frontend:u #    1.86% frontend cycles idle     ( +-  0.25% )
-         1,168,206      stalled-cycles-backend:u  #    5.03% backend cycles idle      ( +-  0.34% )
-        39,967,305      instructions:u            #    1.72  insn per cycle         
+               440      page-faults:u             #    0.071 M/sec                    ( +-  0.06% )
+        22,838,800      cycles:u                  #    3.683 GHz                      ( +-  0.05% )
+           430,358      stalled-cycles-frontend:u #    1.88% frontend cycles idle     ( +-  0.31% )
+         1,189,228      stalled-cycles-backend:u  #    5.21% backend cycles idle      ( +-  0.27% )
+        39,957,887      instructions:u            #    1.75  insn per cycle         
                                                   #    0.03  stalled cycles per insn  ( +-  0.00% )
-         7,410,014      branches:u                # 1171.299 M/sec                    ( +-  0.00% )
-           268,264      branch-misses:u           #    3.62% of all branches          ( +-  0.10% )
+         7,405,132      branches:u                # 1194.113 M/sec                    ( +-  0.00% )
+           258,774      branch-misses:u           #    3.49% of all branches          ( +-  0.06% )
 
-         0.0065493 +- 0.0000103 seconds time elapsed  ( +-  0.16% )
+         0.0064720 +- 0.0000593 seconds time elapsed  ( +-  0.92% )
 
 ```
 ### Day12Part2
@@ -471,18 +471,18 @@ Benchmark results
 
  Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-8.10.7/solutions-2019/x/Day12Part2/build/Day12Part2/Day12Part2' (50 runs):
 
-            145.75 msec task-clock:u              #    0.998 CPUs utilized            ( +-  0.16% )
+            144.66 msec task-clock:u              #    0.998 CPUs utilized            ( +-  0.14% )
                  0      context-switches:u        #    0.000 K/sec                  
                  0      cpu-migrations:u          #    0.000 K/sec                  
-               442      page-faults:u             #    0.003 M/sec                    ( +-  0.05% )
-       603,621,861      cycles:u                  #    4.141 GHz                      ( +-  0.01% )
-        11,824,086      stalled-cycles-frontend:u #    1.96% frontend cycles idle     ( +-  0.23% )
-        29,900,324      stalled-cycles-backend:u  #    4.95% backend cycles idle      ( +-  0.07% )
-     1,044,030,184      instructions:u            #    1.73  insn per cycle         
+               441      page-faults:u             #    0.003 M/sec                    ( +-  0.05% )
+       601,303,980      cycles:u                  #    4.157 GHz                      ( +-  0.05% )
+        11,199,110      stalled-cycles-frontend:u #    1.86% frontend cycles idle     ( +-  0.17% )
+        26,215,603      stalled-cycles-backend:u  #    4.36% backend cycles idle      ( +-  0.40% )
+     1,044,020,233      instructions:u            #    1.74  insn per cycle         
                                                   #    0.03  stalled cycles per insn  ( +-  0.00% )
-       193,694,931      branches:u                # 1328.919 M/sec                    ( +-  0.00% )
-         6,758,919      branch-misses:u           #    3.49% of all branches          ( +-  0.03% )
+       193,689,761      branches:u                # 1338.887 M/sec                    ( +-  0.00% )
+         6,699,976      branch-misses:u           #    3.46% of all branches          ( +-  0.02% )
 
-          0.146075 +- 0.000232 seconds time elapsed  ( +-  0.16% )
+          0.144942 +- 0.000197 seconds time elapsed  ( +-  0.14% )
 
 ```
