@@ -1,0 +1,23 @@
+cabal-version:       2.2
+
+name:                solutions
+version:             2022
+license:             MIT
+author:              Michael Walker
+maintainer:          mike@barrucadu.co.uk
+build-type:          Simple
+
+common base
+  build-depends:       base
+  default-language:    Haskell2010
+  ghc-options:         -O3 -Wall
+
+common exe
+  import:              base
+  build-depends:       solutions
+
+library
+  import:              base
+  exposed-modules:     Utils
+  build-depends:       vector
+  hs-source-dirs:      ../../shared
