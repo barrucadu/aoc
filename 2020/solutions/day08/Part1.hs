@@ -1,12 +1,12 @@
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE LambdaCase #-}
 
-import Control.Monad.ST (runST)
+import           Control.Monad.ST            (runST)
+import           Data.Foldable               (for_)
 import qualified Data.Vector.Unboxed.Mutable as VUM
-import Data.Foldable (for_)
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 8 parse (show . solve)

@@ -2,7 +2,7 @@
 
 module Common where
 
-import Data.List (iterate')
+import           Data.List       (iterate')
 
 import qualified Data.Map.Strict as M
 

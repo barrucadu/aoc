@@ -1,8 +1,8 @@
-import Data.List (foldl')
-import Data.Maybe (fromJust)
-import qualified Data.Set as S
+import           Data.List  (foldl')
+import           Data.Maybe (fromJust)
+import qualified Data.Set   as S
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 8 parse (show . solve)
@@ -46,4 +46,4 @@ solve = sum . map (uncurry go) where
         five = head . isSubsymbolOf nine . isNot three $ withSegments 5
         two = head . isNot five . isNot three $ withSegments 5
     in [(zero, 0), (one, 1), (two, 2), (three, 3), (four, 4), (five, 5), (six, 6), (seven, 7), (eight, 8), (nine, 9)]
-        
+

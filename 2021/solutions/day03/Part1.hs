@@ -1,7 +1,7 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Data.List (transpose)
-import Utils
+import           Data.List (transpose)
+import           Utils
 
 main :: IO ()
 main = mainFor 3 parse (show . solve)

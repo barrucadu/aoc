@@ -2,7 +2,7 @@
 
 module Common where
 
-import Utils
+import           Utils
 
 parse :: String -> [(Int, Int, Char, String)]
 parse = map (go1 0) . lines where

@@ -4,7 +4,7 @@ module Common where
 
 import qualified Data.IntMap.Strict as M
 
-import Utils (stepParseInt)
+import           Utils              (stepParseInt)
 
 -- this makes me sad, but it's faster than something like
 -- `numUnmarkedInColumn :: M.IntMap Int`

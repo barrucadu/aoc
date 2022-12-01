@@ -3,7 +3,7 @@
 module Common where
 
 import qualified Data.IntMap.Strict as M
-import qualified Data.IntSet as S
+import qualified Data.IntSet        as S
 
 type TreeMap = (M.IntMap S.IntSet, Int, Int)
 

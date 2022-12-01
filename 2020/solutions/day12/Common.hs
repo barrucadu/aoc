@@ -1,6 +1,6 @@
 module Common where
 
-import Utils
+import           Utils
 
 data Point = P {-# UNPACK #-} !Int {-# UNPACK #-} !Int
   deriving (Eq, Ord, Read, Show)

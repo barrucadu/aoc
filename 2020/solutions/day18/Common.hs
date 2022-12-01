@@ -2,7 +2,7 @@
 
 module Common where
 
-import Utils (stepParseInt)
+import           Utils (stepParseInt)
 
 type Expr = [Atom]
 

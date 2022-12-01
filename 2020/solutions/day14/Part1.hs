@@ -1,11 +1,11 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Data.Bits
-import Data.Word
+import           Data.Bits
+import           Data.Word
 
 import qualified Data.IntMap.Strict as M
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 14 parse (show . solve)

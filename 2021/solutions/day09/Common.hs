@@ -2,10 +2,10 @@
 
 module Common where
 
-import Control.Monad.ST (ST)
-import Data.Foldable (for_)
+import           Control.Monad.ST (ST)
+import           Data.Foldable    (for_)
 
-import Utils
+import           Utils
 
 parseM :: String -> ST s (STArray s Int)
 parseM input = do

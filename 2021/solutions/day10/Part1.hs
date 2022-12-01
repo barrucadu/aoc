@@ -1,4 +1,4 @@
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 10 parse (show . solve)

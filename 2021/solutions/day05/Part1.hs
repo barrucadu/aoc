@@ -1,6 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Utils
+import           Utils
 
 import qualified Data.Map as M
 

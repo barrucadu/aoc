@@ -2,10 +2,10 @@
 
 module Common where
 
-import qualified Data.Set as S
 import qualified Data.IntMap.Strict as M
+import qualified Data.Set           as S
 
-import Utils (stepParseInt)
+import           Utils              (stepParseInt)
 
 data Rule
   = RChar Char

@@ -1,6 +1,6 @@
-import Data.Char (isDigit, isHexDigit)
+import           Data.Char (isDigit, isHexDigit)
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 4 parse (show . solve)

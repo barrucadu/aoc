@@ -2,7 +2,7 @@ module Common where
 
 import qualified Data.Map as M
 
-import Utils (minmax)
+import           Utils    (minmax)
 
 type LSystemRules = M.Map (Char, Char) Char
 type Polymer = M.Map (Char, Char) Int

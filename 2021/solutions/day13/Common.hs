@@ -4,7 +4,7 @@ module Common where
 
 import qualified Data.Set as S
 
-import Utils (parseInt, stepParseInt)
+import           Utils    (parseInt, stepParseInt)
 
 data Point = P {-# UNPACK #-} !Int {-# UNPACK #-} !Int
   deriving (Eq, Ord, Read, Show)

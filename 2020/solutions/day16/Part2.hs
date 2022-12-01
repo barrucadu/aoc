@@ -1,10 +1,10 @@
-import Data.List (isPrefixOf, transpose)
+import           Data.List (isPrefixOf, transpose)
 
-import Data.Set ((\\))
-import qualified Data.Set as S
+import           Data.Set  ((\\))
+import qualified Data.Set  as S
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 16 parse (show . solve)
@@ -13,7 +13,7 @@ solve :: ([Rule], Ticket, [Ticket]) -> Int
 solve (rules, myTicket, tickets) = product [ n | (field, n) <- zip fieldNames myTicket, "departure" `isPrefixOf` field ] where
   fieldNames = propagateR True [] (map intersections $ transpose validTickets) where
     intersections = foldl1 S.intersection
-    
+
     propagateR allSingletons lefts [current] = case (allSingletons, isSingleton current) of
       (True, True)   -> reverse $ map getElement (current:lefts)
       (True, False)  -> error "no solution"
@@ -43,10 +43,10 @@ solve (rules, myTicket, tickets) = product [ n | (field, n) <- zip fieldNames my
     rmElement x = map (\\x)
 
     isSingleton s = S.size s == 1
-  
+
   validTickets = filter valid $ map matchRulesToFields tickets where
     matchRulesToFields = map mRTF
-    
+
     mRTF field = S.fromList [ rName rule | rule <- rules, checkRule field rule ]
 
     valid = all (not . S.null)

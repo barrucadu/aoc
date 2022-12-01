@@ -2,12 +2,12 @@
 
 module Common where
 
-import Control.Monad.ST (runST)
-import Data.Foldable (for_)
+import           Control.Monad.ST            (runST)
+import           Data.Foldable               (for_)
 
 import qualified Data.Vector.Unboxed.Mutable as VUM
 
-import Utils (parseDigit)
+import           Utils                       (parseDigit)
 
 parse :: String -> [Int]
 parse = go . head . lines where

@@ -1,8 +1,8 @@
-import Control.Monad.ST (ST, runST)
-import Data.List (sort)
+import           Control.Monad.ST (ST, runST)
+import           Data.List        (sort)
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 9 id (show . solve)
@@ -19,7 +19,7 @@ solve input = runST $ do
     flood arr = go where
       maxX = widthArray' arr
       maxY = heightArray' arr
-      
+
       go x y = do
         this <- readArray arr x y
         if this == 9

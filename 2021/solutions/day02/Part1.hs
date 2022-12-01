@@ -1,5 +1,5 @@
-import Data.List (foldl')
-import Utils
+import           Data.List (foldl')
+import           Utils
 
 main :: IO ()
 main = mainFor 2 parse (show . solve)

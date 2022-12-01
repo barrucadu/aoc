@@ -2,9 +2,9 @@
 
 module Common where
 
-import Data.Word (Word8)
+import           Data.Word (Word8)
 
-import Utils
+import           Utils
 
 type Instruction = (Word8, Int)
 

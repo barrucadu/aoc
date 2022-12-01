@@ -1,8 +1,8 @@
-import Data.List (foldl')
-import qualified Data.Map as M
-import qualified Data.Set as S
+import           Data.List (foldl')
+import qualified Data.Map  as M
+import qualified Data.Set  as S
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 7 parse (show . solve)

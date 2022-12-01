@@ -1,7 +1,7 @@
-import Data.List (foldl', sort)
-import Data.Maybe (mapMaybe)
+import           Data.List  (foldl', sort)
+import           Data.Maybe (mapMaybe)
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 10 parse (show . solve)

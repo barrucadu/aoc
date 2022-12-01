@@ -4,7 +4,7 @@ module Common where
 
 import qualified Data.Map.Strict as M
 
-import Utils (fixEq)
+import           Utils           (fixEq)
 
 data Point = P {-# UNPACK#-} !Int {-# UNPACK#-} !Int
   deriving (Eq, Ord, Read, Show)

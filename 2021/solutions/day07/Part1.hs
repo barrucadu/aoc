@@ -1,7 +1,7 @@
-import Data.List (sort)
+import           Data.List (sort)
 
-import Common
-import Utils
+import           Common
+import           Utils
 
 main :: IO ()
 main = mainFor 7 parse (show . solve)

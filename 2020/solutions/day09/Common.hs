@@ -1,9 +1,9 @@
 module Common where
 
-import Data.Sequence (Seq(Empty, (:<|)), (|>))
+import           Data.Sequence (Seq(Empty, (:<|)), (|>))
 import qualified Data.Sequence as Sq
 
-import Utils
+import           Utils
 
 parse :: String -> [Int]
 parse = map parseInt . lines

@@ -1,6 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 1 parse (show . solve)
