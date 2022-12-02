@@ -33,3 +33,15 @@ executable Day01Part2
   main-is:             Part2.hs
   hs-source-dirs:      day01
   other-modules:       Common
+
+executable Day02Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day02
+  other-modules:       Common
+
+executable Day02Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day02
+  other-modules:       Common
