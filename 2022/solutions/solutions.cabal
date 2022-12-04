@@ -57,3 +57,15 @@ executable Day03Part2
   main-is:             Part2.hs
   hs-source-dirs:      day03
   build-depends:       containers
+
+executable Day04Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day04
+  other-modules:       Common
+
+executable Day04Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day04
+  other-modules:       Common
