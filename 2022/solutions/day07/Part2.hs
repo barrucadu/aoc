@@ -7,8 +7,8 @@ main :: IO ()
 main = mainFor 7 parse (show . solve)
 
 solve :: Filesystem -> Int
-solve fs = minimum directorySizes where
-  availableSpace = 70000000 - totalSize fs []
+solve fs = minimum [ size | size <- M.elems sizes, availableSpace + size >= neededSpace ] where
+  availableSpace = 70000000 - sizes M.! []
   neededSpace = 30000000
 
-  directorySizes = [ size | dirname <- M.keys fs, let size = totalSize fs dirname, availableSpace + size >= neededSpace ]
+  sizes = directorySizes fs

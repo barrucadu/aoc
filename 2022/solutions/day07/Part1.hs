@@ -7,4 +7,4 @@ main :: IO ()
 main = mainFor 7 parse (show . solve)
 
 solve :: Filesystem -> Int
-solve fs = sum [ size | dirname <- M.keys fs, let size = totalSize fs dirname, size <= 100000 ]
+solve fs = sum [ size | size <- M.elems (directorySizes fs), size <= 100000 ]
