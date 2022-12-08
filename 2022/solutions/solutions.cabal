@@ -107,3 +107,16 @@ executable Day07Part2
   hs-source-dirs:      day07
   other-modules:       Common
   build-depends:       containers
+
+executable Day08Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day08
+  other-modules:       Common
+  build-depends:       containers
+
+executable Day08Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day08
+  other-modules:       Common
