@@ -37,16 +37,13 @@ solveGeneric segments = S.size . fst . foldl' go (S.singleton origin, origin :| 
 
 yank :: P -> P -> P
 yank (hx, hy) (tx, ty)
-    | adx == 2 && ady == 2 = (tx + sdx, ty + sdy)
-    | adx == 2 = (tx + sdx, hy)
-    | ady == 2 = (hx, ty + sdy)
+    | adx == 2 && ady == 2 = (tx + signum dx, ty + signum dy)
+    | adx == 2 = (tx + signum dx, hy)
+    | ady == 2 = (hx, ty + signum dy)
     | otherwise = (tx, ty)
   where
     adx = abs dx
     ady = abs dy
-
-    sdx = if dx < 0 then -1 else 1
-    sdy = if dy < 0 then -1 else 1
 
     dx = hx - tx
     dy = hy - ty
