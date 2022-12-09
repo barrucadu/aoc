@@ -1,8 +1,8 @@
 module Common where
 
+import qualified Data.IntSet        as S
 import           Data.List          (foldl')
 import           Data.List.NonEmpty (NonEmpty(..))
-import qualified Data.Set           as S
 
 import           Utils              (parseInt)
 
@@ -19,21 +19,24 @@ parse = concatMap go . lines where
   movef 'L' (x, y) = (x - 1, y)
 
 solveGeneric :: Int -> [Step] -> Int
-solveGeneric segments = S.size . fst . foldl' go (S.singleton origin, origin :| replicate segments origin) where
-  go :: (S.Set P, NonEmpty P) -> Step -> (S.Set P, NonEmpty P)
+solveGeneric segments = S.size . fst . foldl' go (S.singleton (toInt origin), origin :| replicate segments origin) where
+  go :: (S.IntSet, NonEmpty P) -> Step -> (S.IntSet, NonEmpty P)
   go (seen, hxy:|txys) step = (seen', hxy':|txys') where
     hxy' = step hxy
 
     (seen', txys') = moveTails [] hxy' txys
 
-    moveTails :: [P] -> P -> [P] -> (S.Set P, [P])
+    moveTails :: [P] -> P -> [P] -> (S.IntSet, [P])
     moveTails acc prior (txy:rest) =
       let txy' = yank prior txy
       in moveTails (txy':acc) txy' rest
-    moveTails acc prior [] = (S.insert prior seen, reverse acc)
+    moveTails acc prior [] = (S.insert (toInt prior) seen, reverse acc)
 
   origin :: P
   origin = (0, 0)
+
+  toInt :: P -> Int
+  toInt (x, y) = x * 1000000 + y
 
 yank :: P -> P -> P
 yank (hx, hy) (tx, ty)
