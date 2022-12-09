@@ -1,9 +1,10 @@
 module Common where
 
-import           Data.List (foldl')
-import qualified Data.Set  as S
+import           Data.List          (foldl')
+import           Data.List.NonEmpty (NonEmpty(..))
+import qualified Data.Set           as S
 
-import           Utils     (parseInt)
+import           Utils              (parseInt)
 
 type P = (Int, Int)
 type Step = P -> P
@@ -18,9 +19,9 @@ parse = concatMap go . lines where
   movef 'L' (x, y) = (x - 1, y)
 
 solveGeneric :: Int -> [Step] -> Int
-solveGeneric segments = (\(seen, _, _) -> S.size seen) . foldl' go (S.singleton origin, origin, replicate segments origin) where
-  go :: (S.Set P, P, [P]) -> Step -> (S.Set P, P, [P])
-  go (seen, hxy, txys) step = (seen', hxy', txys') where
+solveGeneric segments = S.size . fst . foldl' go (S.singleton origin, origin :| replicate segments origin) where
+  go :: (S.Set P, NonEmpty P) -> Step -> (S.Set P, NonEmpty P)
+  go (seen, hxy:|txys) step = (seen', hxy':|txys') where
     hxy' = step hxy
 
     (seen', txys') = moveTails [] hxy' txys

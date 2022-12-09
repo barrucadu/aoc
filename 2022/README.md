@@ -330,19 +330,19 @@ Benchmark results
 
  Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-9.0.2/solutions-2022/x/Day09Part1/build/Day09Part1/Day09Part1' (50 runs):
 
-              6.47 msec task-clock:u              #    0.958 CPUs utilized            ( +-  0.12% )
+              6.40 msec task-clock:u              #    0.953 CPUs utilized            ( +-  0.14% )
                  0      context-switches:u        #    0.000 /sec                   
                  0      cpu-migrations:u          #    0.000 /sec                   
-               597      page-faults:u             #   91.631 K/sec                    ( +-  0.04% )
-        22,903,138      cycles:u                  #    3.515 GHz                      ( +-  0.07% )
-           609,475      stalled-cycles-frontend:u #    2.66% frontend cycles idle     ( +-  0.64% )
-         1,322,737      stalled-cycles-backend:u  #    5.78% backend cycles idle      ( +-  0.32% )
-        35,451,390      instructions:u            #    1.55  insn per cycle         
+               599      page-faults:u             #   92.446 K/sec                    ( +-  0.03% )
+        22,774,758      cycles:u                  #    3.515 GHz                      ( +-  0.10% )
+           654,454      stalled-cycles-frontend:u #    2.85% frontend cycles idle     ( +-  0.65% )
+         1,387,474      stalled-cycles-backend:u  #    6.04% backend cycles idle      ( +-  0.33% )
+        35,450,069      instructions:u            #    1.54  insn per cycle         
                                                   #    0.04  stalled cycles per insn  ( +-  0.00% )
-         6,683,293      branches:u                #    1.026 G/sec                    ( +-  0.00% )
-           313,865      branch-misses:u           #    4.70% of all branches          ( +-  0.15% )
+         6,684,976      branches:u                #    1.032 G/sec                    ( +-  0.00% )
+           307,343      branch-misses:u           #    4.60% of all branches          ( +-  0.24% )
 
-        0.00675414 +- 0.00000897 seconds time elapsed  ( +-  0.13% )
+         0.0067167 +- 0.0000113 seconds time elapsed  ( +-  0.17% )
 
 ```
 ### Day09Part2
@@ -350,18 +350,18 @@ Benchmark results
 
  Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-9.0.2/solutions-2022/x/Day09Part2/build/Day09Part2/Day09Part2' (50 runs):
 
-              7.90 msec task-clock:u              #    0.968 CPUs utilized            ( +-  0.19% )
+              7.99 msec task-clock:u              #    0.975 CPUs utilized            ( +-  0.11% )
                  0      context-switches:u        #    0.000 /sec                   
                  0      cpu-migrations:u          #    0.000 /sec                   
-               534      page-faults:u             #   67.382 K/sec                    ( +-  0.04% )
-        28,716,904      cycles:u                  #    3.624 GHz                      ( +-  0.13% )
-           482,685      stalled-cycles-frontend:u #    1.68% frontend cycles idle     ( +-  0.46% )
-         2,190,153      stalled-cycles-backend:u  #    7.62% backend cycles idle      ( +-  0.38% )
-        54,510,626      instructions:u            #    1.90  insn per cycle         
+               538      page-faults:u             #   67.571 K/sec                    ( +-  0.04% )
+        29,163,790      cycles:u                  #    3.663 GHz                      ( +-  0.06% )
+           492,217      stalled-cycles-frontend:u #    1.69% frontend cycles idle     ( +-  0.36% )
+         2,135,239      stalled-cycles-backend:u  #    7.35% backend cycles idle      ( +-  0.28% )
+        54,526,761      instructions:u            #    1.88  insn per cycle         
                                                   #    0.04  stalled cycles per insn  ( +-  0.00% )
-        10,117,856      branches:u                #    1.277 G/sec                    ( +-  0.00% )
-           286,689      branch-misses:u           #    2.83% of all branches          ( +-  0.18% )
+        10,123,638      branches:u                #    1.271 G/sec                    ( +-  0.00% )
+           287,265      branch-misses:u           #    2.84% of all branches          ( +-  0.12% )
 
-         0.0081633 +- 0.0000164 seconds time elapsed  ( +-  0.20% )
+         0.0081994 +- 0.0000119 seconds time elapsed  ( +-  0.15% )
 
 ```
