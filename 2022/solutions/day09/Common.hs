@@ -6,27 +6,22 @@ import qualified Data.Set  as S
 import           Utils     (parseInt)
 
 type P = (Int, Int)
+type Step = P -> P
 
-data Dir = U | D | R | L
-  deriving Eq
+parse :: String -> [Step]
+parse = concatMap go . lines where
+  go (d:' ':n) = replicate (parseInt n) $ movef d
 
-parse :: String -> [(Dir, Int)]
-parse = map go . lines where
-  go ('U':' ':n) = (U, parseInt n)
-  go ('D':' ':n) = (D, parseInt n)
-  go ('R':' ':n) = (R, parseInt n)
-  go ('L':' ':n) = (L, parseInt n)
+  movef 'U' (x, y) = (x, y + 1)
+  movef 'D' (x, y) = (x, y - 1)
+  movef 'R' (x, y) = (x + 1, y)
+  movef 'L' (x, y) = (x - 1, y)
 
-solveGeneric :: Int -> [(Dir, Int)] -> Int
+solveGeneric :: Int -> [Step] -> Int
 solveGeneric segments = (\(seen, _, _) -> S.size seen) . foldl' go (S.singleton origin, origin, replicate segments origin) where
-  go :: (S.Set P, P, [P]) -> (Dir, Int) -> (S.Set P, P, [P])
-  go (seen, hxy, txys) (_, 0) = (seen, hxy, txys)
-  go (seen, (hx, hy), txys) (dir, n) = go (seen', hxy', txys') (dir, n-1) where
-    hxy' = case dir of
-      U -> (hx, hy+1)
-      D -> (hx, hy-1)
-      R -> (hx+1, hy)
-      L -> (hx-1, hy)
+  go :: (S.Set P, P, [P]) -> Step -> (S.Set P, P, [P])
+  go (seen, hxy, txys) step = (seen', hxy', txys') where
+    hxy' = step hxy
 
     (seen', txys') = moveTails [] hxy' txys
 
