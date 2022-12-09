@@ -120,3 +120,17 @@ executable Day08Part2
   main-is:             Part2.hs
   hs-source-dirs:      day08
   other-modules:       Common
+
+executable Day09Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day09
+  build-depends:       containers
+  other-modules:       Common
+
+executable Day09Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day09
+  build-depends:       containers
+  other-modules:       Common
