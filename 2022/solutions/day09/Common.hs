@@ -1,7 +1,7 @@
 module Common where
 
 import qualified Data.IntSet        as S
-import           Data.List          (foldl')
+import           Data.List          (foldl', scanl')
 import           Data.List.NonEmpty (NonEmpty(..))
 
 import           Utils              (parseInt)
@@ -23,14 +23,8 @@ solveGeneric segments = S.size . fst . foldl' go (S.singleton (toInt origin), or
   go :: (S.IntSet, NonEmpty P) -> Step -> (S.IntSet, NonEmpty P)
   go (seen, hxy:|txys) step = (seen', hxy':|txys') where
     hxy' = step hxy
-
-    (seen', txys') = moveTails [] hxy' txys
-
-    moveTails :: [P] -> P -> [P] -> (S.IntSet, [P])
-    moveTails acc prior (txy:rest) =
-      let txy' = yank prior txy
-      in moveTails (txy':acc) txy' rest
-    moveTails acc prior [] = (S.insert (toInt prior) seen, reverse acc)
+    txys' = tail $ scanl' yank hxy' txys
+    seen' = S.insert (toInt (last txys')) seen
 
   origin :: P
   origin = (0, 0)
