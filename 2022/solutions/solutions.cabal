@@ -134,3 +134,13 @@ executable Day09Part2
   hs-source-dirs:      day09
   build-depends:       containers
   other-modules:       Common
+
+executable Day10Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day10
+
+executable Day10Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day10
