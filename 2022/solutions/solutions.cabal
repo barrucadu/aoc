@@ -144,3 +144,17 @@ executable Day10Part2
   import:              exe
   main-is:             Part2.hs
   hs-source-dirs:      day10
+
+executable Day11Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day11
+  build-depends:       containers
+  other-modules:       Common
+
+-- executable Day11Part2
+--   import:              exe
+--   main-is:             Part2.hs
+--   hs-source-dirs:      day11
+--   build-depends:       containers
+--   other-modules:       Common

@@ -405,3 +405,23 @@ Benchmark results
         0.00096288 +- 0.00000368 seconds time elapsed  ( +-  0.38% )
 
 ```
+### Day11Part1
+```
+
+ Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-9.0.2/solutions-2022/x/Day11Part1/build/Day11Part1/Day11Part1' (50 runs):
+
+              1.20 msec task-clock:u              #    0.825 CPUs utilized            ( +-  0.50% )
+                 0      context-switches:u        #    0.000 /sec                   
+                 0      cpu-migrations:u          #    0.000 /sec                   
+               436      page-faults:u             #  353.854 K/sec                    ( +-  0.04% )
+         2,247,824      cycles:u                  #    1.824 GHz                      ( +-  0.35% )
+           104,928      stalled-cycles-frontend:u #    4.58% frontend cycles idle     ( +-  0.56% )
+           321,279      stalled-cycles-backend:u  #   14.02% backend cycles idle      ( +-  1.12% )
+         3,212,021      instructions:u            #    1.40  insn per cycle         
+                                                  #    0.11  stalled cycles per insn  ( +-  0.00% )
+           674,860      branches:u                #  547.710 M/sec                    ( +-  0.00% )
+            23,105      branch-misses:u           #    3.42% of all branches          ( +-  0.35% )
+
+        0.00145814 +- 0.00000656 seconds time elapsed  ( +-  0.45% )
+
+```
