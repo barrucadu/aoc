@@ -158,3 +158,17 @@ executable Day11Part1
 --   hs-source-dirs:      day11
 --   build-depends:       containers
 --   other-modules:       Common
+
+executable Day12Part1
+  import:              exe
+  main-is:             Part1.hs
+  hs-source-dirs:      day12
+  build-depends:       containers, fgl
+  other-modules:       Common
+
+executable Day12Part2
+  import:              exe
+  main-is:             Part2.hs
+  hs-source-dirs:      day12
+  build-depends:       containers, fgl
+  other-modules:       Common
