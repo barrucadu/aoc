@@ -510,19 +510,19 @@ Benchmark results
 
  Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-9.0.2/solutions-2022/x/Day14Part1/build/Day14Part1/Day14Part1' (50 runs):
 
-             18.84 msec task-clock:u              #    0.987 CPUs utilized            ( +-  0.12% )
+              9.38 msec task-clock:u              #    0.973 CPUs utilized            ( +-  0.13% )
                  0      context-switches:u        #    0.000 /sec                   
                  0      cpu-migrations:u          #    0.000 /sec                   
-               470      page-faults:u             #   24.954 K/sec                    ( +-  0.05% )
-        73,734,429      cycles:u                  #    3.915 GHz                      ( +-  0.03% )
-         1,401,787      stalled-cycles-frontend:u #    1.90% frontend cycles idle     ( +-  0.08% )
-        11,964,337      stalled-cycles-backend:u  #   16.21% backend cycles idle      ( +-  0.08% )
-       147,021,981      instructions:u            #    1.99  insn per cycle         
-                                                  #    0.08  stalled cycles per insn  ( +-  0.00% )
-        25,204,973      branches:u                #    1.338 G/sec                    ( +-  0.00% )
-           962,748      branch-misses:u           #    3.82% of all branches          ( +-  0.02% )
+               624      page-faults:u             #   66.420 K/sec                    ( +-  0.04% )
+        34,448,321      cycles:u                  #    3.667 GHz                      ( +-  0.05% )
+           506,329      stalled-cycles-frontend:u #    1.46% frontend cycles idle     ( +-  0.31% )
+         3,604,156      stalled-cycles-backend:u  #   10.42% backend cycles idle      ( +-  0.26% )
+        90,404,299      instructions:u            #    2.61  insn per cycle         
+                                                  #    0.04  stalled cycles per insn  ( +-  0.00% )
+        18,857,795      branches:u                #    2.007 G/sec                    ( +-  0.00% )
+           369,211      branch-misses:u           #    1.96% of all branches          ( +-  0.06% )
 
-         0.0190797 +- 0.0000235 seconds time elapsed  ( +-  0.12% )
+         0.0096405 +- 0.0000170 seconds time elapsed  ( +-  0.18% )
 
 ```
 ### Day14Part2
@@ -530,18 +530,18 @@ Benchmark results
 
  Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-9.0.2/solutions-2022/x/Day14Part2/build/Day14Part2/Day14Part2' (50 runs):
 
-            390.91 msec task-clock:u              #    0.995 CPUs utilized            ( +-  0.11% )
+            185.09 msec task-clock:u              #    0.997 CPUs utilized            ( +-  0.10% )
                  0      context-switches:u        #    0.000 /sec                   
                  0      cpu-migrations:u          #    0.000 /sec                   
-             1,028      page-faults:u             #    2.618 K/sec                    ( +-  0.02% )
-     1,616,348,255      cycles:u                  #    4.117 GHz                      ( +-  0.02% )
-        25,771,671      stalled-cycles-frontend:u #    1.59% frontend cycles idle     ( +-  0.02% )
-       391,796,805      stalled-cycles-backend:u  #   24.23% backend cycles idle      ( +-  0.03% )
-     3,547,107,012      instructions:u            #    2.19  insn per cycle         
-                                                  #    0.11  stalled cycles per insn  ( +-  0.00% )
-       583,731,301      branches:u                #    1.487 G/sec                    ( +-  0.00% )
-        20,730,211      branch-misses:u           #    3.55% of all branches          ( +-  0.00% )
+               635      page-faults:u             #    3.426 K/sec                    ( +-  0.03% )
+       774,185,030      cycles:u                  #    4.177 GHz                      ( +-  0.01% )
+        10,506,031      stalled-cycles-frontend:u #    1.36% frontend cycles idle     ( +-  0.03% )
+         6,075,335      stalled-cycles-backend:u  #    0.78% backend cycles idle      ( +-  0.89% )
+     1,804,115,076      instructions:u            #    2.33  insn per cycle         
+                                                  #    0.01  stalled cycles per insn  ( +-  0.00% )
+       374,447,562      branches:u                #    2.020 G/sec                    ( +-  0.00% )
+         9,230,654      branch-misses:u           #    2.47% of all branches          ( +-  0.01% )
 
-          0.393014 +- 0.000447 seconds time elapsed  ( +-  0.11% )
+          0.185667 +- 0.000192 seconds time elapsed  ( +-  0.10% )
 
 ```
