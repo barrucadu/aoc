@@ -550,18 +550,38 @@ Benchmark results
 
  Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-9.0.2/solutions-2022/x/Day15Part1/build/Day15Part1/Day15Part1' (50 runs):
 
-              1.05 msec task-clock:u              #    0.901 CPUs utilized            ( +-  1.13% )
+              0.83 msec task-clock:u              #    0.755 CPUs utilized            ( +-  1.09% )
                  0      context-switches:u        #    0.000 /sec                   
                  0      cpu-migrations:u          #    0.000 /sec                   
-               291      page-faults:u             #  320.080 K/sec                    ( +-  0.08% )
-         1,598,257      cycles:u                  #    1.758 GHz                      ( +-  1.43% )
-            63,677      stalled-cycles-frontend:u #    4.71% frontend cycles idle     ( +-  1.61% )
-           382,189      stalled-cycles-backend:u  #   28.25% backend cycles idle      ( +-  3.24% )
-         1,671,180      instructions:u            #    1.24  insn per cycle         
-                                                  #    0.16  stalled cycles per insn  ( +-  0.00% )
-           349,530      branches:u                #  384.459 M/sec                    ( +-  0.00% )
-            13,766      branch-misses:u           #    3.94% of all branches          ( +-  0.34% )
+               291      page-faults:u             #  334.245 K/sec                    ( +-  0.08% )
+         1,215,861      cycles:u                  #    1.397 GHz                      ( +-  1.26% )
+            51,699      stalled-cycles-frontend:u #    4.08% frontend cycles idle     ( +-  1.32% )
+           228,930      stalled-cycles-backend:u  #   18.08% backend cycles idle      ( +-  3.67% )
+         1,676,045      instructions:u            #    1.32  insn per cycle         
+                                                  #    0.15  stalled cycles per insn  ( +-  0.00% )
+           350,222      branches:u                #  402.267 M/sec                    ( +-  0.00% )
+            13,837      branch-misses:u           #    3.95% of all branches          ( +-  0.31% )
 
-         0.0011648 +- 0.0000189 seconds time elapsed  ( +-  1.62% )
+         0.0011019 +- 0.0000143 seconds time elapsed  ( +-  1.30% )
+
+```
+### Day15Part2
+```
+
+ Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-9.0.2/solutions-2022/x/Day15Part2/build/Day15Part2/Day15Part2' (50 runs):
+
+          3,520.62 msec task-clock:u              #    1.001 CPUs utilized            ( +-  0.07% )
+                 0      context-switches:u        #    0.000 /sec                   
+                 0      cpu-migrations:u          #    0.000 /sec                   
+               431      page-faults:u             #  122.622 /sec                     ( +-  0.06% )
+    14,393,457,485      cycles:u                  #    4.095 GHz                      ( +-  0.02% )
+       171,643,917      stalled-cycles-frontend:u #    1.19% frontend cycles idle     ( +-  0.26% )
+       537,337,712      stalled-cycles-backend:u  #    3.73% backend cycles idle      ( +-  0.49% )
+    26,802,649,905      instructions:u            #    1.86  insn per cycle         
+                                                  #    0.02  stalled cycles per insn  ( +-  0.00% )
+     4,692,786,876      branches:u                #    1.335 G/sec                    ( +-  0.00% )
+       135,923,272      branch-misses:u           #    2.90% of all branches          ( +-  0.03% )
+
+           3.51593 +- 0.00244 seconds time elapsed  ( +-  0.07% )
 
 ```
