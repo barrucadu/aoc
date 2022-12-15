@@ -550,18 +550,18 @@ Benchmark results
 
  Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-9.0.2/solutions-2022/x/Day15Part1/build/Day15Part1/Day15Part1' (50 runs):
 
-            847.95 msec task-clock:u              #    1.010 CPUs utilized            ( +-  0.13% )
+              1.05 msec task-clock:u              #    0.901 CPUs utilized            ( +-  1.13% )
                  0      context-switches:u        #    0.000 /sec                   
                  0      cpu-migrations:u          #    0.000 /sec                   
-            52,354      page-faults:u             #   62.447 K/sec                    ( +-  0.00% )
-     3,160,051,404      cycles:u                  #    3.769 GHz                      ( +-  0.05% )
-        17,727,849      stalled-cycles-frontend:u #    0.56% frontend cycles idle     ( +-  0.50% )
-       537,573,499      stalled-cycles-backend:u  #   16.97% backend cycles idle      ( +-  0.34% )
-     9,633,447,623      instructions:u            #    3.04  insn per cycle         
-                                                  #    0.06  stalled cycles per insn  ( +-  0.00% )
-     1,822,695,980      branches:u                #    2.174 G/sec                    ( +-  0.00% )
-         8,561,438      branch-misses:u           #    0.47% of all branches          ( +-  0.03% )
+               291      page-faults:u             #  320.080 K/sec                    ( +-  0.08% )
+         1,598,257      cycles:u                  #    1.758 GHz                      ( +-  1.43% )
+            63,677      stalled-cycles-frontend:u #    4.71% frontend cycles idle     ( +-  1.61% )
+           382,189      stalled-cycles-backend:u  #   28.25% backend cycles idle      ( +-  3.24% )
+         1,671,180      instructions:u            #    1.24  insn per cycle         
+                                                  #    0.16  stalled cycles per insn  ( +-  0.00% )
+           349,530      branches:u                #  384.459 M/sec                    ( +-  0.00% )
+            13,766      branch-misses:u           #    3.94% of all branches          ( +-  0.34% )
 
-           0.83973 +- 0.00102 seconds time elapsed  ( +-  0.12% )
+         0.0011648 +- 0.0000189 seconds time elapsed  ( +-  1.62% )
 
 ```

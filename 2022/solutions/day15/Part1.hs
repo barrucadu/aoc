@@ -1,6 +1,7 @@
 {-# LANGUAGE BangPatterns #-}
 
-import qualified Data.IntSet as S
+import           Data.List  (foldl', nub, sort)
+import           Data.Maybe (mapMaybe)
 
 import           Utils
 
@@ -28,15 +29,26 @@ parse = map go . lines where
   parseNum neg !acc (x:xs) = parseNum neg (stepParseInt acc x) xs
 
 solve :: [(P, P)] -> Int
-solve positions = S.size $ S.unions (map overlap positions) `S.difference` beacons where
-  beacons :: S.IntSet
-  beacons = S.fromList [bx | (_, (bx, by)) <- positions, by == targetY]
+solve positions = overlapSize - length beacons where
+  overlapSize :: Int
+  overlapSize = fst $ foldl' go (rxmax0 - rxmin0 + 1, rxmax0) rs0 where
+    ((rxmin0, rxmax0):rs0) = sort ranges
 
-  overlap :: (P, P) -> S.IntSet
-  overlap (sxy@(sx, sy), bxy) =
-    let srange = manhattan2 sxy bxy
-        ydist = abs (sy - targetY)
-        xdists = [0..srange - ydist]
-    in S.fromList [sx + dx * m | m <- [-1, 1], dx <- xdists]
+    go (!acc, xmax) (rxmin, rxmax)
+      | rxmax < xmax = (acc, xmax)
+      | rxmin > xmax = (acc + rxmax - rxmin + 1, rxmax)
+      | otherwise = (acc + rxmax - xmax, rxmax)
 
+  ranges :: [(Int, Int)]
+  ranges = mapMaybe go positions where
+    go (sxy@(sx, sy), bxy) =
+      let srange = manhattan2 sxy bxy
+          ydist = abs (sy - targetY)
+          xdist = srange - ydist
+      in if xdist < 0 then Nothing else Just (sx - xdist, sx + xdist)
+
+  beacons :: [Int]
+  beacons = nub [bx | (_, (bx, by)) <- positions, by == targetY]
+
+  targetY :: Int
   targetY = 2000000

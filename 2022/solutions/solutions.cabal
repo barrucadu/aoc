@@ -203,4 +203,3 @@ executable Day15Part1
   import:              exe
   main-is:             Part1.hs
   hs-source-dirs:      day15
-  build-depends:       containers
