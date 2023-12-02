@@ -1,14 +1,24 @@
 {-# LANGUAGE BangPatterns #-}
 
-import           Common
 import           Utils
 
 main :: IO ()
 main = mainFor 2 parse (show . solve)
 
-solve :: [(Int, [RGB])] -> Int
-solve = sum . map power where
-  power (_, (RGB r0 g0 b0):configs) = power' r0 g0 b0 configs
+data RGB = RGB !Int !Int !Int
 
-  power' !r !g !b [] = r * g * b
-  power' !r !g !b ((RGB r' g' b'):configs) = power' (max r r') (max g g') (max b b') configs
+parse :: String -> [RGB]
+parse = map (go . words) . lines where
+  go (_:_:configs) = minCubes (RGB 0 0 0) configs
+
+  minCubes !(RGB r g b) (num:color:rest) =
+    let rgb' = case head color of
+          'r' -> RGB (max r $ parseInt num) g b
+          'g' -> RGB r (max g $ parseInt num) b
+          'b' -> RGB r g (max b $ parseInt num)
+    in minCubes rgb' rest
+  minCubes !rgb _ = rgb
+
+solve :: [RGB] -> Int
+solve = sum . map power where
+  power (RGB r g b) = r * b * g
