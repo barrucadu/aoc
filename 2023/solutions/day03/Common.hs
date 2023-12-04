@@ -2,10 +2,10 @@
 
 module Common where
 
-import Data.Char (isDigit)
-import qualified Data.Set as S
+import           Data.Char (isDigit)
+import qualified Data.Set  as S
 
-import Utils
+import           Utils
 
 type Point = (Int, Int)
 data Token = Token
