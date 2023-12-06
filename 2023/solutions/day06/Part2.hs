@@ -10,7 +10,7 @@ parse :: String -> Race
 parse input =
   let [times, distances] = lines input
       numbers = parseInt . concat . tail . words
-  in Race (fromIntegral $ numbers times) (numbers distances)
+  in Race (numbers times) (numbers distances)
 
 solve :: Race -> Int
 solve (Race time distance) = 1 + hi - lo where
