@@ -246,3 +246,23 @@ Benchmark results
         0.00110100 +- 0.00000930 seconds time elapsed  ( +-  0.84% )
 
 ```
+### Day07Part1
+```
+
+ Performance counter stats for 'dist-newstyle/build/x86_64-linux/ghc-9.0.2/solutions-2023/x/Day07Part1/build/Day07Part1/Day07Part1' (50 runs):
+
+              3.77 msec task-clock:u              #    0.913 CPUs utilized            ( +-  0.57% )
+                 0      context-switches:u        #    0.000 /sec                   
+                 0      cpu-migrations:u          #    0.000 /sec                   
+               547      page-faults:u             #  145.534 K/sec                    ( +-  0.03% )
+        10,793,562      cycles:u                  #    2.872 GHz                      ( +-  0.42% )
+           336,831      stalled-cycles-frontend:u #    3.09% frontend cycles idle     ( +-  3.88% )
+           680,101      stalled-cycles-backend:u  #    6.24% backend cycles idle      ( +-  1.70% )
+        14,378,453      instructions:u            #    1.32  insn per cycle         
+                                                  #    0.06  stalled cycles per insn  ( +-  0.00% )
+         3,042,869      branches:u                #  809.582 M/sec                    ( +-  0.00% )
+           145,928      branch-misses:u           #    4.80% of all branches          ( +-  0.12% )
+
+         0.0041251 +- 0.0000284 seconds time elapsed  ( +-  0.69% )
+
+```
