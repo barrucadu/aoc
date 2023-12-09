@@ -1,6 +1,6 @@
-import Data.List (sort)
+import           Data.List (sort)
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 7 parse (show . solve)
