@@ -2,7 +2,7 @@
 
 import qualified Data.Map as M
 
-import Utils
+import           Utils
 
 main :: IO ()
 main = mainFor 8 parse (show . solve)
